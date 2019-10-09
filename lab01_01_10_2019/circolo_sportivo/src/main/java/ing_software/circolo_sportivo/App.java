@@ -28,8 +28,8 @@ public class App {
 		}
 		
 		System.out.println("\n-------> LISTA ATTIVITA <-------");
-		for(int index = 0; index < App.attivita.length; index++) {
-			System.out.print(index + ")\t" + App.attivita[index].getNome() + "\tPartecipatni { ");
+		for(int index = 0; index < attivita.length; index++) {
+			System.out.print(index + ")\t" + attivita[index].getNome() + "\tPartecipatni { ");
 			for(Persona p : attivita[index].getPersone()) {
 				System.out.print(p.getNome() + ", ");
 			}
@@ -46,14 +46,14 @@ public class App {
 		
 		
 		System.out.println("\n-------> LISTA PERSONE <-------");
-		for(int index = 0; index < App.circolo.length; index++) {
-			System.out.print(index + ")\t" + App.circolo[index].getNome() + "\t" + App.circolo[index].getCognome());
-			System.out.println("\t" + App.circolo[index].getEmail());
+		for(int index = 0; index < circolo.length; index++) {
+			System.out.print(index + ")\t" + circolo[index].getNome() + "\t" + circolo[index].getCognome());
+			System.out.println("\t" + circolo[index].getEmail());
 		}
 		
 		System.out.println("\n-------> LISTA ATTIVITA <-------");
-		for(int index = 0; index < App.attivita.length; index++) {
-			System.out.print(index + ")\t" + App.attivita[index].getNome() + "\tPartecipatni { ");
+		for(int index = 0; index < attivita.length; index++) {
+			System.out.print(index + ")\t" + attivita[index].getNome() + "\tPartecipatni { ");
 			for(Persona p : attivita[index].getPersone()) {
 				System.out.print(p.getNome() + ", ");
 			}
@@ -66,14 +66,16 @@ public class App {
 		scanner.close();
 	}
 
-	public static Persona[] aggiungiElementoArray(Persona[] array, Persona oggetto) {
+	public static Persona[] aggiungiElementoArray(Persona[] array, Persona oggetto) throws Exception {
 		
+		// Controlla se è già presente una persona con gli stessi attributi
 		for(Persona p : array) {
-			if(p == oggetto) {
-				System.out.println("Persona già presente.");
-				return array;
+			if(p.getNome().equals(oggetto.getNome()) && p.getCognome().equals(oggetto.getCognome()) && p.getEmail().equals(oggetto.getEmail())) {
+				throw new Exception("Persona già presente.");
 			}
 		}
+		
+		// Aggiunge una nuova persona in coda
 		Persona[] temp = new Persona[array.length + 1];
 		System.arraycopy(array, 0, temp, 0, array.length);
 		temp[array.length] = oggetto;
@@ -81,15 +83,16 @@ public class App {
 
 	}
 
-	public static Attivita[] aggiungiElementoArray(Attivita[] array, Attivita oggetto) {
+	public static Attivita[] aggiungiElementoArray(Attivita[] array, Attivita oggetto) throws Exception {
 		
+		// Controlla se è già presente un'attività con lo stesso nome
 		for(Attivita a : array) {
-			if(a == oggetto) {
-				System.out.println("Attività già presente.");
-				return array;
+			if(a.getNome() == oggetto.getNome()) {
+				throw new Exception("Attività già presente.");
 			}
 		}
 		
+		// Aggiunge una nuova attività in coda
 		Attivita[] temp = new Attivita[array.length + 1];
 		System.arraycopy(array, 0, temp, 0, array.length);
 		temp[array.length] = oggetto;
@@ -100,6 +103,7 @@ public class App {
 
 		int index = -1;
 
+		// Cerca l'indice dell'oggetto da rimuovere
 		for (int i = 0; i < array.length; i++) {
 			if (array[i].equals(oggetto)) {
 				index = i;
@@ -115,9 +119,11 @@ public class App {
 		Attivita[] tempIndexToLast = new Attivita[array.length - index - 1];
 		Attivita[] tempFinal = new Attivita[array.length - 1];
 
+		// Divido in due l'array, isolando l'elemento nella posizione = index
 		System.arraycopy(array, 0, tempFirstToIndex, 0, index);
 		System.arraycopy(array, index + 1, tempIndexToLast, 0, array.length - index - 1);
 
+		// Riunisco gli array senza l'elemento in posizione index
 		System.arraycopy(tempFirstToIndex, 0, tempFinal, 0, tempFirstToIndex.length);
 		System.arraycopy(tempIndexToLast, 0, tempFinal, index, tempIndexToLast.length);
 
@@ -127,7 +133,8 @@ public class App {
 	public static Persona[] rimuoviElementoArray(Persona[] array, Persona oggetto) throws Exception {
 
 		int index = -1;
-
+		
+		// Cerca l'indice dell'oggetto da rimuovere
 		for (int i = 0; i < array.length; i++) {
 			if (array[i].equals(oggetto)) {
 				index = i;
@@ -143,9 +150,11 @@ public class App {
 		Persona[] tempIndexToLast = new Persona[array.length - index - 1];
 		Persona[] tempFinal = new Persona[array.length - 1];
 
+		// Divido in due l'array, isolando l'elemento nella posizione = index
 		System.arraycopy(array, 0, tempFirstToIndex, 0, index);
 		System.arraycopy(array, index + 1, tempIndexToLast, 0, array.length - index - 1);
 
+		// Riunisco gli array senza l'elemento in posizione index
 		System.arraycopy(tempFirstToIndex, 0, tempFinal, 0, tempFirstToIndex.length);
 		System.arraycopy(tempIndexToLast, 0, tempFinal, index, tempIndexToLast.length);
 

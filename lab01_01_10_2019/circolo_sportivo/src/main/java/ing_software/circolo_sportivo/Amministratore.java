@@ -9,7 +9,6 @@ public class Amministratore extends Socio {
 	public Boolean aggiungiPersona() {
 		try {
 			int userChoice;
-
 			System.out.println("\n------>> Aggiungi Persona <<------");
 
 			do {
@@ -56,6 +55,8 @@ public class Amministratore extends Socio {
 		try {
 
 			System.out.println("\n------>> Rimuovi Persona <<------");
+			
+			// Stampa lista persone presenti nel circolo
 			for (int index = 0; index < App.circolo.length; index++) {
 				System.out.print(index + ")\t" + App.circolo[index].getNome() + "\t" + App.circolo[index].getCognome());
 				System.out.println("\t" + App.circolo[index].getEmail());
@@ -92,6 +93,8 @@ public class Amministratore extends Socio {
 	public Boolean modificaPersona() {
 		try {
 			System.out.println("\n------>> Modifica Persona <<------");
+			
+			// Stampa lista persone presenti nel circolo
 			for (int index = 0; index < App.circolo.length; index++) {
 				System.out.print(index + ")\t" + App.circolo[index].getNome() + "\t" + App.circolo[index].getCognome());
 				System.out.println("\t" + App.circolo[index].getEmail());
@@ -177,6 +180,8 @@ public class Amministratore extends Socio {
 	public Boolean rimuoviAttivita() {
 		try {
 			System.out.println("\n------>> Rimuovi Attivita <<------");
+			
+			// Stampa lista attività presenti nel circolo
 			for (int index = 0; index < App.attivita.length; index++) {
 				System.out.println(index + ")\t" + App.attivita[index].getNome());
 			}
@@ -208,6 +213,8 @@ public class Amministratore extends Socio {
 	public Boolean modificaAttivita() {
 		try {
 			System.out.println("\n------>> Modifica Attivita <<------");
+			
+			// Stampa lista attività presenti nel circolo
 			for (int index = 0; index < App.attivita.length; index++) {
 				System.out.println(index + ")\t" + App.attivita[index].getNome());
 			}
