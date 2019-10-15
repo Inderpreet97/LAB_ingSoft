@@ -9,6 +9,7 @@ public class Employee extends Person{
 	
 	public void shipment() {}
 	public void replace() {}
-	
-
+	public void Menu() {
+		
+	}
 }

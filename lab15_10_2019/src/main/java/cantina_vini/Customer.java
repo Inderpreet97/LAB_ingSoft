@@ -1,14 +1,101 @@
 package cantina_vini;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 public class Customer extends Person {
 
+	public Customer() {}
+	
 	public Customer(String username, String name, String surname, String password) {
 		// TODO Auto-generated constructor stub
 		super(username, name, surname, password);
 	}
-	
-	public void login() {}
-	public void search() {}
-	public void buy() {}
 
+	public void menu() {
+		searchWine();
+	}
+	
+	
+	public void buy() {
+		
+		// Check if an order has to be processed (true) or not (false)
+		boolean order = false;
+		
+		// List of wine
+		ArrayList<Wine> wineList = searchWineAndGetList();
+		
+		// Type the index
+		System.out.println("Type the the index of wine you want: ");
+		int chosenWineIndex = Main.scanner.nextInt();
+		Main.scanner.nextLine();
+		
+		// Check if index is correct
+		while (chosenWineIndex < 0 && chosenWineIndex > wineList.size()) {
+			System.out.println("Error, type a correct index");
+			System.out.println("Type the the index of wine you want: ");
+			chosenWineIndex = Main.scanner.nextInt();
+			Main.scanner.nextLine();
+		}
+		
+		// The real position of the wine list from the research is lower than one
+		chosenWineIndex--;
+		
+		// Found the real position of that particular wine in the gloabl Main.wineList
+		int realGlobalWineIndex = Main.getIndexOfWineByName(wineList.get(chosenWineIndex));
+		
+		// Amount of wine bottles
+		System.out.println("Quantity you want to buy: ");
+		int quantity = Main.scanner.nextInt();
+		Main.scanner.nextLine();
+		
+		// Check the amount of bottles
+		while (quantity >= Main.wineList.get(realGlobalWineIndex).getQuantity() && !order ) {
+			
+			System.out.println("Amount NOT AVAIBLE");
+			System.out.println("1- Order\n2-Change amount:");
+			int choice = Main.scanner.nextInt();
+			Main.scanner.nextLine();
+			
+			// Check if choice is correct
+			while (choice < 1 || choice > 2) {
+				System.out.println("1- Order\n2-Change amount:");
+				choice = Main.scanner.nextInt();
+				Main.scanner.nextLine();
+			}
+			
+			if (choice == 1) { // Order -> set order to true -> exit the while loop
+				order = true;
+			}
+			
+			System.out.println("Amount you want to buy: ");
+			quantity = Main.scanner.nextInt();
+			Main.scanner.nextLine();
+		}
+		
+		if (order) {
+			// Make the order
+			System.out.println("Make the order");
+		} else {
+			// Buying
+			
+			double amount = Main.wineList.get(realGlobalWineIndex).getPrice() * quantity;
+			System.out.println("Total amount: " +  amount);
+			
+			Purchase purchase = new Purchase(this, Main.wineList.get(realGlobalWineIndex), quantity, amount, LocalDateTime.now());
+			Main.purchaseList.add(purchase);
+			
+			// Changing quantity of wine
+			Main.wineList.get(realGlobalWineIndex).change(-quantity);
+		}
+		
+		
+		
+		
+		
+	}
+
+	public void order() {}
+	
+	
 }
