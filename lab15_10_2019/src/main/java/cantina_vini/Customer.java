@@ -5,18 +5,17 @@ import java.util.ArrayList;
 
 public class Customer extends Person {
 
+	// Constructor
 	public Customer() {}
-	
 	public Customer(String username, String name, String surname, String password) {
 		// TODO Auto-generated constructor stub
 		super(username, name, surname, password);
 	}
 
+	// Functions
 	public void menu() {
 		searchWine();
 	}
-	
-	
 	public void buy() {
 		
 		// Check if an order has to be processed (true) or not (false)
@@ -85,7 +84,7 @@ public class Customer extends Person {
 			Purchase purchase = new Purchase(this, Main.wineList.get(realGlobalWineIndex), quantity, amount, LocalDateTime.now());
 			Main.purchaseList.add(purchase);
 			
-			// Changing quantity of wine
+			// Changing quantity of wine in the Main.wineList
 			Main.wineList.get(realGlobalWineIndex).change(-quantity);
 		}
 		
@@ -94,7 +93,6 @@ public class Customer extends Person {
 		
 		
 	}
-
 	public void order() {}
 	
 	

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 public class Person {
 	
+	// Attributes
 	private String username;
 	private String name;
 	private String secondName;
 	private String password;
 	
+	// Constructors
 	public Person() {}
-	
 	public Person(String username, String name, String secondName, String password) {
 		super();
 		this.username = username;
@@ -18,6 +19,8 @@ public class Person {
 		this.secondName = secondName;
 		this.password = password;
 	}
+	
+	// Getters and setters
 	public String getName() {
 		return name;
 	}
@@ -36,7 +39,6 @@ public class Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	public String getUsername() {
 		return username;
 	}
@@ -44,6 +46,7 @@ public class Person {
 		this.username = username;
 	}
 	
+	// Functions
 	public void searchWine() {
 		
 		// This function searches the wines
@@ -65,7 +68,6 @@ public class Person {
 		else { Main.printWineList(resultList);	}	
 		
 	}
-	
 	public ArrayList<Wine> searchWineAndGetList() {
 		
 		// The same function of searhWine. It returns the resultList

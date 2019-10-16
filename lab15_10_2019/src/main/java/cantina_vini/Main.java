@@ -1,6 +1,5 @@
 package cantina_vini;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,20 +16,20 @@ public class Main {
 	public static ArrayList<Purchase> purchaseList = new ArrayList<Purchase>();
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		addUsers();
 		addWines();
 		
 		login();
-		System.out.println(loggedUser.getName());
-		
-		// loggedUser.searchWine();
+		System.out.println("Welcome " + loggedUser.getName() + " " + loggedUser.getSecondName());
 
-		if (loggedUser instanceof Customer) {
+		if (loggedUser instanceof Customer) {				// If logged user is a customer
 			Customer temp = (Customer) loggedUser;
 			loggedUser = temp;
 			((Customer) loggedUser).buy();
+		} else if (loggedUser instanceof Employee) {		// If logged user is an employee
+			Employee temp = (Employee) loggedUser;
+			loggedUser = temp;
 		}
 		
 		printWineList(wineList);
@@ -71,21 +70,11 @@ public class Main {
 		}
 	}
 	public static void registerCustomer(Person person) {
+		// Add a person to a list
 		userList.add(person);
 	}
 	
-	public static int getPositionOfUser() {
-		// return the index of logged user in userList, else return -1
-		int index = 0;
-		for (Person p : userList) {
-			if (p.getName() == loggedUser.getName() && p.getPassword() == loggedUser.getPassword()) {
-				return index;
-			}
-			index++;
-		}
-		return -1;
-	}
-	
+	// Print functions
 	public static void printWineList(ArrayList<Wine> wineList) {
 		
 		int index = 1;
@@ -99,7 +88,19 @@ public class Main {
 			index++;
 		}
 	}
-	
+
+	// Other functions
+	public static int getPositionOfUser() {
+		// return the index of logged user in userList, else return -1
+		int index = 0;
+		for (Person p : userList) {
+			if (p.getName() == loggedUser.getUsername() && p.getPassword() == loggedUser.getPassword()) {
+				return index;
+			}
+			index++;
+		}
+		return -1;
+	}
 	public static int getIndexOfWineByName(Wine wine) {
 		// Return the index of a wine in the Main.wineList, if no match the function returns -1
 		int index = 0;

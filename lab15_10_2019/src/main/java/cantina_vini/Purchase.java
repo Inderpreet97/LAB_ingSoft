@@ -4,6 +4,14 @@ import java.time.LocalDateTime;
 
 public class Purchase {
 	
+	// Attributes
+	private Customer customer = new Customer();
+	private Wine wine = new Wine();
+	private double quantity;
+	private double amount;
+	private LocalDateTime date;	
+	
+	// Constructors
 	public Purchase() {}
 	public Purchase(Customer customer, Wine wine, double quantity, double amount, LocalDateTime date) {
 		super();
@@ -14,6 +22,7 @@ public class Purchase {
 		this.date = date;
 	}
 	
+	// Getters and setters
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -44,12 +53,5 @@ public class Purchase {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
-	
-	private Customer customer = new Customer();
-	private Wine wine = new Wine();
-	private double quantity;
-	private double amount;
-	private LocalDateTime date;	
-	
-	
+
 }
