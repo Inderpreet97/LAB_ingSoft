@@ -14,6 +14,8 @@ public class Customer extends Person {
 
 	// Functions
 	public void menu() {
+		// Visulizza le pending notification
+		
 		searchWine();
 	}
 	public void buy() {
@@ -74,7 +76,16 @@ public class Customer extends Person {
 		
 		if (order) {
 			// Make the order
-			System.out.println("Make the order");
+			System.out.println("Created request for wine");
+			
+			Request request = new Request();
+			request.customer = this;
+			request.wine = Main.wineList.get(realGlobalWineIndex);
+			request.quantity = quantity;
+					
+			Main.pendinRequestForEmployee.add(request);
+			
+			
 		} else {
 			// Buying
 			
@@ -86,6 +97,16 @@ public class Customer extends Person {
 			
 			// Changing quantity of wine in the Main.wineList
 			Main.wineList.get(realGlobalWineIndex).change(-quantity);
+			
+			// Check remaining quantity of Wine in global wineList
+			if(Main.wineList.get(realGlobalWineIndex).getQuantity() == 0) {
+				Request request = new Request();
+				request.customer = null;
+				request.wine = Main.wineList.get(realGlobalWineIndex);
+				request.quantity = quantity;
+						
+				Main.pendinRequestForEmployee.add(request);
+			}
 		}
 		
 		
@@ -93,7 +114,5 @@ public class Customer extends Person {
 		
 		
 	}
-	public void order() {}
-	
-	
+	public void askWine() {}
 }

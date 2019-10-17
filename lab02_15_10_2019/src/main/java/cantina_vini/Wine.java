@@ -59,9 +59,6 @@ public class Wine {
 	private String description;
 	private String vine;
 	private int quantity;
-	
-
-	
 	private double price;
 	
 	
