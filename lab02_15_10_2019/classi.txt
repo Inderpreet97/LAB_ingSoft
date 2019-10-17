@@ -1,0 +1,60 @@
+Wine:
+  - name
+  - year
+  - description
+  - vine
+  - quantity
+  - price
+  
+  -- change(int)
+
+Purchase:
+  - customer
+  - wine
+  - quantity
+  - amount
+  - data
+
+Request:
+  - Wine
+  - Quanity
+  - Customer
+
+Notification:
+  - cliente (not null)
+  - Wine
+
+Person:
+  - username
+  - name
+  - surname
+  - password
+  
+  -- searchWine()
+  -- searchWineAndGetList()
+  
+  	Customer:
+	  -- buy() // se customer compra tutte le bottiglie di un vino creo una notifica di rimpiazzo all'impiegato
+	  -- requestWine() // Richiede la notifica
+	  -- menu() // vedremo
+	
+	Employee:
+	  -- makeOrder()
+	  -- replaceWine(Wine wine) // Dopo aver aggiunto il vino, controlli se ci sono richieste per quel vino in pendingRe..employee
+					// se esiste un customer non nullo crei una notifica e aggiungila alla pendinNotifi..Customer.
+					// e rimuovi la richiesta da pendingRe..employee
+	  -- menu() // vedremo
+
+Main:
+  - pendingRequestForEmployee  <- richieste generate da sistema (customer = null) o da customer (!= null, richiesta bottiglie > presenti)
+  - pendingNotificationForCustomer
+  - userList
+  - wineList
+  - purchaseList
+
+
+registrazioneUtente()
+ricercaVino(nome, anno)
+acquistaVino(Vino)
+
+  

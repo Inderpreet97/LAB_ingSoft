@@ -55,12 +55,11 @@ public class Main {
 	}
 
 	public static void login() {
-		while (!userIsLogged) {
 
-			// Ask for username and password
+		while(!userIsLogged) {
 			String username = "Gianni";
 			String password = "gianni123";
-
+			
 			for (Person person : userList) {
 				if (person.getUsername().equals(username) && person.getPassword().equals(password)) {
 					// loging correct
