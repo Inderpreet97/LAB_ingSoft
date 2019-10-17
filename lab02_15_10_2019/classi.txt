@@ -1,0 +1,25 @@
+Vino:
+  - Nome
+  - Anno
+  - Note Tecniche
+  - Derivazione (Vitigni)
+  - Numero Bottiglie
+
+Persona:
+  - username
+  - nome
+  - cognome
+  - password
+  
+
+
+
+
+
+
+
+registrazioneUtente()
+ricercaVino(nome, anno)
+acquistaVino(Vino)
+
+  

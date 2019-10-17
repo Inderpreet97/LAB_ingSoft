@@ -53,8 +53,8 @@ public class Main {
 	
 	public static void login() {
 		while(!userIsLogged) {
-			String username = "beppe";
-			String password = "beppe123";
+			String username = "Gianni";
+			String password = "gianni123";
 			
 			for (Person person : userList) {
 				if (person.getUsername() == username && person.getPassword() == password) {
