@@ -5,17 +5,20 @@ import java.util.Scanner;
 
 public class Main {
 
+	// Scanner to get input
 	public static Scanner scanner = new Scanner(System.in);
 
+	// Logged user variables
 	private static Person loggedUser = new Person();
 	private static boolean userIsLogged = false;
 
 	// Global variables
 	public static ArrayList<Person> userList = new ArrayList<Person>();
 	public static ArrayList<Wine> wineList = new ArrayList<Wine>();
-
 	public static ArrayList<Purchase> purchaseList = new ArrayList<Purchase>();
-	public static ArrayList<Request> pendinRequestForEmployee = new ArrayList<Request>();
+	
+	// Pending list
+	public static ArrayList<Request> pendingRequestForEmployee = new ArrayList<Request>();
 	public static ArrayList<Notification> pendingNotificationForCustomer = new ArrayList<Notification>();
 
 	public static void main(String[] args) {
@@ -39,7 +42,7 @@ public class Main {
 	}
 
 	public static void addUsers() {
-		// Add users
+		// Add default users
 		Customer defaultCustomer1 = new Customer("beppe", "Giuseppe", "Urbano", "beppe123");
 		Customer defaultCustomer2 = new Customer("Mario", "Mario", "Rossi", "mario123");
 		Employee defaultAdmin = new Employee("Gianni", "Gianni", "Morandi", "gianni123");
@@ -49,7 +52,7 @@ public class Main {
 	}
 
 	public static void addWines() {
-		// Add wines
+		// Add default wines
 		wineList.add(new Wine("Lambrusco", 1980, "Vino rosso", "Callmewine", 10, 2000));
 		wineList.add(new Wine("Prosecco", 1975, "Vino bianco", "Cantina Colli Euganei", 10, 1500));
 	}
@@ -95,7 +98,25 @@ public class Main {
 			index++;
 		}
 	}
-
+	public static void printPendingRequestForEmployee() {
+		System.out.println("Pending requests for employee")
+		for (Request request : pendingRequestForEmployee) {
+			System.out.println("\nCustomer: " + request.customer.getName() + " " + request.customer.getSecondName());
+			System.out.println("Wine: " + request.wine.getName() + " " + request.wine.getYear());
+			System.out.println("Quantity: " + request.wine.getQuantity());
+			System.out.println("##############################################\n");
+		}
+	}
+	
+	public static void printPendingsNotificationForCustomer() {
+		System.out.println("Pending notifications for customer");
+		for (Notification notification : pendingNotificationForCustomer) {
+			System.out.println("\nCustomer: " + notification.customer.getName() + " " + notification.customer.getSecondName());
+			System.out.println("Wine: " + notification.wine.getName() + " " + notification.wine.getYear());
+			System.out.println("##############################################\n");
+		}
+	}
+	
 	// Other functions
 	public static int getPositionOfUser() {
 		// return the index of logged user in userList, else return -1
@@ -110,8 +131,7 @@ public class Main {
 	}
 
 	public static int getIndexOfWineByName(Wine wine) {
-		// Return the index of a wine in the Main.wineList, if no match the function
-		// returns -1
+		// Return the index of a wine in the Main.wineList, if no match the function returns -1
 		int index = 0;
 		for (Wine w : wineList) {
 			if (w.getName().equals(wine.getName()) && w.getYear() == wine.getYear()) {
