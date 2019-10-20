@@ -8,7 +8,6 @@ public class Customer extends Person {
 	// Constructor
 	public Customer() {}
 	public Customer(String username, String name, String surname, String password) {
-		// TODO Auto-generated constructor stub
 		super(username, name, surname, password);
 	}
 
@@ -27,7 +26,58 @@ public class Customer extends Person {
 			}
 		}
 		
-		searchWine();
+		boolean logout = false;
+		int userChoice;
+		
+		do {
+			do {
+				try {
+					
+					System.out.println("\n=========> MAIN MENU <=========");
+					System.out.println("1) Aggiungi Utente\n2) Utenti Attivi\n3) Chat con utente");
+					System.out.print("4) Modifica Profilo\n5) Logout\nScelta: ");
+					
+					userChoice = Main.scanner.nextInt();
+					Main.scanner.nextLine();
+					
+				} catch (Exception ex) {
+					System.out.println("Error: " + ex.getMessage());
+					System.out.println("Press [enter] to continue...");
+					Main.scanner.nextLine();
+					userChoice = 0;
+				}
+				
+			} while (userChoice < 1 || userChoice > 5);
+			
+			System.out.println();
+			
+			switch (userChoice) {
+			case 1:
+				// Do something
+				
+				break;
+			case 2:
+				// Do something
+				
+				break;
+			case 3:
+				// Do something
+				
+				break;
+			case 4:
+				// Do something
+				
+				break;
+			case 5:
+				logout = true;
+				break;
+
+			default:
+				System.out.println("Error! User Choice not valid.");
+				break;
+			}
+
+		} while (!logout);
 	}
 	public void buy() {
 		
