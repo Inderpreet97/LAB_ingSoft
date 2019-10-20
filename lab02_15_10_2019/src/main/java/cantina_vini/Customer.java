@@ -14,7 +14,18 @@ public class Customer extends Person {
 
 	// Functions
 	public void menu() {
-		// Visulizza le pending notification
+		// Show pending notification for this customer
+		for(int index = 0; index < Main.pendingNotificationForCustomer.size(); index++) {
+			Notification notif = Main.pendingNotificationForCustomer.get(index);
+			Customer c = notif.customer;
+			if(c.getName().equals(this.getName()) && c.getSurname().equals(this.getSurname())) {
+				// Show notification and remove it from the list
+				System.out.print("NOTIFICATION: The Wine you requested has arrived ");
+				System.out.println("(" + notif.wine.getName() + "," + notif.wine.getYear() +")");
+				Main.pendingNotificationForCustomer.remove(index);
+				index--;
+			}
+		}
 		
 		searchWine();
 	}
@@ -83,7 +94,7 @@ public class Customer extends Person {
 			request.wine = Main.wineList.get(realGlobalWineIndex);
 			request.quantity = quantity;
 					
-			Main.pendinRequestForEmployee.add(request);
+			Main.pendingRequestForEmployee.add(request);
 			
 			
 		} else {
@@ -105,7 +116,7 @@ public class Customer extends Person {
 				request.wine = Main.wineList.get(realGlobalWineIndex);
 				request.quantity = quantity;
 						
-				Main.pendinRequestForEmployee.add(request);
+				Main.pendingRequestForEmployee.add(request);
 			}
 		}
 		

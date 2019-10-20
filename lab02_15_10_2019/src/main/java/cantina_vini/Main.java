@@ -78,7 +78,7 @@ public class Main {
 			}
 		}
 
-		System.out.println("Welcome " + loggedUser.getName() + " " + loggedUser.getSecondName());
+		System.out.println("Welcome " + loggedUser.getName() + " " + loggedUser.getSurname());
 	}
 
 	public static void registerCustomer(Person person) {
@@ -99,9 +99,9 @@ public class Main {
 		}
 	}
 	public static void printPendingRequestForEmployee() {
-		System.out.println("Pending requests for employee")
+		System.out.println("Pending requests for employee");
 		for (Request request : pendingRequestForEmployee) {
-			System.out.println("\nCustomer: " + request.customer.getName() + " " + request.customer.getSecondName());
+			System.out.println("\nCustomer: " + request.customer.getName() + " " + request.customer.getSurname());
 			System.out.println("Wine: " + request.wine.getName() + " " + request.wine.getYear());
 			System.out.println("Quantity: " + request.wine.getQuantity());
 			System.out.println("##############################################\n");
@@ -111,7 +111,7 @@ public class Main {
 	public static void printPendingsNotificationForCustomer() {
 		System.out.println("Pending notifications for customer");
 		for (Notification notification : pendingNotificationForCustomer) {
-			System.out.println("\nCustomer: " + notification.customer.getName() + " " + notification.customer.getSecondName());
+			System.out.println("\nCustomer: " + notification.customer.getName() + " " + notification.customer.getSurname());
 			System.out.println("Wine: " + notification.wine.getName() + " " + notification.wine.getYear());
 			System.out.println("##############################################\n");
 		}
