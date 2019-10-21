@@ -29,15 +29,12 @@ public class Main {
 		login();
 
 		if (loggedUser instanceof Customer) { // If logged user is a customer
-			Customer temp = (Customer) loggedUser;
-			loggedUser = temp;
-			((Customer) loggedUser).buy();
+			((Customer) loggedUser).Menu();
 		} else if (loggedUser instanceof Employee) { // If logged user is an employee
-			Employee temp = (Employee) loggedUser;
-			loggedUser = temp;
+			((Employee) loggedUser).Menu();
 		}
 
-		printWineList(wineList);
+		System.out.println("\n\nLogged out, see you soon!");
 
 	}
 
@@ -58,7 +55,8 @@ public class Main {
 	}
 
 	public static void login() {
-
+		
+		// TODO Ask username and password
 		while(!userIsLogged) {
 			String username = "Gianni";
 			String password = "gianni123";

@@ -12,7 +12,8 @@ public class Customer extends Person {
 	}
 
 	// Functions
-	public void menu() {
+	public void Menu() {
+		
 		// Show pending notification for this customer
 		for(int index = 0; index < Main.pendingNotificationForCustomer.size(); index++) {
 			Notification notif = Main.pendingNotificationForCustomer.get(index);
@@ -26,6 +27,7 @@ public class Customer extends Person {
 			}
 		}
 		
+		/* TODO: TESTARE menu customer */
 		boolean logout = false;
 		int userChoice;
 		
@@ -34,8 +36,8 @@ public class Customer extends Person {
 				try {
 					
 					System.out.println("\n=========> MAIN MENU <=========");
-					System.out.println("1) Aggiungi Utente\n2) Utenti Attivi\n3) Chat con utente");
-					System.out.print("4) Modifica Profilo\n5) Logout\nScelta: ");
+					System.out.println("1) Buy Wine\n2) Ask Wine\n3) Search Wine");
+					System.out.print("4) Logout\nChoice: ");
 					
 					userChoice = Main.scanner.nextInt();
 					Main.scanner.nextLine();
@@ -47,28 +49,24 @@ public class Customer extends Person {
 					userChoice = 0;
 				}
 				
-			} while (userChoice < 1 || userChoice > 5);
+			} while (userChoice < 1 || userChoice > 4);
 			
 			System.out.println();
 			
 			switch (userChoice) {
 			case 1:
-				// Do something
-				
+				buy();
 				break;
+				
 			case 2:
-				// Do something
-				
+				askWine();
 				break;
+				
 			case 3:
-				// Do something
-				
+				searchWine();
 				break;
+				
 			case 4:
-				// Do something
-				
-				break;
-			case 5:
 				logout = true;
 				break;
 
@@ -79,6 +77,7 @@ public class Customer extends Person {
 
 		} while (!logout);
 	}
+	
 	public void buy() {
 		
 		// Check if an order has to be processed (true) or not (false)
@@ -175,5 +174,6 @@ public class Customer extends Person {
 		
 		
 	}
+	
 	public void askWine() {}
 }

@@ -11,8 +11,35 @@ public class Employee extends Person{
 	// Functions
 	public void replaceProduct() {
 		
-		/*TODO: Ask the name, year, quantity for the wine to add*/
-		Wine wineToAdd = new Wine();
+		// TODO add Try Catch in case of letters input when numbers are needed
+		System.out.println("--> Add Wine <--");
+		
+		System.out.print("Name: ");
+		String name = Main.scanner.nextLine();
+		
+		System.out.print("Year: ");
+		int year = Main.scanner.nextInt();
+		Main.scanner.nextLine();
+		
+		System.out.print("Description: ");
+		String description = Main.scanner.nextLine();
+		
+		System.out.print("Vine: ");
+		String vine = Main.scanner.nextLine();
+		
+		System.out.print("Quantity(N. Bottles): ");
+		int quantity = Main.scanner.nextInt();
+		Main.scanner.nextLine();
+		
+		System.out.print("Price per bottle: ");
+		double price = Main.scanner.nextDouble();
+		Main.scanner.nextLine();
+		
+		Wine wineToAdd = new Wine(name, year, description, vine, quantity, price);
+		
+		Main.wineList.add(wineToAdd);
+		
+		System.out.println("\n>>" + quantity + " bottles of " + name + " added to the Shop");
 		
 		// Check if a customer is waiting for that wine
 		for(int index = 0; index < Main.pendingRequestForEmployee.size(); index++){
@@ -44,7 +71,7 @@ public class Employee extends Person{
 				System.out.print("System: There are no more bottles of " + req.wine.getName() + ", " + req.wine.getYear());
 			}
 		}
-	
+				
 		boolean logout = false;
 		int userChoice;
 		
@@ -53,8 +80,8 @@ public class Employee extends Person{
 				try {
 					
 					System.out.println("\n=========> MAIN MENU <=========");
-					System.out.println("1) Aggiungi Utente\n2) Utenti Attivi\n3) Chat con utente");
-					System.out.print("4) Modifica Profilo\n5) Logout\nScelta: ");
+					System.out.println("1) Replace Product\n2) Show Wine List\n3) Show Customer List");
+					System.out.print("4) Show Notification List\n5) Logout\nChoice: ");
 					
 					userChoice = Main.scanner.nextInt();
 					Main.scanner.nextLine();
@@ -72,20 +99,20 @@ public class Employee extends Person{
 			
 			switch (userChoice) {
 			case 1:
-				// Do something
+				replaceProduct();
 				
 				break;
 			case 2:
-				// Do something
-				
+				// TODO Show Wine List
+				System.out.println("WORKING ON...");
 				break;
 			case 3:
-				// Do something
-				
+				// TODO Show Customer List
+				System.out.println("WORKING ON...");
 				break;
 			case 4:
-				// Do something
-				
+				// TODO Show Notification List
+				System.out.println("WORKING ON...");
 				break;
 			case 5:
 				logout = true;
