@@ -1,7 +1,17 @@
 package cantina_vini;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Main {
 
@@ -23,7 +33,11 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		addUsers();
+		readUserListFromFile();
+		readWineListFromFile();
+		readNotificationsFromFile();
+		readRequestsFromFile();
+		
 		addWines();
 
 		login();
@@ -33,40 +47,36 @@ public class Main {
 		} else if (loggedUser instanceof Employee) { // If logged user is an employee
 			((Employee) loggedUser).Menu();
 		}
-
+		
+		writeUserListOnFile();
+		writeWineListOnFile();
+		writeNotificationsOnFile();
+		writeRequestsOnFile();
+		
 		System.out.println("\n\nLogged out, see you soon!");
 
 	}
 	
-	public static void writeWineListOnFile() {
-		// TODO write wine list on 
-		//First Employee
-        JSONObject employeeDetails = new JSONObject();
-        employeeDetails.put("firstName", "Lokesh");
-        employeeDetails.put("lastName", "Gupta");
-        employeeDetails.put("website", "howtodoinjava.com");
-         
-        JSONObject employeeObject = new JSONObject();
-        employeeObject.put("employee", employeeDetails);
-         
-        //Second Employee
-        JSONObject employeeDetails2 = new JSONObject();
-        employeeDetails2.put("firstName", "Brian");
-        employeeDetails2.put("lastName", "Schultz");
-        employeeDetails2.put("website", "example.com");
-         
-        JSONObject employeeObject2 = new JSONObject();
-        employeeObject2.put("employee", employeeDetails2);
-         
-        //Add employees to list
-        JSONArray employeeList = new JSONArray();
-        employeeList.add(employeeObject);
-        employeeList.add(employeeObject2);
+	private static void writeUserListOnFile() {
+		// Create JSON string for user list
+		JSONArray userListJSON = new JSONArray();
+		
+		for(Person p : Main.userList) {
+			JSONObject userDetails = new JSONObject();
+			userDetails.put("name", p.getName());
+			userDetails.put("surname", p.getSurname());
+			userDetails.put("username", p.getUsername());
+			userDetails.put("password", p.getPassword());
+			
+			String account = (p instanceof Employee)? "employee" : "customer";
+			userDetails.put("account", account);
+			
+			userListJSON.add(userDetails);
+		}
          
         //Write JSON file
-        try (FileWriter file = new FileWriter("employees.json")) {
- 
-            file.write(employeeList.toJSONString());
+        try (FileWriter file = new FileWriter("users.json")) {
+            file.write(userListJSON.toJSONString());
             file.flush();
  
         } catch (IOException e) {
@@ -74,24 +84,29 @@ public class Main {
         }
 	}
 	
-	public static void readWineListFromFile() {
-		// TODO read Wine List From File
+	private static void readUserListFromFile() {
 		//JSON parser object to parse read file
-        JSONParser jsonParser = new JSONParser();
-         
-        try (FileReader reader = new FileReader("employees.json"))
-        {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
- 
-            JSONArray employeeList = (JSONArray) obj;
-            System.out.println(employeeList);
-             
-            //Iterate over employee array
-            employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
- 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+		JSONParser parser = new JSONParser();
+
+        try (Reader reader = new FileReader("users.json")) {
+        	
+            JSONArray userListJSON = (JSONArray) parser.parse(reader);
+            
+            for (int i = 0 ; i < userListJSON.size(); i++) {
+                JSONObject user = (JSONObject) userListJSON.get(i);
+                String name = (String) user.get("name");
+                String surname = (String) user.get("surname");
+                String username = (String) user.get("username");
+                String password = (String) user.get("password");
+                String account = (String) user.get("account");
+                
+                if(account.equals("employee")) {
+                	Main.userList.add(new Employee(username, name, surname, password));
+                } else {
+                	Main.userList.add(new Customer(username, name, surname, password));
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -99,24 +114,29 @@ public class Main {
         }
 	}
 	
-	// TODO metod for reading JSON from file
-	private static void parseEmployeeObject(JSONObject employee)
-    {
-        //Get employee object within list
-        JSONObject employeeObject = (JSONObject) employee.get("employee");
-         
-        //Get employee first name
-        String firstName = (String) employeeObject.get("firstName");   
-        System.out.println(firstName);
-         
-        //Get employee last name
-        String lastName = (String) employeeObject.get("lastName"); 
-        System.out.println(lastName);
-         
-        //Get employee website name
-        String website = (String) employeeObject.get("website");   
-        System.out.println(website);
-    }
+	private static void writeWineListOnFile() {
+		// TODO scrittura vini su file 
+	}
+	
+	private static void readWineListFromFile() {
+		// TODO lettura vini su file
+	}
+	
+	private static void writeNotificationsOnFile() {
+		// TODO scrittura Notifiche su file 
+	}
+	
+	private static void readNotificationsFromFile() {
+		// TODO lettura Notifiche su file
+	}
+	
+	private static void writeRequestsOnFile() {
+		// TODO scrittura Richieste su file 
+	}
+	
+	private static void readRequestsFromFile() {
+		// TODO lettura Richieste su file
+	}
 	
 	public static void addUsers() {
 		// Add default users
@@ -199,8 +219,7 @@ public class Main {
 			System.out.println("Quantity: " + request.wine.getQuantity());
 			System.out.println("##############################################\n");
 		}
-	}
-	
+	}	
 	public static void printPendingsNotificationForCustomer() {
 		System.out.println("Pending notifications for customer");
 		for (Notification notification : pendingNotificationForCustomer) {
