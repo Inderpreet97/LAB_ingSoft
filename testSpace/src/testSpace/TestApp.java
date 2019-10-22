@@ -3,27 +3,25 @@ package testSpace;
 import java.util.ArrayList;
 
 public class TestApp {
-
+	
 	public static void main(String[] args) {
-		ArrayList<Integer> array = new ArrayList<Integer>();
+		System.out.println("NomeApp:" + App.nomeApp);
 		
-		for(int i = 0; i < 10; i++)
-			array.add(i);
+		App app = new App();
 		
-		for(int i : array) {
-			if(i == 5) {
-				array.remove(5);
-			}
-		}
+		app.nomeApp = "ciao";
 		
-		for(int i = 0; i < array.size(); i++) {
-			if(array.get(i) == 5) {
-				array.remove(array.get(i));
-				i--;
-			}
-			System.out.println("num : " + array.get(i));
-		}
-
+		System.out.println("NomeApp:" + App.nomeApp);
+		
+		App app2 = new App();
+		
+		System.out.println("NomeApp (app2):" + app2.nomeApp);
+		System.out.println("NomeApp (App):" + App.nomeApp);
 	}
 
+	static class App {
+		
+		public static String nomeApp;
+		
+	}
 }

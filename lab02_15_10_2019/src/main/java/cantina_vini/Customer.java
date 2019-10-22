@@ -113,7 +113,7 @@ public class Customer extends Person {
 		// Check the amount of bottles
 		while (quantity >= Main.wineList.get(realGlobalWineIndex).getQuantity() && !order ) {
 			
-			System.out.println("Amount NOT AVAIBLE");
+			System.out.println("Amount NOT AVAILABLE");
 			System.out.println("1- Order\n2-Change amount:");
 			int choice = Main.scanner.nextInt();
 			Main.scanner.nextLine();
@@ -147,11 +147,11 @@ public class Customer extends Person {
 			
 			
 		} else {
-			// Buying
-			
+			// Buying the Wine
 			double amount = Main.wineList.get(realGlobalWineIndex).getPrice() * quantity;
 			System.out.println("Total amount: " +  amount);
 			
+			// this = this customer
 			Purchase purchase = new Purchase(this, Main.wineList.get(realGlobalWineIndex), quantity, amount, LocalDateTime.now());
 			Main.purchaseList.add(purchase);
 			
