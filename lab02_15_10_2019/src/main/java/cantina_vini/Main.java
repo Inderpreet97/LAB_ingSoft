@@ -1,6 +1,4 @@
 package cantina_vini;
-
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -57,6 +55,7 @@ public class Main {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static void writeUserListOnFile() {
 		// Create JSON string for user list
 		JSONArray userListJSON = new JSONArray();
@@ -180,7 +179,6 @@ public class Main {
 				if (person.getUsername().equals(username) && person.getPassword().equals(password)) {
 					// loging correct
 					loggedUser = person;
-					System.out.println("Logged");
 					userIsLogged = true;
 					break;
 				}

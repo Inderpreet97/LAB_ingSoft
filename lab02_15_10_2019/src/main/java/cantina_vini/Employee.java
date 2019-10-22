@@ -10,72 +10,102 @@ public class Employee extends Person {
 		super(username, name, surname, password);
 	}
 
+	public void addWine() {
+		try {
+			System.out.println("--> Add Wine <--");
+
+			System.out.print("Name: ");
+			String name = Main.scanner.nextLine();
+
+			System.out.print("Year: ");
+			int year = Main.scanner.nextInt();
+			Main.scanner.nextLine();
+
+			System.out.print("Description: ");
+			String description = Main.scanner.nextLine();
+
+			System.out.print("Vine: ");
+			String vine = Main.scanner.nextLine();
+
+			System.out.print("Quantity(N. Bottles): ");
+			int quantity = Main.scanner.nextInt();
+			Main.scanner.nextLine();
+
+			System.out.print("Price per bottle: ");
+			double price = Main.scanner.nextDouble();
+			Main.scanner.nextLine();
+
+			// Get the global index of the wine to add
+			int globalIndex = Main.getIndexOfWineByNameAndYear(name, year);
+
+			if (globalIndex != -1) {
+				// Wine not found in the global list, It Can Be Added
+				Main.wineList.add(new Wine(name, year, description, vine, quantity, price));
+			} else {
+				// Wine already exits in the Global List
+				System.out.println("\n>> Wine already in Storage");
+			}
+
+			System.out.println("\n>>" + quantity + " bottles of " + name + " added to the Shop");
+
+		} catch (Exception ex) {
+			Main.scanner.nextLine();
+			System.out.println("\nERROR >> " + ex.getMessage());
+		}
+	}
+
 	// Functions
 	public void replaceProduct() {
 
-		// TODO add Try Catch in case of letters input when numbers are needed
-		System.out.println("--> Add Wine <--");
+		try {
+			System.out.println("--> Replace Wine <--");
 
-		System.out.print("Name: ");
-		String name = Main.scanner.nextLine();
+			System.out.print("Name: ");
+			String name = Main.scanner.nextLine();
 
-		System.out.print("Year: ");
-		int year = Main.scanner.nextInt();
-		Main.scanner.nextLine();
+			System.out.print("Year: ");
+			int year = Main.scanner.nextInt();
+			Main.scanner.nextLine();
 
-		System.out.print("Description: ");
-		String description = Main.scanner.nextLine();
+			System.out.print("Quantity(N. Bottles): ");
+			int quantity = Main.scanner.nextInt();
+			Main.scanner.nextLine();
 
-		System.out.print("Vine: ");
-		String vine = Main.scanner.nextLine();
+			// Get the global index of the wine to add
+			int globalIndex = Main.getIndexOfWineByNameAndYear(name, year);
 
-		System.out.print("Quantity(N. Bottles): ");
-		int quantity = Main.scanner.nextInt();
-		Main.scanner.nextLine();
-
-		System.out.print("Price per bottle: ");
-		double price = Main.scanner.nextDouble();
-		Main.scanner.nextLine();
-
-		// Wine wineToAdd = new Wine(name, year, description, vine, quantity, price);
-
-		/*
-		 * TODO invece di inserire un nuovo vino, aggiorna la quantit� del vino
-		 * esistente OPPURE se il vino non esiste devi crearlo (magari due metodi,
-		 * addNewWine() e replaceProduct())
-		 */
-		
-		// Get the global index of the wine to add
-		int globalIndex = Main.getIndexOfWineByNameAndYear(name, year);
-		
-		if (globalIndex != -1) {
-			// Wine to add found in the global list
-			Main.wineList.get(globalIndex).change(quantity);
-		} else{
-			// Wine not found in the global list
-			System.out.println("Wine not found");
-		}
-
-		System.out.println("\n>>" + quantity + " bottles of " + name + " added to the Shop");
-
-		// Check if a customer is waiting for that wine
-		for (int index = 0; index < Main.pendingRequestForEmployee.size(); index++) {
-
-			Request request = Main.pendingRequestForEmployee.get(index);
-
-			if (request.wine.getName().equals(name) && request.wine.getYear() == year) {
-
-				if (request.customer != null) {
-					// If customer is not null, it means that a customer made the request and he's
-					// waiting for notification
-					Notification notification = new Notification(request.customer, request.wine);
-					Main.pendingNotificationForCustomer.add(notification);
-				}
-
-				// Remove the Wine Request from Request List
-				Main.pendingRequestForEmployee.remove(index);
-				index--;
+			if (globalIndex != -1) {
+				// Wine to add found in the global list
+				Main.wineList.get(globalIndex).change(quantity);
+			} else {
+				// Wine not found in the global list
+				System.out.println("Wine not found");
 			}
+
+			System.out.println("\n>>" + quantity + " bottles of " + name + " added to the Shop");
+
+			// Check if a customer is waiting for that wine
+			for (int index = 0; index < Main.pendingRequestForEmployee.size(); index++) {
+
+				Request request = Main.pendingRequestForEmployee.get(index);
+
+				if (request.wine.getName().equals(name) && request.wine.getYear() == year) {
+
+					if (request.customer != null) {
+						// If customer is not null, it means that a customer made the request and he's
+						// waiting for notification
+						Notification notification = new Notification(request.customer, request.wine);
+						Main.pendingNotificationForCustomer.add(notification);
+					}
+
+					// Remove the Wine Request from Request List
+					Main.pendingRequestForEmployee.remove(index);
+					index--;
+				}
+			}
+		} catch (Exception ex) {
+			Main.scanner.nextLine();
+			System.out.println("\nERROR >> " + ex.getMessage());			
 		}
 	}
 
@@ -99,8 +129,8 @@ public class Employee extends Person {
 				try {
 
 					System.out.println("\n=========> MAIN MENU <=========");
-					System.out.println("1) Replace Product\n2) Show Wine List\n3) Show Customer List");
-					System.out.print("4) Show Notification List\n5) Logout\nChoice: ");
+					System.out.println("1) Replace Product\n2) Add Wine\n3) Show Wine List\n4) Show Customer List");
+					System.out.print("5) Show Notification List\n6) Logout\nChoice: ");
 
 					userChoice = Main.scanner.nextInt();
 					Main.scanner.nextLine();
@@ -112,7 +142,7 @@ public class Employee extends Person {
 					userChoice = 0;
 				}
 
-			} while (userChoice < 1 || userChoice > 5);
+			} while (userChoice < 1 || userChoice > 6);
 
 			System.out.println();
 
@@ -121,12 +151,18 @@ public class Employee extends Person {
 				replaceProduct();
 
 				break;
+
 			case 2:
+				// Add Wine
+				addWine();
+				break;
+
+			case 3:
 				// Show Wine List
 				Main.printWineList(Main.wineList);
 				break;
 
-			case 3:
+			case 4:
 				// Show Customer List
 				System.out.println("\n-->Printing Customer List <--");
 				int index = 0;
@@ -139,7 +175,7 @@ public class Employee extends Person {
 				}
 				break;
 
-			case 4:
+			case 5:
 				// Show Customer Notification List
 				System.out.println("\n-->Printing Customer Notification List <--");
 				index = 0;
@@ -152,7 +188,7 @@ public class Employee extends Person {
 				}
 				break;
 
-			case 5:
+			case 6:
 				logout = true;
 				break;
 

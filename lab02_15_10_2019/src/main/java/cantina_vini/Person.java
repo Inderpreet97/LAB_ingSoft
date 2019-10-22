@@ -48,15 +48,10 @@ public class Person {
 	
 	// Functions
 	public void searchWine() {
-		
 		// This function searches the wines
 		
-		System.out.println("Wine name: ");
+		System.out.print("Wine name: ");
 		String wineName = Main.scanner.nextLine();
-		System.out.println("Year: ");
-		int wineYear = Main.scanner.nextInt();
-		
-		// System.out.println(wineName + wineYear);
 		
 		ArrayList<Wine> resultList = new ArrayList<Wine>();
 		
@@ -72,10 +67,8 @@ public class Person {
 		
 		// The same function of searhWine. It returns the resultList
 		
-		System.out.println("Wine name: ");
+		System.out.print("Wine name: ");
 		String wineName = Main.scanner.nextLine();
-		System.out.println("Year: ");
-		int wineYear = Main.scanner.nextInt();
 		
 		ArrayList<Wine> resultList = new ArrayList<Wine>();
 		
