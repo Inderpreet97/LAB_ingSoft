@@ -17,7 +17,7 @@ public class Main {
 	public static ArrayList<Wine> wineList = new ArrayList<Wine>();
 	public static ArrayList<Purchase> purchaseList = new ArrayList<Purchase>();
 	
-	// Pending list
+	// Pending Notification/Request list
 	public static ArrayList<Request> pendingRequestForEmployee = new ArrayList<Request>();
 	public static ArrayList<Notification> pendingNotificationForCustomer = new ArrayList<Notification>();
 
@@ -56,10 +56,25 @@ public class Main {
 
 	public static void login() {
 		
-		// TODO Ask username and password
 		while(!userIsLogged) {
-			String username = "Gianni";
-			String password = "gianni123";
+			
+			System.out.println("--> LOGIN <--");
+			
+			String username = "";
+			String password = "";
+			
+			do {
+				System.out.print("Username: ");
+				username = Main.scanner.nextLine();
+				System.out.print("Password: ");
+				password = Main.scanner.nextLine();
+				
+				if(username.isEmpty() && password.isEmpty()) {
+					System.out.println("\n>> Username or Password not inserted\n");
+				}
+				
+			} while (username.isEmpty() && password.isEmpty());
+			
 			
 			for (Person person : userList) {
 				if (person.getUsername().equals(username) && person.getPassword().equals(password)) {
@@ -72,7 +87,7 @@ public class Main {
 			}
 
 			if(!userIsLogged) {
-				System.out.println("Wrong username or password");
+				System.out.println("\n>> Wrong username or password\n");
 			}
 		}
 
