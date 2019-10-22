@@ -55,6 +55,7 @@ public class Main {
 
 	}
 	
+	// Users JSON
 	@SuppressWarnings("unchecked")
 	private static void writeUserListOnFile() {
 		// Create JSON string for user list
@@ -73,7 +74,7 @@ public class Main {
 			userListJSON.add(userDetails);
 		}
          
-        //Write JSON file
+        // Write JSON file
         try (FileWriter file = new FileWriter("users.json")) {
             file.write(userListJSON.toJSONString());
             file.flush();
@@ -82,7 +83,6 @@ public class Main {
             e.printStackTrace();
         }
 	}
-	
 	private static void readUserListFromFile() {
 		//JSON parser object to parse read file
 		JSONParser parser = new JSONParser();
@@ -113,30 +113,81 @@ public class Main {
         }
 	}
 	
+	// Wines JSON
+	@SuppressWarnings("unchecked")
 	private static void writeWineListOnFile() {
-		// TODO scrittura vini su file 
+		// Create JSON string for wine list
+		JSONArray wineListJSON = new JSONArray();
+		
+		for (Wine wine: Main.wineList) {
+			JSONObject wineDetails = new JSONObject();
+			wineDetails.put("name", wine.getName());
+			wineDetails.put("year", wine.getYear());
+			wineDetails.put("description", wine.getDescription());
+			wineDetails.put("vine", wine.getVine());
+			wineDetails.put("quantity", wine.getQuantity());
+			wineDetails.put("price", wine.getPrice());
+			
+			wineListJSON.add(wineDetails);
+		}
+		
+		// Write JSON file
+        try (FileWriter file = new FileWriter("wines.json")) {
+            file.write(wineListJSON.toJSONString());
+            file.flush();
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 	}
-	
 	private static void readWineListFromFile() {
-		// TODO lettura vini su file
+		//JSON parser object to parse read file
+		JSONParser parser = new JSONParser();
+
+        try (Reader reader = new FileReader("wines.json")) {
+        	
+            JSONArray wineListJSON = (JSONArray) parser.parse(reader);
+            
+            for (int i = 0 ; i < wineListJSON.size(); i++) {
+                JSONObject wine = (JSONObject) wineListJSON.get(i);
+                String name = (String) wine.get("name");
+                int year = (int) wine.get("year");
+                String description = (String) wine.get("description");
+                String vine = (String) wine.get("vine");
+                int quantity = (int) wine.get("quantity");
+                double price = (double) wine.get("price");
+                
+                // Add the JSON object to the wine list
+                Main.wineList.add(new Wine(name, year, description, vine, quantity, price));
+                
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
 	}
 	
+	// Notifications JSON
 	private static void writeNotificationsOnFile() {
-		// TODO scrittura Notifiche su file 
+		// Create JSON string for notification list
 	}
-	
 	private static void readNotificationsFromFile() {
 		// TODO lettura Notifiche su file
 	}
 	
+	// Requests JSON
 	private static void writeRequestsOnFile() {
 		// TODO scrittura Richieste su file 
 	}
-	
 	private static void readRequestsFromFile() {
 		// TODO lettura Richieste su file
 	}
 	
+	// Testing functions for default 
 	public static void addUsers() {
 		// Add default users
 		Customer defaultCustomer1 = new Customer("beppe", "Giuseppe", "Urbano", "beppe123");
@@ -146,13 +197,13 @@ public class Main {
 		registerCustomer(defaultCustomer2);
 		registerCustomer(defaultAdmin);
 	}
-
 	public static void addWines() {
 		// Add default wines
 		wineList.add(new Wine("Lambrusco", 1980, "Vino rosso", "Callmewine", 10, 2000));
 		wineList.add(new Wine("Prosecco", 1975, "Vino bianco", "Cantina Colli Euganei", 10, 1500));
 	}
 
+	// Login & Signing up
 	public static void login() {
 		
 		while(!userIsLogged) {
@@ -191,7 +242,6 @@ public class Main {
 
 		System.out.println("Welcome " + loggedUser.getName() + " " + loggedUser.getSurname());
 	}
-
 	public static void registerCustomer(Person person) {
 		// Add a person to a list
 		userList.add(person);
@@ -239,7 +289,6 @@ public class Main {
 		}
 		return -1;
 	}
-
 	public static int getIndexOfWineByNameAndYear(String wineName, int wineYear) {
 		// Return the index of a wine in the Main.wineList, if no match the function returns -1
 		int index = 0;
