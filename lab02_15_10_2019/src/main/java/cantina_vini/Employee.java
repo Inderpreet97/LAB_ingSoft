@@ -37,14 +37,24 @@ public class Employee extends Person {
 		double price = Main.scanner.nextDouble();
 		Main.scanner.nextLine();
 
-		Wine wineToAdd = new Wine(name, year, description, vine, quantity, price);
+		// Wine wineToAdd = new Wine(name, year, description, vine, quantity, price);
 
 		/*
-		 * TODO invece di inserire un nuovo vino, aggiorna la quantità del vino
+		 * TODO invece di inserire un nuovo vino, aggiorna la quantitï¿½ del vino
 		 * esistente OPPURE se il vino non esiste devi crearlo (magari due metodi,
 		 * addNewWine() e replaceProduct())
 		 */
-		Main.wineList.add(wineToAdd);
+		
+		// Get the global index of the wine to add
+		int globalIndex = Main.getIndexOfWineByNameAndYear(name, year);
+		
+		if (globalIndex != -1) {
+			// Wine to add found in the global list
+			Main.wineList.get(globalIndex).change(quantity);
+		} else{
+			// Wine not found in the global list
+			System.out.println("Wine not found");
+		}
 
 		System.out.println("\n>>" + quantity + " bottles of " + name + " added to the Shop");
 
@@ -53,7 +63,7 @@ public class Employee extends Person {
 
 			Request request = Main.pendingRequestForEmployee.get(index);
 
-			if (request.wine.getName().equals(wineToAdd.getName()) && request.wine.getYear() == wineToAdd.getYear()) {
+			if (request.wine.getName().equals(name) && request.wine.getYear() == year) {
 
 				if (request.customer != null) {
 					// If customer is not null, it means that a customer made the request and he's

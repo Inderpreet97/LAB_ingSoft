@@ -143,11 +143,11 @@ public class Main {
 		return -1;
 	}
 
-	public static int getIndexOfWineByName(Wine wine) {
+	public static int getIndexOfWineByNameAndYear(String wineName, int wineYear) {
 		// Return the index of a wine in the Main.wineList, if no match the function returns -1
 		int index = 0;
 		for (Wine w : wineList) {
-			if (w.getName().equals(wine.getName()) && w.getYear() == wine.getYear()) {
+			if (w.getName().equals(wineName) && w.getYear() == wineYear) {
 				return index;
 			}
 			index++;

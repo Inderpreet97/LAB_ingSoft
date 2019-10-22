@@ -103,7 +103,7 @@ public class Customer extends Person {
 		chosenWineIndex--;
 		
 		// Found the real position of that particular wine in the gloabl Main.wineList
-		int realGlobalWineIndex = Main.getIndexOfWineByName(wineList.get(chosenWineIndex));
+		int realGlobalWineIndex = Main.getIndexOfWineByNameAndYear(wineList.get(chosenWineIndex).getName(), wineList.get(chosenWineIndex).getYear());
 		
 		// Amount of wine bottles
 		System.out.println("Quantity you want to buy: ");
