@@ -146,49 +146,203 @@ public class Main {
 		//JSON parser object to parse read file
 		JSONParser parser = new JSONParser();
 
-		try (Reader reader = new FileReader("wines.json")) {
+        try (Reader reader = new FileReader("wines.json")) {
 
-			JSONArray wineListJSON = (JSONArray) parser.parse(reader);
+            JSONArray wineListJSON = (JSONArray) parser.parse(reader);
 
-			for (int i = 0 ; i < wineListJSON.size(); i++) {
-				JSONObject wine = (JSONObject) wineListJSON.get(i);
-				String name = (String) wine.get("name");
-				int year = (int) wine.get("year");
-				String description = (String) wine.get("description");
-				String vine = (String) wine.get("vine");
-				int quantity = (int) wine.get("quantity");
-				double price = (double) wine.get("price");
+            for (int i = 0 ; i < wineListJSON.size(); i++) {
+                JSONObject wine = (JSONObject) wineListJSON.get(i);
+                String name = (String) wine.get("name");
+                int year = Integer.valueOf(wine.get("year").toString());
+                String description = (String) wine.get("description");
+                String vine = (String) wine.get("vine");
+                int quantity = Integer.valueOf(wine.get("quantity").toString());
+                double price = (double) wine.get("price");
 
-				// Add the JSON object to the wine list
-				Main.wineList.add(new Wine(name, year, description, vine, quantity, price));
+                // Add the JSON object to the wine list
+                Main.wineList.add(new Wine(name, year, description, vine, quantity, price));
 
-			}
+            }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 	}
 
 	// Notifications JSON
+	@SuppressWarnings("unchecked")
 	private static void writeNotificationsOnFile() {
 		// Create JSON string for notification list
+		JSONArray notificationListJSON = new JSONArray();
+
+		for (Notification notification : Main.pendingNotificationForCustomer) {
+
+			// Write the customer JSON
+			JSONObject notificationDetails = new JSONObject();
+
+			JSONObject customerDetails = new JSONObject();
+			customerDetails.put("name", notification.customer.getName());
+			customerDetails.put("surname", notification.customer.getSurname());
+			customerDetails.put("username", notification.customer.getUsername());
+			customerDetails.put("password", notification.customer.getPassword());
+			customerDetails.put("account", "customer");
+			// The account key value can only be "customer", because only a customer is in notification list
+
+			// Write the wine JSON
+			JSONObject wineDetails = new JSONObject();
+			wineDetails.put("name", notification.wine.getName());
+			wineDetails.put("year", notification.wine.getYear());
+			wineDetails.put("description", notification.wine.getDescription());
+			wineDetails.put("vine", notification.wine.getVine());
+			wineDetails.put("quantity", notification.wine.getQuantity());
+			wineDetails.put("price", notification.wine.getPrice());
+
+			notificationDetails.put("customer", customerDetails);
+			notificationDetails.put("wine", wineDetails);
+
+			notificationListJSON.add(notificationDetails);
+
+		}
+
+        // Write JSON file
+        try (FileWriter file = new FileWriter("notifications.json")) {
+            file.write(notificationListJSON.toJSONString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 	}
 	private static void readNotificationsFromFile() {
 		// TODO lettura Notifiche su file
+
+		JSONParser parser = new JSONParser();
+
+		try (Reader reader = new FileReader("notifications.json")) {
+			JSONArray notificationListJSON = (JSONArray) parser.parse(reader);
+
+			for (int i=0; i<notificationListJSON.size(); i++) {
+				JSONObject notification = (JSONObject) notificationListJSON.get(i);
+                JSONObject customerJSON = (JSONObject) notification.get("customer");
+                JSONObject wineJSON = (JSONObject) notification.get("wine");
+
+                // Create the customer object from json object
+                Customer customer = new Customer(
+                		(String) customerJSON.get("username"),
+                		(String) customerJSON.get("name"),
+                		(String) customerJSON.get("surname"),
+                		(String) customerJSON.get("password"));
+
+                // Create the wine object from json object
+                Wine wine = new Wine(
+                        (String) wineJSON.get("name"),
+                        Integer.valueOf(wineJSON.get("year").toString()),
+                        (String) wineJSON.get("description"),
+                        (String) wineJSON.get("vine"),
+                        Integer.valueOf(wineJSON.get("quantity").toString()),
+                        (double) wineJSON.get("price"));
+
+                // Create the notification object with customer and wine -> add to the notification global list
+                Main.pendingNotificationForCustomer.add(new Notification(customer, wine));
+			}
+		} catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 	}
 
 	// Requests JSON
 	private static void writeRequestsOnFile() {
-		// TODO scrittura Richieste su file 
+		// Create JSON string for request list
+		JSONArray requestListJSON = new JSONArray();
+
+		for (Request request : Main.pendingRequestForEmployee) {
+
+			// Write the customer JSON
+			JSONObject requestDetails = new JSONObject();
+
+			JSONObject customerDetails = new JSONObject();
+			customerDetails.put("name", request.customer.getName());
+			customerDetails.put("surname", request.customer.getSurname());
+			customerDetails.put("username", request.customer.getUsername());
+			customerDetails.put("password", request.customer.getPassword());
+			customerDetails.put("account", "customer");
+			// The account key value can only be "customer", because only a customer is in request list
+
+			// Write the wine JSON
+			JSONObject wineDetails = new JSONObject();
+			wineDetails.put("name", request.wine.getName());
+			wineDetails.put("year", request.wine.getYear());
+			wineDetails.put("description", request.wine.getDescription());
+			wineDetails.put("vine", request.wine.getVine());
+			wineDetails.put("quantity", request.wine.getQuantity());
+			wineDetails.put("price", request.wine.getPrice());
+
+			requestDetails.put("customer", customerDetails);
+			requestDetails.put("wine", wineDetails);
+			requestDetails.put("quantity", request.quantity);
+
+			requestListJSON.add(requestDetails);
+
+		}
+
+        // Write JSON file
+        try (FileWriter file = new FileWriter("requests.json")) {
+            file.write(requestListJSON.toJSONString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 	private static void readRequestsFromFile() {
-		// TODO lettura Richieste su file
+
+		JSONParser parser = new JSONParser();
+
+		try (Reader reader = new FileReader("requests.json")) {
+			JSONArray requestListJSON = (JSONArray) parser.parse(reader);
+
+			for (int i=0; i<requestListJSON.size(); i++) {
+				JSONObject request = (JSONObject) requestListJSON.get(i);
+                JSONObject customerJSON = (JSONObject) request.get("customer");
+                JSONObject wineJSON = (JSONObject) request.get("wine");
+
+                // Create the customer object from json object
+                Customer customer = new Customer(
+                		(String) customerJSON.get("username"),
+                		(String) customerJSON.get("name"),
+                		(String) customerJSON.get("surname"),
+                		(String) customerJSON.get("password"));
+
+                // Create the wine object from json object
+                Wine wine = new Wine(
+                        (String) wineJSON.get("name"),
+                        Integer.valueOf(wineJSON.get("year").toString()),
+                        (String) wineJSON.get("description"),
+                        (String) wineJSON.get("vine"),
+                        Integer.valueOf(wineJSON.get("quantity").toString()),
+                        (double) wineJSON.get("price"));
+
+                // Read quantity
+                int quantity = Integer.valueOf(request.get("quantity").toString());
+
+                // Create the request object with customer, wine and quantity -> Add to the request global list
+                Main.pendingRequestForEmployee.add(new Request(customer, wine, quantity));
+			}
+		} catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 	}
 
-	// Testing functions for default 
+	// Testing functions for default
 	public static void addUsers() {
 		// Add default users
 		Customer defaultCustomer1 = new Customer("beppe", "Giuseppe", "Urbano", "beppe123");
@@ -268,7 +422,7 @@ public class Main {
 			System.out.println("Quantity: " + request.wine.getQuantity());
 			System.out.println("##############################################\n");
 		}
-	}	
+	}
 	public static void printPendingsNotificationForCustomer() {
 		System.out.println("Pending notifications for customer");
 		for (Notification notification : pendingNotificationForCustomer) {
