@@ -24,7 +24,7 @@ public class Main {
 	public static ArrayList<Person> userList = new ArrayList<Person>();
 	public static ArrayList<Wine> wineList = new ArrayList<Wine>();
 	public static ArrayList<Purchase> purchaseList = new ArrayList<Purchase>();
-	
+
 	// Pending Notification/Request list
 	public static ArrayList<Request> pendingRequestForEmployee = new ArrayList<Request>();
 	public static ArrayList<Notification> pendingNotificationForCustomer = new ArrayList<Notification>();
@@ -35,7 +35,7 @@ public class Main {
 		readWineListFromFile();
 		readNotificationsFromFile();
 		readRequestsFromFile();
-		
+
 		addWines();
 
 		login();
@@ -45,80 +45,80 @@ public class Main {
 		} else if (loggedUser instanceof Employee) { // If logged user is an employee
 			((Employee) loggedUser).Menu();
 		}
-		
+
 		writeUserListOnFile();
 		writeWineListOnFile();
 		writeNotificationsOnFile();
 		writeRequestsOnFile();
-		
+
 		System.out.println("\n\nLogged out, see you soon!");
 
 	}
-	
+
 	// Users JSON
 	@SuppressWarnings("unchecked")
 	private static void writeUserListOnFile() {
 		// Create JSON string for user list
 		JSONArray userListJSON = new JSONArray();
-		
+
 		for(Person p : Main.userList) {
 			JSONObject userDetails = new JSONObject();
 			userDetails.put("name", p.getName());
 			userDetails.put("surname", p.getSurname());
 			userDetails.put("username", p.getUsername());
 			userDetails.put("password", p.getPassword());
-			
+
 			String account = (p instanceof Employee)? "employee" : "customer";
 			userDetails.put("account", account);
-			
+
 			userListJSON.add(userDetails);
 		}
-         
-        // Write JSON file
-        try (FileWriter file = new FileWriter("users.json")) {
-            file.write(userListJSON.toJSONString());
-            file.flush();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+		// Write JSON file
+		try (FileWriter file = new FileWriter("users.json")) {
+			file.write(userListJSON.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	private static void readUserListFromFile() {
 		//JSON parser object to parse read file
 		JSONParser parser = new JSONParser();
 
-        try (Reader reader = new FileReader("users.json")) {
-        	
-            JSONArray userListJSON = (JSONArray) parser.parse(reader);
-            
-            for (int i = 0 ; i < userListJSON.size(); i++) {
-                JSONObject user = (JSONObject) userListJSON.get(i);
-                String name = (String) user.get("name");
-                String surname = (String) user.get("surname");
-                String username = (String) user.get("username");
-                String password = (String) user.get("password");
-                String account = (String) user.get("account");
-                
-                if(account.equals("employee")) {
-                	Main.userList.add(new Employee(username, name, surname, password));
-                } else {
-                	Main.userList.add(new Customer(username, name, surname, password));
-                }
-            }
+		try (Reader reader = new FileReader("users.json")) {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+			JSONArray userListJSON = (JSONArray) parser.parse(reader);
+
+			for (int i = 0 ; i < userListJSON.size(); i++) {
+				JSONObject user = (JSONObject) userListJSON.get(i);
+				String name = (String) user.get("name");
+				String surname = (String) user.get("surname");
+				String username = (String) user.get("username");
+				String password = (String) user.get("password");
+				String account = (String) user.get("account");
+
+				if(account.equals("employee")) {
+					Main.userList.add(new Employee(username, name, surname, password));
+				} else {
+					Main.userList.add(new Customer(username, name, surname, password));
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	// Wines JSON
 	@SuppressWarnings("unchecked")
 	private static void writeWineListOnFile() {
 		// Create JSON string for wine list
 		JSONArray wineListJSON = new JSONArray();
-		
+
 		for (Wine wine: Main.wineList) {
 			JSONObject wineDetails = new JSONObject();
 			wineDetails.put("name", wine.getName());
@@ -127,50 +127,51 @@ public class Main {
 			wineDetails.put("vine", wine.getVine());
 			wineDetails.put("quantity", wine.getQuantity());
 			wineDetails.put("price", wine.getPrice());
-			
+
 			wineListJSON.add(wineDetails);
 		}
-		
+
 		// Write JSON file
-        try (FileWriter file = new FileWriter("wines.json")) {
-            file.write(wineListJSON.toJSONString());
-            file.flush();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+		try (FileWriter file = new FileWriter("wines.json")) {
+			file.write(wineListJSON.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
+
 	private static void readWineListFromFile() {
 		//JSON parser object to parse read file
 		JSONParser parser = new JSONParser();
 
-        try (Reader reader = new FileReader("wines.json")) {
-        	
-            JSONArray wineListJSON = (JSONArray) parser.parse(reader);
-            
-            for (int i = 0 ; i < wineListJSON.size(); i++) {
-                JSONObject wine = (JSONObject) wineListJSON.get(i);
-                String name = (String) wine.get("name");
-                int year = (int) wine.get("year");
-                String description = (String) wine.get("description");
-                String vine = (String) wine.get("vine");
-                int quantity = (int) wine.get("quantity");
-                double price = (double) wine.get("price");
-                
-                // Add the JSON object to the wine list
-                Main.wineList.add(new Wine(name, year, description, vine, quantity, price));
-                
-            }
+		try (Reader reader = new FileReader("wines.json")) {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        
+			JSONArray wineListJSON = (JSONArray) parser.parse(reader);
+
+			for (int i = 0 ; i < wineListJSON.size(); i++) {
+				JSONObject wine = (JSONObject) wineListJSON.get(i);
+				String name = (String) wine.get("name");
+				int year = (int) wine.get("year");
+				String description = (String) wine.get("description");
+				String vine = (String) wine.get("vine");
+				int quantity = (int) wine.get("quantity");
+				double price = (double) wine.get("price");
+
+				// Add the JSON object to the wine list
+				Main.wineList.add(new Wine(name, year, description, vine, quantity, price));
+
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	// Notifications JSON
 	private static void writeNotificationsOnFile() {
 		// Create JSON string for notification list
@@ -178,7 +179,7 @@ public class Main {
 	private static void readNotificationsFromFile() {
 		// TODO lettura Notifiche su file
 	}
-	
+
 	// Requests JSON
 	private static void writeRequestsOnFile() {
 		// TODO scrittura Richieste su file 
@@ -186,7 +187,7 @@ public class Main {
 	private static void readRequestsFromFile() {
 		// TODO lettura Richieste su file
 	}
-	
+
 	// Testing functions for default 
 	public static void addUsers() {
 		// Add default users
@@ -205,27 +206,27 @@ public class Main {
 
 	// Login & Signing up
 	public static void login() {
-		
+
 		while(!userIsLogged) {
-			
+
 			System.out.println("--> LOGIN <--");
-			
+
 			String username = "";
 			String password = "";
-			
+
 			do {
 				System.out.print("Username: ");
 				username = Main.scanner.nextLine();
 				System.out.print("Password: ");
 				password = Main.scanner.nextLine();
-				
+
 				if(username.isEmpty() && password.isEmpty()) {
 					System.out.println("\n>> Username or Password not inserted\n");
 				}
-				
+
 			} while (username.isEmpty() && password.isEmpty());
-			
-			
+
+
 			for (Person person : userList) {
 				if (person.getUsername().equals(username) && person.getPassword().equals(password)) {
 					// loging correct
@@ -276,7 +277,7 @@ public class Main {
 			System.out.println("##############################################\n");
 		}
 	}
-	
+
 	// Other functions
 	public static int getPositionOfUser() {
 		// return the index of logged user in userList, else return -1
