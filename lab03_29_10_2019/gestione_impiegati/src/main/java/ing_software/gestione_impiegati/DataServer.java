@@ -36,7 +36,7 @@ public class DataServer {
 					// Case
 					if (obj instanceof Message) {
 
-						System.out.format(" Server received: %s from Client\n", obj.getContent());
+						System.out.format(" Server received: %s from Client\n", ((Message) obj).getContent());
 
 						if (r.nextDouble() > MIN) {
 							os.writeObject(new Message(obj.getBranch(), "done"));
