@@ -10,16 +10,18 @@ public class Purchase {
 	private double quantity;
 	private double amount;
 	private LocalDateTime date;	
+	private boolean shipped = false;
 	
 	// Constructors
 	public Purchase() {}
-	public Purchase(Customer customer, Wine wine, double quantity, double amount, LocalDateTime date) {
+	public Purchase(Customer customer, Wine wine, double quantity, double amount, LocalDateTime date, boolean shipped) {
 		super();
 		this.customer = customer;
 		this.wine = wine;
 		this.quantity = quantity;
 		this.amount = amount;
 		this.date = date;
+		this.shipped = shipped;
 	}
 	
 	// Getters and setters
@@ -53,5 +55,11 @@ public class Purchase {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
-
+	public boolean isShipped() {
+		return shipped;
+	}
+	public void setShipped(boolean shipped) {
+		this.shipped = shipped;
+	}
+	
 }

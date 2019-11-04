@@ -54,6 +54,33 @@ public class Employee extends Person {
 		}
 	}
 
+	public void shipOrder() {
+		for (Purchase purchase : Main.purchaseList) {
+			if (!purchase.isShipped()) {
+				System.out.print("Wine: " + purchase.getWine().getName());
+				System.out.print("\tYear: " + purchase.getWine().getYear());
+				System.out.println("\tQuantity: " + purchase.getQuantity());
+
+				System.out.println("Ship this order?\n1)Yes\n2)No\nChoice: ");
+				int choice = 0;
+				do {
+					try {
+						choice = Main.scanner.nextInt();
+						Main.scanner.nextLine();
+					} catch (Exception e) {
+						e.printStackTrace();
+						choice = 0;
+					}
+				} while (choice < 1 || choice > 2);
+
+				if (choice == 1) {
+					purchase.setShipped(true);
+					System.out.println("\nOrder Shipped!\n");
+				}
+			}
+		}
+	}
+
 	// Functions
 	public void replaceProduct() {
 
@@ -105,7 +132,7 @@ public class Employee extends Person {
 			}
 		} catch (Exception ex) {
 			Main.scanner.nextLine();
-			System.out.println("\nERROR >> " + ex.getMessage());			
+			System.out.println("\nERROR >> " + ex.getMessage());
 		}
 	}
 
@@ -121,6 +148,16 @@ public class Employee extends Person {
 			}
 		}
 
+		// Visulizza le pending shippings
+		for (Purchase purchase : Main.purchaseList) {
+			if (!purchase.isShipped()) {
+				System.out.print("Wine Order to Ship!!! ");
+				System.out.print("Wine: " + purchase.getWine().getName());
+				System.out.print("\tYear: " + purchase.getWine().getYear());
+				System.out.println("\tQuantity: " + purchase.getQuantity());
+			}
+		}
+
 		boolean logout = false;
 		int userChoice;
 
@@ -130,7 +167,7 @@ public class Employee extends Person {
 
 					System.out.println("\n=========> MAIN MENU <=========");
 					System.out.println("1) Replace Product\n2) Add Wine\n3) Show Wine List\n4) Show Customer List");
-					System.out.print("5) Show Notification List\n6) Logout\nChoice: ");
+					System.out.print("5) Ship Order\n6) Logout\nChoice: ");
 
 					userChoice = Main.scanner.nextInt();
 					Main.scanner.nextLine();
@@ -176,16 +213,8 @@ public class Employee extends Person {
 				break;
 
 			case 5:
-				// Show Customer Notification List
-				System.out.println("\n-->Printing Customer Notification List <--");
-				index = 0;
-				for (Notification notif : Main.pendingNotificationForCustomer) {
-					System.out.print(index + ") ");
-					System.out.print("Customer Name: " + notif.customer.getName());
-					System.out.print("\tCustomer Surname: " + notif.customer.getSurname());
-					System.out.print("\tWine Name: " + notif.wine.getName());
-					System.out.println("\tWine Year: " + notif.wine.getYear());
-				}
+				// Ship Order
+				shipOrder();
 				break;
 
 			case 6:

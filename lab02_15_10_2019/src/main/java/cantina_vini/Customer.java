@@ -149,7 +149,7 @@ public class Customer extends Person {
 				System.out.println("Total amount: " +  amount);
 
 				// this = this customer
-				Purchase purchase = new Purchase(this, Main.wineList.get(realGlobalWineIndex), quantity, amount, LocalDateTime.now());
+				Purchase purchase = new Purchase(this, Main.wineList.get(realGlobalWineIndex), quantity, amount, LocalDateTime.now(), false);
 				Main.purchaseList.add(purchase);
 
 				// Changing quantity of wine in the Main.wineList
