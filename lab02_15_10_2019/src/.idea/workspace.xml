@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6a4617c1-9f9a-4809-ba41-f704d26c8ae2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../testSpace/src/testSpace/TestApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../testSpace/src/testSpace/TestApp.java" afterDir="false" />
+    <list default="true" id="9a6e06ef-aca0-4984-823f-5f8f9bdadab6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../testSpace/src/testSpace/TestApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../testSpace/src/testSpace/TestApp.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,21 +11,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="importAutomatically" value="true" />
-      </MavenImportingSettings>
-    </option>
-  </component>
-  <component name="ProjectId" id="1STUHuYsazBSQMWZbqaxq0XM66x" />
+  <component name="ProjectId" id="1T9hzTZ4V7GzxLulgjKfTOTbmHh" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/main/java/cantina_vini" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -45,12 +37,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6a4617c1-9f9a-4809-ba41-f704d26c8ae2" name="Default Changelist" comment="" />
-      <created>1571586995196</created>
+      <changelist id="9a6e06ef-aca0-4984-823f-5f8f9bdadab6" name="Default Changelist" comment="" />
+      <created>1572878481507</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1571586995196</updated>
-      <workItem from="1572878840050" duration="962000" />
+      <updated>1572878481507</updated>
+      <workItem from="1572878486502" duration="41000" />
     </task>
     <servers />
   </component>
@@ -62,9 +54,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
