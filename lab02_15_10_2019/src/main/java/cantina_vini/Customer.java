@@ -94,7 +94,7 @@ public class Customer extends Person {
 					ex.printStackTrace();
 					chosenWineIndex = -1;
 				}
-			} while (chosenWineIndex < 0 && chosenWineIndex > wineList.size());
+			} while (chosenWineIndex < 0 || chosenWineIndex > wineList.size());
 
 			// The real position of the wine list from the research is lower than one
 			chosenWineIndex--;

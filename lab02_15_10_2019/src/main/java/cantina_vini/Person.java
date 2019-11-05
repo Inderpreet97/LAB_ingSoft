@@ -73,7 +73,7 @@ public class Person {
 		ArrayList<Wine> resultList = new ArrayList<Wine>();
 		
 		for (Wine wine : Main.wineList) {
-			if (wine.getName().equals(wineName) && wine.getQuantity() > 0){	resultList.add(wine);} 
+			if (wine.getName().toLowerCase().equals(wineName.toLowerCase()) && wine.getQuantity() > 0){	resultList.add(wine);} 
 		}
 		
 		if (resultList.size() == 0) { System.out.println("No wine found with this name");}

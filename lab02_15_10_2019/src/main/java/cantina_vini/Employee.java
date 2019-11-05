@@ -10,6 +10,7 @@ public class Employee extends Person {
 		super(username, name, surname, password);
 	}
 
+	
 	public void addWine() {
 		try {
 			System.out.println("--> Add Wine <--");
@@ -61,7 +62,7 @@ public class Employee extends Person {
 				System.out.print("\tYear: " + purchase.getWine().getYear());
 				System.out.println("\tQuantity: " + purchase.getQuantity());
 
-				System.out.println("Ship this order?\n1)Yes\n2)No\nChoice: ");
+				System.out.print("Ship this order?\n1)Yes\n2)No\nChoice: ");
 				int choice = 0;
 				do {
 					try {
@@ -81,7 +82,6 @@ public class Employee extends Person {
 		}
 	}
 
-	// Functions
 	public void replaceProduct() {
 
 		try {
@@ -151,7 +151,7 @@ public class Employee extends Person {
 		// Visulizza le pending shippings
 		for (Purchase purchase : Main.purchaseList) {
 			if (!purchase.isShipped()) {
-				System.out.print("Wine Order to Ship!!! ");
+				System.out.print("NOTIFICATION: shipping is pending!");
 				System.out.print("Wine: " + purchase.getWine().getName());
 				System.out.print("\tYear: " + purchase.getWine().getYear());
 				System.out.println("\tQuantity: " + purchase.getQuantity());
