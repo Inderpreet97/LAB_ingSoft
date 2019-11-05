@@ -9,9 +9,9 @@ public final class Message implements Serializable {
 	private Object object;
 	private String content;
 
-	public Message(final Object u, final String c) {
-		this.object = u;
-		this.content = c;
+	public Message(final Object obj, final String content) {
+		this.object = obj;
+		this.content = content;
 	}
 
 	public Object getObject() {
