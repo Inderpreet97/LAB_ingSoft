@@ -1,8 +1,14 @@
 package ing_software.gestione_impiegati;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Employee {
+public class Employee implements Serializable{
+	
+	/**
+	 * attributo richiesto dall'interfaccia Serializable 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	// Attributes
 	private String fiscalCode;
@@ -33,7 +39,10 @@ public class Employee {
 	public Employee(String fiscalCode, String username, String password, String name, String surname, String job,
 			String branch, LocalDate startDate) {
 		this(fiscalCode, username, password, name, surname, job, branch, startDate, null);
-		
+	}
+	public Employee(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 	
 	// Getters & Setters
