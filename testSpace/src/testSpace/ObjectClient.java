@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ObjectClient {
@@ -11,6 +12,8 @@ public class ObjectClient {
 	private static final String SHOST = "localhost";
 	private String[] greetings = { "hello", "hi", "ciao", "hey", "aloha", "shalom" };
 
+	private static ArrayList<User> listUser = new ArrayList<User>();
+	
 	public void send() {
 		try {
 			// Client
@@ -58,6 +61,25 @@ public class ObjectClient {
 	}
 
 	public static void main(final String[] v) {
-		new ObjectClient().send();
+		// new ObjectClient().send();
+		
+		// Test contains
+		
+		listUser.add(new User("giuseppe", "urbano"));
+		listUser.add(new User("marco", "rossi"));
+		
+		User temp = new User("giusepp", "urbano");
+		check(temp);
+	}
+	
+	public static void check(User user) {
+		for (User u : listUser) {
+			if (u.equals(user)) {
+				System.out.println("Found");
+				break;
+			} 
+			System.out.println("Not found");
+		}
+		
 	}
 }

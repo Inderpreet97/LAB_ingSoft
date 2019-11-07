@@ -22,4 +22,18 @@ public class User {
 		this.surname = surname;
 	}
 
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (obj == null) {
+			return false;
+		} else if (obj instanceof User) {
+			User user = (User) obj;
+			if (user.getName().equals(this.name) && (user.getSurname().equals(this.surname))){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
