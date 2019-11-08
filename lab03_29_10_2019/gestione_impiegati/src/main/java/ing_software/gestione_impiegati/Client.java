@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
 
+import ing_software.gestione_impiegati.EasyConsole.Console;
+
 public class Client {
 	static Scanner scanner = new Scanner(System.in);
 
@@ -14,7 +16,6 @@ public class Client {
 
 	private static final int SPORT = 4444;
 	private static final String SHOST = "localhost";
-
 
 	public Message send(Message message)
 	{
@@ -78,8 +79,12 @@ public class Client {
 				loggedUser = new Employee(username, password);
 				Message loginMessage = new Message(loggedUser,"",Functions.login);
 
+				// Send the login Message to the server
+				// The server returns another message
 				Message returnMessage = new Client().send(loginMessage);
 
+				// Check the called Function from the server
+				// If It is "done" -> then set the loggedUser true
 				if(returnMessage.getCalledFunction() == Functions.done) {
 					userIsLogged = true;
 					loggedUser = (Employee) returnMessage.getObj();
@@ -99,6 +104,7 @@ public class Client {
 			}
 		} while (!userIsLogged);
 
+		// Different menu interface for each king of job (Functionary, manager, admin)
 		switch (loggedUser.getJob().toLowerCase()){
 		case "functionary":
 			menuFunctionary();
@@ -126,17 +132,18 @@ public class Client {
 			do {
 				try {
 
-					System.out.println("\n=========> MAIN MENU <=========");
-					System.out.println("1) Replace Product\n2) Add Wine\n3) Show Wine List\n4) Show Customer List");
-					System.out.print("5) Ship Order\n6) Logout\nChoice: ");
+					Console.OutputLN("\n=========> MAIN MENU <=========");
+					Console.Output(""
+							+ "1) New employee\n"
+							+ "2) Update employee\n"
+							+ "3) Logout\n"
+							+ "Choice: ");
 
-					userChoice = Main.scanner.nextInt();
-					Main.scanner.nextLine();
+					userChoice = Console.IntInput(null);
 
 				} catch (Exception ex) {
 					System.out.println("Error: " + ex.getMessage());
-					System.out.println("Press [enter] to continue...");
-					Main.scanner.nextLine();
+					Console.Enter("Press [enter] to continue...");
 					userChoice = 0;
 				}
 
@@ -197,4 +204,5 @@ public class Client {
 	private static void menuAdmin (){
 		// TODO Admin Menu
 	}
+	
 }
