@@ -1,9 +1,10 @@
-package ing_software.gestione_impiegati;
+package testSpace;
 
-// Enumaration of functions called by client
+//Enumaration of functions called by client
 
 public enum Functions {
 	login,
+	logout,
 	insertEmployee,
 	updateEmployee,
 	searchEmployee,

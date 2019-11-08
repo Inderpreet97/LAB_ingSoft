@@ -24,6 +24,7 @@ public class Employee implements Serializable{
 	private LocalDate endDate;
 	
 	// Constructors
+	public Employee() {}
 	public Employee(String fiscalCode, String username, String password, String name, String surname, String job,
 			String branch, LocalDate startDate, LocalDate endDate) {
 		this.fiscalCode = fiscalCode;

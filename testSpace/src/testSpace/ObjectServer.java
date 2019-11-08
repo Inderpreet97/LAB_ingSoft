@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Random;
 
+import testSpace.Menu.MenuFunctionary;
+import testSpace.Menu.MenuManager;
+
 public class ObjectServer {
 	private static final int SPORT = 4444;
 	private static final double MIN = 0.1;
@@ -61,6 +64,8 @@ public class ObjectServer {
 	}
 
 	public static void main(final String[] v) {
-		new ObjectServer().reply();
+		//new ObjectServer().reply();
+		// MenuFunctionary.Run();
+		MenuManager.Run();
 	}
 }

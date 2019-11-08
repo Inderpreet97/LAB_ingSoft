@@ -96,8 +96,11 @@ public class Server {
 						}
 						break;
 					case insertEmployee:
+						// Check if all data received are corrected
+						// Check if the fiscalCode and the username does not exist yet
 						break;
 					case updateEmployee:
+						// Update
 						break;
 					case searchEmployee:
 						break;

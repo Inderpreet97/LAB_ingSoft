@@ -7,28 +7,32 @@ import java.util.Random;
 import java.util.Scanner;
 
 import ing_software.gestione_impiegati.EasyConsole.Console;
+import ing_software.gestione_impiegati.Menu.MenuAdmin;
+import ing_software.gestione_impiegati.Menu.MenuFunctionary;
+import ing_software.gestione_impiegati.Menu.MenuManager;
 
 public class Client {
+
 	static Scanner scanner = new Scanner(System.in);
 
 	// Logged user variables
-	private static Employee loggedUser;
+	public static Employee loggedUser;
 
 	private static final int SPORT = 4444;
 	private static final String SHOST = "localhost";
 
-	public Message send(Message message)
-	{
-		try
-		{
-			Socket  client = new Socket(SHOST, SPORT);
+	public Message send(Message message) {
+
+		// This functions send a message to the server and returns the message received from the server
+
+		try {
+			Socket client = new Socket(SHOST, SPORT);
 
 			ObjectOutputStream os = new ObjectOutputStream(client.getOutputStream());
-			ObjectInputStream  is = new ObjectInputStream(client.getInputStream());
+			ObjectInputStream is = new ObjectInputStream(client.getInputStream());
 			Message returnMessage;
 
-			while (true)
-			{
+			while (true) {
 				// Sends messages until it receives an �end� message
 
 				os.writeObject(message);
@@ -36,8 +40,7 @@ public class Client {
 
 				Object o = is.readObject();
 
-				if ((o != null) && (o instanceof Message))
-				{
+				if ((o != null) && (o instanceof Message)) {
 					returnMessage = (Message) o;
 					break;
 				}
@@ -45,16 +48,27 @@ public class Client {
 
 			client.close();
 			return returnMessage;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public static void main(final String[] v)
-	{
+	public boolean checkMessage(Message message) {
+
+		// This functions checks if a message is an error message (return false) or not
+
+		if (message.getCalledFunction() == Functions.done) {
+			return true;
+		}
+
+		// Whatever the error, print the error message and retunr false
+		Console.Output(message.getContent());
+		return false;
+
+	}
+
+	public static void main(final String[] v) {
 
 		// LOGIN
 		Boolean userIsLogged = false;
@@ -77,7 +91,7 @@ public class Client {
 				}
 
 				loggedUser = new Employee(username, password);
-				Message loginMessage = new Message(loggedUser,"",Functions.login);
+				Message loginMessage = new Message(loggedUser, "", Functions.login);
 
 				// Send the login Message to the server
 				// The server returns another message
@@ -85,7 +99,7 @@ public class Client {
 
 				// Check the called Function from the server
 				// If It is "done" -> then set the loggedUser true
-				if(returnMessage.getCalledFunction() == Functions.done) {
+				if (returnMessage.getCalledFunction() == Functions.done) {
 					userIsLogged = true;
 					loggedUser = (Employee) returnMessage.getObj();
 					System.out.println("\n>> Logged in correctly\n");
@@ -104,105 +118,14 @@ public class Client {
 			}
 		} while (!userIsLogged);
 
-		// Different menu interface for each king of job (Functionary, manager, admin)
-		switch (loggedUser.getJob().toLowerCase()){
-		case "functionary":
-			menuFunctionary();
-			break;
-		case "manager":
-			menuManager();
-			break;
-		case "admin":
-			menuAdmin();
-			break;
-		default:
-			System.out.println("\nERROR: Unknown user!!!\n");
-			break;
+		switch (loggedUser.getJob().toLowerCase()) {
+		case "functionary":		MenuFunctionary.Run();									break;
+		case "manager":			MenuManager.Run();										break;
+		case "admin":			MenuAdmin.Run();										break;
+		default:				System.out.println("\nERROR: Unknown user!!!\n");		break;
 		}
 
 		System.out.println("\n\nLogged out, see you soon!");
-	}
-
-	private static void menuFunctionary (){
-		// TODO Functionary Menu
-		boolean logout = false;
-		int userChoice;
-
-		do {
-			do {
-				try {
-
-					Console.OutputLN("\n=========> MAIN MENU <=========");
-					Console.Output(""
-							+ "1) New employee\n"
-							+ "2) Update employee\n"
-							+ "3) Logout\n"
-							+ "Choice: ");
-
-					userChoice = Console.IntInput(null);
-
-				} catch (Exception ex) {
-					System.out.println("Error: " + ex.getMessage());
-					Console.Enter("Press [enter] to continue...");
-					userChoice = 0;
-				}
-
-			} while (userChoice < 1 || userChoice > 6);
-
-			System.out.println();
-
-			switch (userChoice) {
-			case 1:
-				replaceProduct();
-
-				break;
-
-			case 2:
-				// Add Wine
-				addWine();
-				break;
-
-			case 3:
-				// Show Wine List
-				Main.printWineList(Main.wineList);
-				break;
-
-			case 4:
-				// Show Customer List
-				System.out.println("\n-->Printing Customer List <--");
-				int index = 0;
-				for (Person person : Main.userList) {
-					if (person instanceof Customer) {
-						System.out.print(index++ + ") ");
-						System.out.print("Name: " + person.getName());
-						System.out.println("\tSurname: " + person.getSurname());
-					}
-				}
-				break;
-
-			case 5:
-				// Ship Order
-				shipOrder();
-				break;
-
-			case 6:
-				logout = true;
-				break;
-
-			default:
-				System.out.println("Error! User Choice not valid.");
-				break;
-			}
-
-		} while (!logout);
-	}
-
-	private static void menuManager (){
-		// TODO Manager Menu
-	}
-
-	private static void menuAdmin (){
-		// TODO Admin Menu
 	}
 	
 }
