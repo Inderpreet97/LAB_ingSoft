@@ -77,7 +77,7 @@ public class Client {
 
 		do {
 			System.out.println("=========> Employee Manager <=========");
-			System.out.println("=========> Login <========= ");
+			System.out.println(">> Login <<\n");
 
 			try {
 				System.out.print("Username: ");
