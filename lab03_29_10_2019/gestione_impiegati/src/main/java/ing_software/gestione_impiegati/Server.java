@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,10 +18,10 @@ import org.json.simple.parser.JSONParser;
 public class Server {
 
 	// File names
-	private String employeeFileName = "employee.json";
+	private static String employeeFileName = "employee.json";
 
 	// Global list
-	ArrayList<Employee> employeeList = new ArrayList<Employee>();
+	static ArrayList<Employee> employeeList = new ArrayList<Employee>();
 
 	// Server
 	private static final int PORT = 4444;
@@ -33,9 +32,9 @@ public class Server {
 		try {
 			ServerSocket server = new ServerSocket(PORT);
 
-			Functions i;
-			i = Functions.login;
-
+			//Functions i = Functions.login;
+			System.out.println(">> Server Online");
+			
 			Socket client = server.accept();
 
 			ObjectInputStream inputObject = new ObjectInputStream(client.getInputStream());
@@ -43,7 +42,7 @@ public class Server {
 			Random r = new Random();
 
 			while (true) {
-
+				
 				// Object receiver by a client
 				Object obj = inputObject.readObject();
 
@@ -53,7 +52,7 @@ public class Server {
 					// Cast object to Message class
 					Message msg = (Message) obj;
 
-					System.out.format(" Server received: %s from Client\n", msg.getContent());
+					System.out.format(" Server received: %s from Client\n", msg.getCalledFunction().name());
 
 					// Check the differente called function from the message received
 					switch (msg.getCalledFunction()) {
@@ -121,8 +120,11 @@ public class Server {
 						break;
 					case searchEmployee:
 						break;
+					default:
+						break;
 					}
-
+					
+					/*
 					if (r.nextDouble() > MIN) {
 						// outputObject.writeObject(new Message(msg.getUser(), "done"));
 						outputObject.flush();
@@ -131,6 +133,7 @@ public class Server {
 						outputObject.flush();
 						break;
 					}
+					*/
 				} else {
 					break;
 				}
@@ -144,7 +147,9 @@ public class Server {
 	}
 
 	public static void main(final String[] v) {
+		readJSONEmployee();
 		new Server().reply();
+		writeJSONEmployee();
 	}
 
 	private Employee Login(Employee employee) {
@@ -179,7 +184,7 @@ public class Server {
 	}
 	
 	// Read JSON employee
-	private void readJSONEmployee() {
+	private static void readJSONEmployee() {
 
 		// JSON parser object to parse read file
 		JSONParser parser = new JSONParser();
@@ -192,16 +197,18 @@ public class Server {
 				JSONObject employeeJSON = (JSONObject) employeeListJSON.get(i);
 
 				// ReadlDate
+				String fiscalCode =  (String) employeeJSON.get("fiscalCode");
+				String username = (String) employeeJSON.get("username");
+				String password = (String) employeeJSON.get("password");
+				String name = (String) employeeJSON.get("name");
+				String surname = (String) employeeJSON.get("surname");
+				String job = (String) employeeJSON.get("job");
+				String branch = (String) employeeJSON.get("branch");
 				LocalDate startDate = LocalDate.parse((CharSequence) employeeJSON.get("startDate"));
 				LocalDate endDate = LocalDate.parse((CharSequence) employeeJSON.get("endDate"));
 
 				// Create the employee object from json object
-				Employee employee = new Employee((String) employeeJSON.get("fiscalCode"),
-						(String) employeeJSON.get("username"), (String) employeeJSON.get("name"),
-						(String) employeeJSON.get("surname"), (String) employeeJSON.get("password"),
-						(String) employeeJSON.get("job"), (String) employeeJSON.get("branch"),
-						LocalDate.parse((CharSequence) employeeJSON.get("startDate")),
-						LocalDate.parse((CharSequence) employeeJSON.get("endDate")));
+				Employee employee = new Employee(fiscalCode,username,password,name,surname,job,branch,startDate,endDate);
 
 				// Add employee to global list
 				employeeList.add(employee);
@@ -214,6 +221,6 @@ public class Server {
 		}
 	}
 
-	private void writeJSONEmployee() {
+	private static void writeJSONEmployee() {
 	}
 }

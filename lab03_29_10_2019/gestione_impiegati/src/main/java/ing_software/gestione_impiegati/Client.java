@@ -64,12 +64,11 @@ public class Client {
 			if (message.getCalledFunction() == Functions.done) {
 				return true;
 			}
+		// Whatever the error, print the error message and retunr false
+		Console.Output(message.getContent());
+		return false;
 
-			// Whatever the error, print the error message and retunr false
-			Console.Output(message.getContent());
-			return false;
-
-		}
+	}
 
 		public static void main(final String[] v) {
 
