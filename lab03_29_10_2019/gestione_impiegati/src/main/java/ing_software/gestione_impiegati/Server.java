@@ -67,7 +67,8 @@ public class Server {
 								System.out.println(" - " + loggedEmployee.getFiscalCode());
 								
 								// Send message "done" to the client
-								msg.setContent("Done");
+								// TODO in set content, describe the message or simply "Done"?
+								msg.setContent("Done");      
 								msg.setCalledFunction(Functions.done);
 								outputObject.writeObject(msg);
 								outputObject.flush();
@@ -98,6 +99,22 @@ public class Server {
 					case insertEmployee:
 						// Check if all data received are corrected
 						// Check if the fiscalCode and the username does not exist yet
+						
+						if (msg.getObj() instanceof Employee) {
+							Employee employee = (Employee) msg.getObj();
+							if (searchEmployeeByFiscalCode(employee.getFiscalCode())) {
+								msg.setContent("Done");
+								msg.setCalledFunction(Functions.done);
+								outputObject.writeObject(msg);
+								outputObject.flush();
+							} else {
+								msg.setContent("FISCAL CODE ALREADY EXIST");
+								msg.setCalledFunction(Functions.error);
+								outputObject.writeObject(msg);
+								outputObject.flush();
+							}
+						}
+						
 						break;
 					case updateEmployee:
 						// Update
@@ -142,6 +159,24 @@ public class Server {
 	}
 
 	// Search functions
+	public int searchEmployeeByUsername(String username) {
+		int index = 0;
+		for (Employee temp : employeeList) {
+			if (temp.getUsername().equals(username)) {
+				return index; 
+			}
+			index++;
+		}
+		return -1;
+	}
+	public boolean searchEmployeeByFiscalCode(String fiscalCode) {
+		for (Employee employee : employeeList) {
+			if (employee.getFiscalCode().equals(fiscalCode)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	// Read JSON employee
 	private void readJSONEmployee() {
