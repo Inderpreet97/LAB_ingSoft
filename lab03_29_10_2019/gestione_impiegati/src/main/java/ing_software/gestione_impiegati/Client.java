@@ -24,6 +24,7 @@ public class Client {
 		private static final int SPORT = 4444;
 		private static final String SHOST = "localhost";
 
+		// Functions on Message
 		public static Message send(Message message) {
 
 			// This functions send a message to the server and returns the message received from the server
@@ -56,7 +57,6 @@ public class Client {
 				return null;
 			}
 		}
-
 		public static boolean checkMessage(Message message) {
 
 			// This functions checks if a message is an error message (return false) or not

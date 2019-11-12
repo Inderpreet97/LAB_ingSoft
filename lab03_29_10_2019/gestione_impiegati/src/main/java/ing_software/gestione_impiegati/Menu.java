@@ -22,6 +22,8 @@ public class Menu {
 			case "":					Console.Output("Errore");		break;
 			}
 		}
+	
+		// Methods
 		
 		public static void logout() {
 			Console.Output("Logout");
@@ -61,8 +63,7 @@ public class Menu {
 			Console.Output("Update");
 		}
 
-		// Methods
-
+		
 	}
 
 	public static class MenuManager extends MenuFunctionary{
