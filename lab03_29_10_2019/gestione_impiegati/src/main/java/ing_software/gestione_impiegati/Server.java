@@ -206,7 +206,6 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
-
 	private static void writeJSONEmployee() {
 	}
 }
