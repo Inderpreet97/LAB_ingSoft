@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,22 +24,19 @@ public class Server {
 
 	// Server
 	private static final int PORT = 4444;
-	private static final double MIN = 0.1;
 
 	public void reply() {
 
 		try {
 			ServerSocket server = new ServerSocket(PORT);
-
-			//Functions i = Functions.login;
+			
 			System.out.println(">> Server Online");
 			
 			Socket client = server.accept();
 
 			ObjectInputStream inputObject = new ObjectInputStream(client.getInputStream());
 			ObjectOutputStream outputObject = new ObjectOutputStream(client.getOutputStream());
-			Random r = new Random();
-
+			
 			while (true) {
 				
 				// Object receiver by a client
@@ -69,6 +65,7 @@ public class Server {
 								// TODO in set content, describe the message or simply "Done"?
 								msg.setContent("Done");      
 								msg.setCalledFunction(Functions.done);
+								msg.setObj(loggedEmployee);
 								outputObject.writeObject(msg);
 								outputObject.flush();
 								
@@ -123,17 +120,6 @@ public class Server {
 					default:
 						break;
 					}
-					
-					/*
-					if (r.nextDouble() > MIN) {
-						// outputObject.writeObject(new Message(msg.getUser(), "done"));
-						outputObject.flush();
-					} else {
-						// outputObject.writeObject(new Message(m.getUser(), "end"));
-						outputObject.flush();
-						break;
-					}
-					*/
 				} else {
 					break;
 				}
