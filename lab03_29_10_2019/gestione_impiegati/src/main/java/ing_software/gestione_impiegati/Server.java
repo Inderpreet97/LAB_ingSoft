@@ -9,6 +9,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,120 +28,54 @@ public class Server {
 	// Server
 	private static final int PORT = 4444;
 
-	public void reply() {
+	private static final int COREPOOL = 5;
+	private static final int MAXPOOL = 100;
+	private static final long IDLETIME = 5000;
 
-		try {
-			ServerSocket server = new ServerSocket(PORT);
-			
-			System.out.println(">> Server Online");
-			
-			Socket client = server.accept();
+	private ServerSocket socket;
+	private ThreadPoolExecutor pool;
 
-			ObjectInputStream inputObject = new ObjectInputStream(client.getInputStream());
-			ObjectOutputStream outputObject = new ObjectOutputStream(client.getOutputStream());
-			
-			while (true) {
-				
-				// Object receiver by a client
-				Object obj = inputObject.readObject();
+	public Server() throws IOException {
+		this.socket = new ServerSocket(PORT);
+	}
 
-				// Check if object is not null and if it is instance of Message Class
-				if ((obj != null) && (obj instanceof Message)) {
+	private void run() {
+		this.pool = new ThreadPoolExecutor(COREPOOL, MAXPOOL, IDLETIME, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>());
 
-					// Cast object to Message class
-					Message msg = (Message) obj;
+		while (true) {
+			try {
+				Socket s = this.socket.accept();
 
-					System.out.format(" Server received: %s from Client\n", msg.getCalledFunction().name());
-
-					// Check the differente called function from the message received
-					switch (msg.getCalledFunction()) {
-					case login:
-						if (msg.getObj() instanceof Employee) {
-							Employee loggedEmployee = Login(((Employee) msg.getObj()));
-							if (loggedEmployee != null) {
-								// Login corrected
-								System.out.print("Login corrected for " + loggedEmployee.getUsername());
-								System.out.print(" - " + loggedEmployee.getName() + " " + loggedEmployee.getSurname());
-								System.out.println(" - " + loggedEmployee.getFiscalCode());
-								
-								// Send message "done" to the client
-								// TODO in set content, describe the message or simply "Done"?
-								msg.setContent("Done");      
-								msg.setCalledFunction(Functions.done);
-								msg.setObj(loggedEmployee);
-								outputObject.writeObject(msg);
-								outputObject.flush();
-								
-							} else {
-								// Login not corrected
-								System.out.println("Login not corrected");
-								
-								// Send message "error" to the client
-								msg.setContent("Login not corrected, please enter corrected credentials");
-								msg.setCalledFunction(Functions.error);
-								outputObject.writeObject(msg);
-								outputObject.flush();
-								
-							}
-						} else {
-
-							// content = descrizione del messaggio
-							// calledFunction (done = successo) (error = non successo)
-							// if calledFunction = error -> content = descrizione errore
-
-							msg.setContent("Object is not instance of Employee");
-							msg.setCalledFunction(Functions.error);
-							outputObject.writeObject(msg);
-							outputObject.flush();
-						}
-						break;
-					case insertEmployee:
-						// Check if all data received are corrected
-						// Check if the fiscalCode and the username does not exist yet
-						
-						if (msg.getObj() instanceof Employee) {
-							Employee employee = (Employee) msg.getObj();
-							if (searchEmployeeByFiscalCode(employee.getFiscalCode())) {
-								msg.setContent("Done");
-								msg.setCalledFunction(Functions.done);
-								outputObject.writeObject(msg);
-								outputObject.flush();
-							} else {
-								msg.setContent("FISCAL CODE ALREADY EXIST");
-								msg.setCalledFunction(Functions.error);
-								outputObject.writeObject(msg);
-								outputObject.flush();
-							}
-						}
-						
-						break;
-					case updateEmployee:
-						// Update
-						break;
-					case searchEmployee:
-						break;
-					default:
-						break;
-					}
-				} else {
-					break;
-				}
+				this.pool.execute(new ServerThread(this, s));
+			} catch (Exception e) {
+				break;
 			}
+		}
 
-			client.close();
-			server.close();
+		this.pool.shutdown();
+	}
+
+	public ThreadPoolExecutor getPool() {
+		return this.pool;
+	}
+
+	public void close() {
+		try {
+			this.socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(final String[] v) {
+	public static void main(final String[] v) throws IOException {
 		readJSONEmployee();
-		new Server().reply();
+		new Server().run();
 		writeJSONEmployee();
 	}
 
-	private Employee Login(Employee employee) {
+	// Functions
+	Employee Login(Employee employee) {
 		// Return the employee found or null
 		for (Employee temp : employeeList) {
 			if (temp.getUsername().equals(employee.getUsername())
@@ -154,12 +91,13 @@ public class Server {
 		int index = 0;
 		for (Employee temp : employeeList) {
 			if (temp.getUsername().equals(username)) {
-				return index; 
+				return index;
 			}
 			index++;
 		}
 		return -1;
 	}
+
 	public boolean searchEmployeeByFiscalCode(String fiscalCode) {
 		for (Employee employee : employeeList) {
 			if (employee.getFiscalCode().equals(fiscalCode)) {
@@ -168,7 +106,7 @@ public class Server {
 		}
 		return false;
 	}
-	
+
 	// Read JSON employee
 	private static void readJSONEmployee() {
 
@@ -183,7 +121,7 @@ public class Server {
 				JSONObject employeeJSON = (JSONObject) employeeListJSON.get(i);
 
 				// ReadlDate
-				String fiscalCode =  (String) employeeJSON.get("fiscalCode");
+				String fiscalCode = (String) employeeJSON.get("fiscalCode");
 				String username = (String) employeeJSON.get("username");
 				String password = (String) employeeJSON.get("password");
 				String name = (String) employeeJSON.get("name");
@@ -194,7 +132,8 @@ public class Server {
 				LocalDate endDate = LocalDate.parse((CharSequence) employeeJSON.get("endDate"));
 
 				// Create the employee object from json object
-				Employee employee = new Employee(fiscalCode,username,password,name,surname,job,branch,startDate,endDate);
+				Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
+						endDate);
 
 				// Add employee to global list
 				employeeList.add(employee);
