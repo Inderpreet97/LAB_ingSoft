@@ -8,7 +8,7 @@ USE CASES
   <<Actor>> Dirigente
     LOGIN
     SEARCH by Mansione(no admin)(after login)
-  <<Actor> Amministratore
+  <<Actor> Amministratore  
     LOGIN
     SEARCH by Mansione (+ admin)(after login)
 
