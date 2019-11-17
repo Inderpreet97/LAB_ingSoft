@@ -9,9 +9,6 @@ import java.net.Socket;
 
 public class ServerThread implements Runnable {
 
-	//private static final int MAX = 100;
-	//private static final long SLEEPTIME = 200;
-
 	private Server server;
 	private Socket socket;
 
@@ -29,7 +26,6 @@ public class ServerThread implements Runnable {
 			is = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
 		} catch (Exception e) {
 			e.printStackTrace();
-
 			return;
 		}
 

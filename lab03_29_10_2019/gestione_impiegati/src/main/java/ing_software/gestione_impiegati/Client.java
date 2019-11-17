@@ -1,5 +1,6 @@
 package ing_software.gestione_impiegati;
 
+import java.io.BufferedInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,7 +17,18 @@ public class Client {
 	
 	public static class ClientManager {
 		static Scanner scanner = new Scanner(System.in);
-
+		
+/** TODO
+ *  Dobbiamo dividere la creazione e la chiusura della Socket,
+ *  Ora è dentro il metodo Send, ma così apriamo e chiudiamo una
+ *  connessione tutte le volte che dobbiamo inivare un messaggio.
+ *  Invece dobbiamo Aprire la connessione al Login, e chiuderla al Logout
+ *  oppure in caso di errore.
+ * 
+ *  Metodo Send (nudes) deve solo inviare messaggi, assicurandosi che
+ *  la socket non sia Null.
+ */
+		
 		// Logged user variables
 		public static Employee loggedUser;
 
@@ -32,7 +44,7 @@ public class Client {
 				Socket client = new Socket(SHOST, SPORT);
 
 				ObjectOutputStream os = new ObjectOutputStream(client.getOutputStream());
-				ObjectInputStream is = new ObjectInputStream(client.getInputStream());
+				ObjectInputStream is = null;
 				Message returnMessage;
 
 				while (true) {
@@ -40,6 +52,10 @@ public class Client {
 
 					os.writeObject(message);
 					os.flush();
+					
+					if(is == null) {
+						is = new ObjectInputStream(new BufferedInputStream(client.getInputStream()));
+					}
 
 					Object o = is.readObject();
 
@@ -79,7 +95,7 @@ public class Client {
 			do {
 				System.out.println("=========> Employee Manager <=========");
 				System.out.println("=========> Login <========= ");
-
+				
 				try {
 					System.out.print("Username: ");
 					username = scanner.nextLine();
