@@ -23,21 +23,26 @@ public class Server {
 	// Global list
 	static ArrayList<Employee> employeeList = new ArrayList<Employee>();
 
-	// Server
+	// Server attrbiutes
 	private static final int PORT = 4444;
-
 	private static final int COREPOOL = 5;
 	private static final int MAXPOOL = 100;
 	private static final long IDLETIME = 5000;
 
+	// Generic attributes
 	private ServerSocket socket;
 	private ThreadPoolExecutor pool;
 
+	// Constructors
 	public Server() throws IOException {
 		this.socket = new ServerSocket(PORT);
 	}
 
+	
 	private void run() {
+		
+		// This functions...
+		
 		this.pool = new ThreadPoolExecutor(COREPOOL, MAXPOOL, IDLETIME, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
@@ -54,11 +59,13 @@ public class Server {
 		this.pool.shutdown();
 	}
 
+	// Getters & setters
 	public ThreadPoolExecutor getPool() {
 		return this.pool;
 	}
 
-	public void close() {
+	public void close() { 
+		// This functions simply closes the socket	
 		try {
 			this.socket.close();
 		} catch (Exception e) {
@@ -67,13 +74,13 @@ public class Server {
 	}
 
 	public static void main(final String[] v) throws IOException {
-		readJSONEmployee();
-		new Server().run();
-		writeJSONEmployee();
+		readJSONEmployee();			// First, read the JSON File
+		new Server().run();			// Run the server
+		writeJSONEmployee();		// When server is closed, write on JSON File
 	}
 
 	// Functions
-	Employee Login(Employee employee) {
+	public Employee Login(Employee employee) {
 		// Return the employee found or null
 		for (Employee temp : employeeList) {
 			if (temp.getUsername().equals(employee.getUsername())
