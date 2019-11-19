@@ -23,7 +23,7 @@ public class Server {
 	// Global list
 	static ArrayList<Employee> employeeList = new ArrayList<Employee>();
 
-	// Server attrbiutes
+	// Server attributes
 	private static final int PORT = 4444;
 	private static final int COREPOOL = 5;
 	private static final int MAXPOOL = 100;
