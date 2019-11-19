@@ -24,7 +24,7 @@ public class Server {
 	//static ArrayList<Employee> employeeList = new ArrayList<Employee>();
 	static CopyOnWriteArrayList<Employee> employeeList = new CopyOnWriteArrayList<Employee>();
 
-	// Server attrbiutes
+	// Server attributes
 	private static final int PORT = 4444;
 	private static final int COREPOOL = 5;
 	private static final int MAXPOOL = 100;

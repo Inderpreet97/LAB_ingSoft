@@ -1,9 +1,11 @@
 package ing_software.gestione_impiegati;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import ing_software.gestione_impiegati.EasyConsole.Console;
@@ -12,66 +14,73 @@ import ing_software.gestione_impiegati.Menu.MenuFunctionary;
 import ing_software.gestione_impiegati.Menu.MenuManager;
 
 public class Client {
-	
+
 	// Changing client as a static class
-	
+
 	public static class ClientManager {
 		static Scanner scanner = new Scanner(System.in);
-		
-/** TODO
- *  Dobbiamo dividere la creazione e la chiusura della Socket,
- *  Ora è dentro il metodo Send, ma così apriamo e chiudiamo una
- *  connessione tutte le volte che dobbiamo inivare un messaggio.
- *  Invece dobbiamo Aprire la connessione al Login, e chiuderla al Logout
- *  oppure in caso di errore.
- * 
- *  Metodo Send (nudes) deve solo inviare messaggi, assicurandosi che
- *  la socket non sia Null.
- */
-		
+
+		/**
+		 * TODO Dobbiamo dividere la creazione e la chiusura della Socket, Ora è dentro
+		 * il metodo Send, ma così apriamo e chiudiamo una connessione tutte le volte
+		 * che dobbiamo inivare un messaggio. Invece dobbiamo Aprire la connessione al
+		 * Login, e chiuderla al Logout oppure in caso di errore.
+		 * 
+		 * Metodo Send (nudes) deve solo inviare messaggi, assicurandosi che la socket
+		 * non sia Null.
+		 */
+
 		// Logged user variables
 		public static Employee loggedUser;
 
 		private static final int SPORT = 4444;
 		private static final String SHOST = "localhost";
 
+		private static Socket client = null;
+		private static ObjectOutputStream outputStream = null;
+		private static ObjectInputStream inputStream = null;
+
 		// Functions on Message
 		public static Message send(Message message) {
 
-			// This functions send a message to the server and returns the message received from the server
+			// This functions send a message to the server and returns the message received
+			// from the server
 
 			try {
-				Socket client = new Socket(SHOST, SPORT);
+				if (!client.equals(null)) {
+					Message returnMessage;
+					while (true) {
+						// Sends messages until it receives an �end� message
 
-				ObjectOutputStream os = new ObjectOutputStream(client.getOutputStream());
-				ObjectInputStream is = null;
-				Message returnMessage;
+						outputStream.writeObject(message);
+						outputStream.flush();
 
-				while (true) {
-					// Sends messages until it receives an �end� message
+						if (inputStream == null) {
+							inputStream = new ObjectInputStream(new BufferedInputStream(client.getInputStream()));
+						}
 
-					os.writeObject(message);
-					os.flush();
-					
-					if(is == null) {
-						is = new ObjectInputStream(new BufferedInputStream(client.getInputStream()));
+						Object o = inputStream.readObject();
+
+						if ((o != null) && (o instanceof Message)) {
+							returnMessage = (Message) o;
+							break;
+						}
 					}
 
-					Object o = is.readObject();
+					return returnMessage;
 
-					if ((o != null) && (o instanceof Message)) {
-						returnMessage = (Message) o;
-						break;
-					}
+				} else {
+					Console.Output("Client not connected to the server");
+					return null;
 				}
 
-				client.close();
-				return returnMessage;
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception ex) {
+				ex.printStackTrace();
 				return null;
 			}
+
 		}
+
 		public static boolean checkMessage(Message message) {
 
 			// This functions checks if a message is an error message (return false) or not
@@ -79,15 +88,37 @@ public class Client {
 			if (message.getCalledFunction() == Functions.done) {
 				return true;
 			}
-		// Whatever the error, print the error message and retunr false
-		Console.Output(message.getContent());
-		return false;
+			// Whatever the error, print the error message and return false
+			Console.Output(message.getContent());
+			return false;
 
-	}
+		}
 
-		public static void main(final String[] v) {
+		public static void connect() throws UnknownHostException, IOException {
 
+			// Connect to the server, set all parameters to null in the catch block if
+			// exception occurred
+
+			client = new Socket(SHOST, SPORT);
+			outputStream = new ObjectOutputStream(client.getOutputStream());
+			inputStream = null;
+
+		}
+
+		public static void disconnect() {
+
+			// Disconnect the client from the server
+
+			try {
+				client.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		public static void login() {
 			// LOGIN
+
 			Boolean userIsLogged = false;
 			String username;
 			String password;
@@ -95,7 +126,7 @@ public class Client {
 			do {
 				System.out.println("=========> Employee Manager <=========");
 				System.out.println("=========> Login <========= ");
-				
+
 				try {
 					System.out.print("Username: ");
 					username = scanner.nextLine();
@@ -110,8 +141,10 @@ public class Client {
 					loggedUser = new Employee(username, password);
 					Message loginMessage = new Message(loggedUser, "", Functions.login);
 
+					connect();
 					// Send the login Message to the server
 					// The server returns another message
+
 					Message returnMessage = send(loginMessage);
 
 					// Check the called Function from the server
@@ -122,28 +155,58 @@ public class Client {
 						System.out.println("\n>> Logged in correctly\n");
 					} else {
 						userIsLogged = false;
+						disconnect();
 						System.out.println("\n>> Wrong username or password\n");
 					}
 
 					System.out.println("Press [enter] to continue...");
 					scanner.nextLine();
 
+				} catch (IOException ex) {
+					disconnect();
+					ex.printStackTrace();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					System.out.println("Press [enter] to continue...");
 					scanner.nextLine();
 				}
+				
 			} while (!userIsLogged);
 
 			switch (loggedUser.getJob().toLowerCase()) {
-			case "functionary":		MenuFunctionary.Run();									break;
-			case "manager":			MenuManager.Run();										break;
-			case "admin":			MenuAdmin.Run();										break;
-			default:				System.out.println("\nERROR: Unknown user!!!\n");		break;
+			case "functionary":
+				MenuFunctionary.Run();
+				break;
+			case "manager":
+				MenuManager.Run();
+				break;
+			case "admin":
+				MenuAdmin.Run();
+				break;
+			default:
+				System.out.println("\nERROR: Unknown user!!!\n");
+				break;
 			}
 
-			System.out.println("\n\nLogged out, see you soon!");
+		}
+
+		public static void logout() {
+			try {
+				loggedUser = null;
+				disconnect();
+				System.out.println("\n\nLogged out, see you soon!");
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		public static void main(final String[] v) throws IOException {
+
+			login();
+
+			logout();
+
 		}
 	}
-	
+
 }
