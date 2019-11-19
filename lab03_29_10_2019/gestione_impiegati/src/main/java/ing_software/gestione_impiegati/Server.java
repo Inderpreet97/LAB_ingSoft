@@ -6,7 +6,7 @@ import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +21,8 @@ public class Server {
 	private static String employeeFileName = "employee.json";
 
 	// Global list
-	static ArrayList<Employee> employeeList = new ArrayList<Employee>();
+	//static ArrayList<Employee> employeeList = new ArrayList<Employee>();
+	static CopyOnWriteArrayList<Employee> employeeList = new CopyOnWriteArrayList<Employee>();
 
 	// Server attrbiutes
 	private static final int PORT = 4444;
@@ -41,11 +42,23 @@ public class Server {
 	
 	private void run() {
 		
-		// This functions...
+		/* THREAD POOL:
+		 * 
+		 * Java Thread pool represents a group of worker threads that are waiting for the job and reuse many times.
+		 * 
+		 * In case of thread pool, a group of fixed size threads are created. 
+		 * A thread from the thread pool is pulled out and assigned a job by the service provider. 
+		 * After completion of the job, thread is contained in the thread pool again.
+		 * 
+		 */
 		
 		this.pool = new ThreadPoolExecutor(COREPOOL, MAXPOOL, IDLETIME, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
+		/*
+		 *  Server stays "online" listening for incoming Clients.
+		 *  It accepts it the incoming call and assign it a new Thread
+		 */
 		while (true) {
 			try {
 				Socket s = this.socket.accept();
@@ -55,7 +68,6 @@ public class Server {
 				break;
 			}
 		}
-
 		this.pool.shutdown();
 	}
 
@@ -64,8 +76,8 @@ public class Server {
 		return this.pool;
 	}
 
+	// This functions simply closes the socket	
 	public void close() { 
-		// This functions simply closes the socket	
 		try {
 			this.socket.close();
 		} catch (Exception e) {
@@ -73,6 +85,7 @@ public class Server {
 		}
 	}
 
+	// Server Main
 	public static void main(final String[] v) throws IOException {
 		readJSONEmployee();			// First, read the JSON File
 		new Server().run();			// Run the server
