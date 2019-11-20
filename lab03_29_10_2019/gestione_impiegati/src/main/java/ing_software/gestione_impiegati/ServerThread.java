@@ -11,7 +11,7 @@ public class ServerThread implements Runnable {
 
 	private Server server;
 	private Socket socket;
-
+	
 	public ServerThread(final Server s, final Socket c) {
 		this.server = s;
 		this.socket = c;
