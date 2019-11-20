@@ -22,7 +22,7 @@ public class Server {
 
 	// Global list
 	//static ArrayList<Employee> employeeList = new ArrayList<Employee>();
-	static CopyOnWriteArrayList<Employee> employeeList = new CopyOnWriteArrayList<Employee>();
+	private static CopyOnWriteArrayList<Employee> employeeList = new CopyOnWriteArrayList<Employee>();
 
 	// Server attributes
 	private static final int PORT = 4444;
@@ -91,10 +91,21 @@ public class Server {
 		new Server().run();			// Run the server
 		writeJSONEmployee();		// When server is closed, write on JSON File
 	}
+	
 
-	// Functions
+	
+	/**************************************************************
+	 **
+	 ** 					Server functions
+	 **
+	 **************************************************************/
+	
+	/**
+	 * Search an employee by username and password
+	 * @param employee
+	 * @return the employee found or null
+	 **/
 	public Employee Login(Employee employee) {
-		// Return the employee found or null
 		for (Employee temp : employeeList) {
 			if (temp.getUsername().equals(employee.getUsername())
 					&& temp.getPassword().equals(employee.getPassword())) {
@@ -103,9 +114,13 @@ public class Server {
 		}
 		return null;
 	}
-
-	// Search functions
-	public int searchEmployeeByUsername(String username) {
+	
+	/**
+	 * Search an employee in the employeeList using username
+	 * @param username
+	 * @return index of employee or -1 if not found
+	**/
+	public int searchEmployeeIndexByUsername(String username) {
 		int index = 0;
 		for (Employee temp : employeeList) {
 			if (temp.getUsername().equals(username)) {
@@ -115,16 +130,31 @@ public class Server {
 		}
 		return -1;
 	}
-
-	public boolean searchEmployeeByFiscalCode(String fiscalCode) {
+	
+	/**
+	 * Search an employee in the employeeList using fiscal code
+	 * @param fiscalCode
+	 * @return index of employee or -1 if not found
+	**/
+	public int searchEmployeeIndexByFiscalCode(String fiscalCode) {
+		int index = 0;
 		for (Employee employee : employeeList) {
-			if (employee.getFiscalCode().equals(fiscalCode)) {
-				return true;
+			if (employee.getFiscalCode().toLowerCase().equals(fiscalCode.toLowerCase())) {
+				return index;
 			}
+			index++;
 		}
-		return false;
+		return -1;
 	}
-
+	
+	/* TODO getEmployeeListByJob(String job) return lista utenti con quel particolare
+	*  Job is msg.getContent();
+	*/
+	
+	// TODO Inserisci Operaio o Funzionario
+	
+	// TODO Modifica Anagrafica del Funzionario
+	
 	// Read JSON employee
 	private static void readJSONEmployee() {
 

@@ -11,6 +11,7 @@ public class ServerThread implements Runnable {
 
 	private Server server;
 	private Socket socket;
+	private Employee loggedUser = null;
 
 	public ServerThread(final Server s, final Socket c) {
 		this.server = s;
@@ -34,7 +35,6 @@ public class ServerThread implements Runnable {
 		boolean threadRunning = true;
 
 		while (threadRunning) {
-
 			try {
 				Object obj = is.readObject();
 
@@ -56,23 +56,21 @@ public class ServerThread implements Runnable {
 					case login:
 						if (msg.getObj() instanceof Employee) {
 							Employee loggedEmployee = this.server.Login(((Employee) msg.getObj()));
+							
 							if (loggedEmployee != null) {
 								// Login corrected
-								System.out.print("Login corrected for " + loggedEmployee.getUsername());
-								System.out.print(" - " + loggedEmployee.getName() + " " + loggedEmployee.getSurname());
-								System.out.println(" - " + loggedEmployee.getFiscalCode());
+								System.out.format("Thread %s login corrected for %s \n", id, loggedEmployee.getUsername());
 
-								// Send message "done" to the client
-								// TODO in set content, describe the message or simply "Done"?
-								msg.setContent("Done");      
+								// Send message "done" to the client  
 								msg.setCalledFunction(Functions.done);
 								msg.setObj(loggedEmployee);
 								os.writeObject(msg);
 								os.flush();
+								loggedUser = loggedEmployee;
 
 							} else {
 								// Login not corrected
-								System.out.println("Login not corrected");
+								System.out.format("Thread %s login failed \n", id);
 
 								// Send message "error" to the client
 								msg.setContent("Login not corrected, please enter corrected credentials");
@@ -102,7 +100,7 @@ public class ServerThread implements Runnable {
 
 						if (msg.getObj() instanceof Employee) {
 							Employee employee = (Employee) msg.getObj();
-							if (this.server.searchEmployeeByFiscalCode(employee.getFiscalCode())) {
+							if (this.server.searchEmployeeIndexByFiscalCode(employee.getFiscalCode()) >= 0) {
 								msg.setContent("Done");
 								msg.setCalledFunction(Functions.done);
 								os.writeObject(msg);
@@ -120,6 +118,28 @@ public class ServerThread implements Runnable {
 						// Update
 						break;
 					case searchEmployee:
+						if(msg.getObj() instanceof Jobs) {
+							Jobs searchedJob = (Jobs) msg.getObj();
+							if(searchedJob.compareTo(loggedUser.getJob()) > 0) {
+								msg.setContent("The logged user have Insufficient Privileges");
+								msg.setCalledFunction(Functions.error);
+								os.writeObject(msg);
+								os.flush();
+							}
+						}
+						
+						/* JOBS
+						 *   -  worker
+						 *   -  functionary
+						 *   -  manager
+						 *   -  admin 
+						 */
+						/* TODO controlla i privilegi dell'utente che chiama il metodo
+						 *  
+						 * I privilegi devono consentire o vietare la ricerca di determinanti Job
+						 * presente in msg.getConent();
+						 * 
+						 */
 						break;
 					default:
 						break;
@@ -135,7 +155,6 @@ public class ServerThread implements Runnable {
 		try {
 			this.socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -17,7 +17,7 @@ public class Employee implements Serializable{
 	private String name;
 	private String surname;
 	
-	private String job;
+	private Jobs job;
 	private String branch;
 	
 	private LocalDate startDate;
@@ -25,7 +25,7 @@ public class Employee implements Serializable{
 	
 	// Constructors
 	public Employee() {}
-	public Employee(String fiscalCode, String username, String password, String name, String surname, String job,
+	public Employee(String fiscalCode, String username, String password, String name, String surname, Jobs job,
 			String branch, LocalDate startDate, LocalDate endDate) {
 		this.fiscalCode = fiscalCode;
 		this.username = username;
@@ -37,7 +37,7 @@ public class Employee implements Serializable{
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
-	public Employee(String fiscalCode, String username, String password, String name, String surname, String job,
+	public Employee(String fiscalCode, String username, String password, String name, String surname, Jobs job,
 			String branch, LocalDate startDate) {
 		this(fiscalCode, username, password, name, surname, job, branch, startDate, null);
 	}
@@ -77,10 +77,10 @@ public class Employee implements Serializable{
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	public String getJob() {
+	public Jobs getJob() {
 		return job;
 	}
-	public void setJob(String job) {
+	public void setJob(Jobs job) {
 		this.job = job;
 	}
 	public String getBranch() {

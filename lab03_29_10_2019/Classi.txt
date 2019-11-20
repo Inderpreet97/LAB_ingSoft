@@ -22,8 +22,8 @@ Server ->
 	serviziDiRicerca();
 
 Client ->
-	aggiungiImpiegato();
-	modificaImpiegato();
+	Boolean aggiungiImpiegato(Employee emp);
+	Boolean modificaImpiegato(Employee emp);
 	
 SedeLavorativa -> (nome - chiave primaria)
 	nome;
