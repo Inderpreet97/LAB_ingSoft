@@ -60,7 +60,27 @@ public class Menu {
 		}
 		
 		public static void updateEmployee() {
+			
+			// TODO nel content ci metto l'hold username e nel messaggio riempio solo i campi da modificare
 			Console.Output("Update");
+			
+			ClientManager.loggedUser.print();
+			
+			String username = Console.Input("Username: ");
+			String name = Console.Input("Name: ");
+			String surname = Console.Input("Surname: ");
+			
+			Employee tempEmployee = new Employee(username, name, surname);
+			Message message = new Message(tempEmployee, ClientManager.loggedUser.getUsername(), Functions.updateEmployee);
+			Message returnMessage = ClientManager.send(message);
+			
+			if (ClientManager.checkMessage(message)) {
+				// TODO update the clientManager.loggedUser!!!
+				Console.Output("Done");
+			} else {
+				Console.Output("Error");
+			}
+			
 		}
 
 		
@@ -68,7 +88,8 @@ public class Menu {
 
 	public static class MenuManager extends MenuFunctionary{
 		
-		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", "New employee", "Update employee", "Search"));;
+		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", 
+				"New employee", "Update employee", "Worker list", "Functionary list", "Manager list"));;
 
 		public static void Run() {
 			
@@ -76,12 +97,24 @@ public class Menu {
 			case "Logout": 				logout();						break;
 			case "New Employee":		addEmployee();					break;
 			case "Update employee":		updateEmployee();				break;
-			case "Search":				search();						break;
+			case "Worker list":			search("worker");				break;
+			case "Functionary list":	search("functionary");			break;
+			case "Manager list":		search("manager");				break;
 			case "":					Console.Output("Errore");		break;
 			}
 		}
 		
-		public static void search() {
+		public static void search(String job) {
+			//TODO Cerca solo gli impiegati
+			Message message = new Message(null, job, Functions.searchEmployee);
+			Message returnMessage = ClientManager.send(message);
+			
+			if (ClientManager.checkMessage(returnMessage)) {
+				// Get list of employee
+			} else {
+				Console.Output("Error occurred");
+			}
+			
 		}
 	}
 

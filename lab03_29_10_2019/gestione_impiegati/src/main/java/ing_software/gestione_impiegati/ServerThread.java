@@ -31,7 +31,7 @@ public class ServerThread implements Runnable {
 		}
 
 		String id = String.valueOf(this.hashCode());
-		
+
 		boolean threadRunning = true;
 
 		while (threadRunning) {
@@ -56,12 +56,12 @@ public class ServerThread implements Runnable {
 					case login:
 						if (msg.getObj() instanceof Employee) {
 							Employee loggedEmployee = this.server.Login(((Employee) msg.getObj()));
-							
+
 							if (loggedEmployee != null) {
 								// Login corrected
 								System.out.format("Thread %s login corrected for %s \n", id, loggedEmployee.getUsername());
 
-								// Send message "done" to the client  
+								// Send message "done" to the client
 								msg.setCalledFunction(Functions.done);
 								msg.setObj(loggedEmployee);
 								os.writeObject(msg);
@@ -127,30 +127,30 @@ public class ServerThread implements Runnable {
 								os.flush();
 							}
 						}
-						
+
 						/* JOBS
 						 *   -  worker
 						 *   -  functionary
 						 *   -  manager
-						 *   -  admin 
+						 *   -  admin
 						 */
 						/* TODO controlla i privilegi dell'utente che chiama il metodo
-						 *  
+						 *
 						 * I privilegi devono consentire o vietare la ricerca di determinanti Job
 						 * presente in msg.getConent();
-						 * 
+						 *
 						 */
 						break;
 					default:
 						break;
 					}
-				} 
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				threadRunning = false;
 			}
 		}
-		
+
 		// Close the connection with a single client
 		try {
 			this.socket.close();

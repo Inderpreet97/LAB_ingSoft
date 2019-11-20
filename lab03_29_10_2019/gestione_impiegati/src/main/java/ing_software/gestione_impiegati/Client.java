@@ -155,7 +155,7 @@ public class Client {
 						System.out.println("\n>> Logged in correctly\n");
 					} else {
 						userIsLogged = false;
-						disconnect();
+						logout();
 						System.out.println("\n>> Wrong username or password\n");
 					}
 
@@ -193,7 +193,9 @@ public class Client {
 		public static void logout() {
 			try {
 				loggedUser = null;
-				disconnect();
+				Message message = new Message(null, "", Functions.logout);
+				send(message);			// Send a message to server and close the thread on server thread
+				disconnect();			// Close socket 
 				System.out.println("\n\nLogged out, see you soon!");
 			} catch (Exception ex) {
 				ex.printStackTrace();

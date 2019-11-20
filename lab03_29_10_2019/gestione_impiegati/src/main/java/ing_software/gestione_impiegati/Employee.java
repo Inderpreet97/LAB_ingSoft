@@ -45,6 +45,16 @@ public class Employee implements Serializable{
 		this.username = username;
 		this.password = password;
 	}
+	public Employee(String username, String name, String surname) {
+		// Constructor only for update from client manager
+		this.username = username;
+		this.name = name;
+		this.surname = surname;
+	}
+	
+	public void print() {
+		
+	}
 	
 	// Getters & Setters
 	public String getFiscalCode() {
