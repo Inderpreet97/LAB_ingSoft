@@ -7,7 +7,7 @@ import java.net.InetAddress;
 
 public class DataSender
 {
-  private static final int SPORT = 4444;
+  private static final int OPORT = 4440;
   private static final String ADDRESS = "230.0.0.1";
   private static final int DPORT = 4446;
 
@@ -15,7 +15,7 @@ public class DataSender
   {
     try
     {
-      DatagramSocket socket = new DatagramSocket(SPORT);
+      DatagramSocket socket = new DatagramSocket(OPORT);
       InetAddress    group  = InetAddress.getByName(ADDRESS);
 
       String s = "Hello\n";
