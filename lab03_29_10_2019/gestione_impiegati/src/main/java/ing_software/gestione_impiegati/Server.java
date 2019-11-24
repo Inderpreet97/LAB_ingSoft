@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -147,13 +148,44 @@ public class Server {
 		return -1;
 	}
 	
-	/* TODO getEmployeeListByJob(String job) return lista utenti con quel particolare
-	*  Job is msg.getContent();
-	*/
+	/**
+	 * Creates a new array of Employee that have the given Job
+	 * 
+	 * @param job
+	 * @return ArrayList of employee with given Job, if there aren't any return an empty array
+	 */
+	public ArrayList<Employee> getEmployeeListByJob(Jobs job){
+		
+		ArrayList<Employee> returnList = new ArrayList<Employee>() {private static final long serialVersionUID = 1L;};
+		
+		for (Employee employee : employeeList) {
+			if (employee.getJob().equals(job)) {
+				returnList.add(employee);
+			}
+		}
+		
+		return returnList;
+	}
 	
-	// TODO Inserisci Operaio o Funzionario
+	/**
+	 * TODO Funzione da implementare
+	 * @param employee
+	 * @return
+	 */
+	public Boolean addEmployee(Employee employee) {
+		
+		return false;
+	}
 	
-	// TODO Modifica Anagrafica del Funzionario
+	/**
+	 * TODO Funzione da implementare
+	 * @param employee
+	 * @param oldUsername
+	 * @return
+	 */
+	public Boolean updateEmployee(Employee employee, String oldUsername) {
+		return false;
+	}
 	
 	// Read JSON employee
 	private static void readJSONEmployee() {
@@ -168,13 +200,14 @@ public class Server {
 
 				JSONObject employeeJSON = (JSONObject) employeeListJSON.get(i);
 
-				// ReadlDate
+				// Read Data
 				String fiscalCode = (String) employeeJSON.get("fiscalCode");
 				String username = (String) employeeJSON.get("username");
 				String password = (String) employeeJSON.get("password");
 				String name = (String) employeeJSON.get("name");
 				String surname = (String) employeeJSON.get("surname");
-				String job = (String) employeeJSON.get("job");
+				String jobString = (String) employeeJSON.get("job");
+				Jobs job = Jobs.valueOf(jobString);
 				String branch = (String) employeeJSON.get("branch");
 				LocalDate startDate = LocalDate.parse((CharSequence) employeeJSON.get("startDate"));
 				LocalDate endDate = LocalDate.parse((CharSequence) employeeJSON.get("endDate"));
@@ -194,5 +227,6 @@ public class Server {
 		}
 	}
 	private static void writeJSONEmployee() {
+		// TODO Write EmployeeList to file
 	}
 }

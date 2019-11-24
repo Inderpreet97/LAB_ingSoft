@@ -38,7 +38,8 @@ public class Menu {
 			String name = Console.Input("Name: ");
 			String surname = Console.Input("Surname: ");
 
-			String job = Console.Input("Job: ");
+			String jobString = Console.Input("Job: ");
+			Jobs job = Jobs.valueOf(jobString);
 			String branch = Console.Input("Branch: ");
 
 			LocalDate startDate = Console.LocalDateInput("Start date: ");
@@ -74,7 +75,7 @@ public class Menu {
 			Message message = new Message(tempEmployee, ClientManager.loggedUser.getUsername(), Functions.updateEmployee);
 			Message returnMessage = ClientManager.send(message);
 			
-			if (ClientManager.checkMessage(message)) {
+			if (ClientManager.checkMessage(returnMessage)) {
 				// TODO update the clientManager.loggedUser!!!
 				Console.Output("Done");
 			} else {

@@ -4,5 +4,5 @@ enum Jobs {
 	worker,
 	functionary,
 	manager,
-	administrator
+	admin
 }

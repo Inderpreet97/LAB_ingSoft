@@ -20,16 +20,6 @@ public class Client {
 	public static class ClientManager {
 		static Scanner scanner = new Scanner(System.in);
 
-		/**
-		 * TODO Dobbiamo dividere la creazione e la chiusura della Socket, Ora è dentro
-		 * il metodo Send, ma così apriamo e chiudiamo una connessione tutte le volte
-		 * che dobbiamo inivare un messaggio. Invece dobbiamo Aprire la connessione al
-		 * Login, e chiuderla al Logout oppure in caso di errore.
-		 * 
-		 * Metodo Send (nudes) deve solo inviare messaggi, assicurandosi che la socket
-		 * non sia Null.
-		 */
-
 		// Logged user variables
 		public static Employee loggedUser;
 
@@ -173,14 +163,14 @@ public class Client {
 				
 			} while (!userIsLogged);
 
-			switch (loggedUser.getJob().toLowerCase()) {
-			case "functionary":
+			switch (loggedUser.getJob()) {
+			case functionary :
 				MenuFunctionary.Run();
 				break;
-			case "manager":
+			case manager:
 				MenuManager.Run();
 				break;
-			case "admin":
+			case admin:
 				MenuAdmin.Run();
 				break;
 			default:

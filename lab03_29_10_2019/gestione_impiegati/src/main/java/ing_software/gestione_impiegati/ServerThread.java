@@ -53,6 +53,7 @@ public class ServerThread implements Runnable {
 
 					// Check the differente called function from the message received
 					switch (msg.getCalledFunction()) {
+					
 					case login:
 						if (msg.getObj() instanceof Employee) {
 							Employee loggedEmployee = this.server.Login(((Employee) msg.getObj()));
@@ -91,9 +92,13 @@ public class ServerThread implements Runnable {
 							os.flush();
 						}
 						break;
+						
+						
 					case logout:
 						threadRunning = false;
 						break;
+						
+						
 					case insertEmployee:
 						// Check if all data received are corrected
 						// Check if the fiscalCode and the username does not exist yet
@@ -112,11 +117,14 @@ public class ServerThread implements Runnable {
 								os.flush();
 							}
 						}
-
 						break;
+						
+						
 					case updateEmployee:
 						// Update
 						break;
+						
+						
 					case searchEmployee:
 						if(msg.getObj() instanceof Jobs) {
 							Jobs searchedJob = (Jobs) msg.getObj();
@@ -125,23 +133,21 @@ public class ServerThread implements Runnable {
 								msg.setCalledFunction(Functions.error);
 								os.writeObject(msg);
 								os.flush();
+							} else {
+								msg.setObj(this.server.getEmployeeListByJob(searchedJob));
+								msg.setCalledFunction(Functions.done);
+								os.writeObject(msg);
+								os.flush();
 							}
 						}
-
-						/* JOBS
-						 *   -  worker
-						 *   -  functionary
-						 *   -  manager
-						 *   -  admin
-						 */
-						/* TODO controlla i privilegi dell'utente che chiama il metodo
-						 *
-						 * I privilegi devono consentire o vietare la ricerca di determinanti Job
-						 * presente in msg.getConent();
-						 *
-						 */
 						break;
+						
+						
 					default:
+						msg.setContent("Unknown function");
+						msg.setCalledFunction(Functions.error);
+						os.writeObject(msg);
+						os.flush();
 						break;
 					}
 				}
