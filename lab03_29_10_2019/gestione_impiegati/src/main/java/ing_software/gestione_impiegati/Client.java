@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 import ing_software.gestione_impiegati.EasyConsole.Console;
 import ing_software.gestione_impiegati.Menu.MenuAdmin;
@@ -18,13 +17,12 @@ public class Client {
 	// Changing client as a static class
 
 	public static class ClientManager {
-		static Scanner scanner = new Scanner(System.in);
 
 		// Logged user variables
 		public static Employee loggedUser;
 
 		private static final int SPORT = 4444;
-		private static final String SHOST = "localhost";
+		private static final String SHOST = "192.168.43.73";
 
 		private static Socket client = null;
 		private static ObjectOutputStream outputStream = null;
@@ -113,8 +111,8 @@ public class Client {
 			String password;
 
 			do {
-				Console.Output("=========> Employee Manager <=========");
-				Console.Output("=========> Login <========= ");
+				Console.OutputLN("=========> Employee Manager <=========");
+				Console.OutputLN("=========> Login <========= ");
 
 				try {
 					
@@ -122,7 +120,7 @@ public class Client {
 					password = Console.Input("Password: ");
 
 					if (username.isEmpty() || password.isEmpty()) { throw new Exception("Username or Password not inserted.");}
-
+					
 					loggedUser = new Employee(username, password);
 					Message loginMessage = new Message(loggedUser, "", Functions.login);
 
@@ -139,6 +137,7 @@ public class Client {
 						userIsLogged = true;
 						loggedUser = (Employee) returnMessage.getObj();
 						Console.Output("\n>> Logged in correctly\n");
+						
 					} else {
 						userIsLogged = false;
 						logout();
@@ -150,10 +149,10 @@ public class Client {
 				} catch (IOException ex) {
 					disconnect();
 					ex.printStackTrace();
+					
 				} catch (Exception ex) {
 					ex.printStackTrace();
-					System.out.println("Press [enter] to continue...");
-					scanner.nextLine();
+					Console.EnterDefault();
 				}
 				
 			} while (!userIsLogged);
@@ -179,7 +178,7 @@ public class Client {
 			try {
 				loggedUser = null;
 				Message message = new Message(null, "", Functions.logout);
-				send(message);			// Send a message to server and close the thread on server thread
+				send(message);	// Send a message to server and close the thread on server thread
 				disconnect();			// Close socket 
 				System.out.println("\n\nLogged out, see you soon!");
 			} catch (Exception ex) {

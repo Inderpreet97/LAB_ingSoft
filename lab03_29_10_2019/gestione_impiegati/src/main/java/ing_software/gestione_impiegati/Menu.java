@@ -13,30 +13,33 @@ public class Menu {
 	public static class MenuFunctionary {
 
 		protected static ArrayList<String> options = new ArrayList<String>(
-				Arrays.asList("Logout", "New employee", "Update employee"));
+				Arrays.asList("Logout", "New Employee", "Update Employee"));
 
 		public static void Run() {
-			switch (ControlMenu.RunMenu(options)) {
-			case "Logout":
-				logout();
-				break;
-			case "New Employee":
-				addEmployee();
-				break;
-			case "Update employee":
-				updateEmployee();
-				break;
-			case "":
-				Console.Output("Errore");
-				break;
+
+			Boolean running = true;
+			while (running) {
+				switch (ControlMenu.RunMenu(options).toLowerCase()) {
+				case "logout":
+					running = false;
+					break;
+				case "new employee":
+					addEmployee();
+					break;
+				case "update employee":
+					updateEmployee();
+					break;
+				case "":
+					Console.Output("Error");
+					break;
+				default:
+					Console.Output("Unknown command");
+					break;
+				}
 			}
 		}
 
 		// Methods
-
-		public static void logout() {
-			Console.Output("Logout");
-		}
 
 		public static void addEmployee() {
 			Console.Output("Insert");
@@ -64,7 +67,8 @@ public class Menu {
 			if (ClientManager.checkMessage(returnMessage)) {
 				Console.OutputLN("Employee added");
 			} else {
-				int choice = ControlMenu.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
+				int choice = ControlMenu
+						.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
 				if (choice == 1) {
 					addEmployee();
 				}
@@ -118,29 +122,31 @@ public class Menu {
 				"Update employee", "Worker list", "Functionary list", "Manager list"));;
 
 		public static void Run() {
-
-			switch (ControlMenu.RunMenu(options)) {
-			case "Logout":
-				logout();
-				break;
-			case "New Employee":
-				addEmployee();
-				break;
-			case "Update employee":
-				updateEmployee();
-				break;
-			case "Worker list":
-				search("worker");
-				break;
-			case "Functionary list":
-				search("functionary");
-				break;
-			case "Manager list":
-				search("manager");
-				break;
-			case "":
-				Console.Output("Errore");
-				break;
+			Boolean running = true;
+			while (running) {
+				switch (ControlMenu.RunMenu(options)) {
+				case "Logout":
+					running = false;
+					break;
+				case "New Employee":
+					addEmployee();
+					break;
+				case "Update employee":
+					updateEmployee();
+					break;
+				case "Worker list":
+					search("worker");
+					break;
+				case "Functionary list":
+					search("functionary");
+					break;
+				case "Manager list":
+					search("manager");
+					break;
+				case "":
+					Console.Output("Errore");
+					break;
+				}
 			}
 		}
 

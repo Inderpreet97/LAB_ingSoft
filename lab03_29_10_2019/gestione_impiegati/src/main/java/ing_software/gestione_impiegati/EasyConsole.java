@@ -88,7 +88,10 @@ public class EasyConsole {
 
 		public static int IntInput(String text) {
 			Output(text);
-			return scanner.nextInt();
+			int returnInt = scanner.nextInt();
+			scanner.nextLine();
+			return returnInt;
+			
 		}
 
 		public static double DoubleInput(String text) {
@@ -98,7 +101,7 @@ public class EasyConsole {
 
 		public static String Input(String text) {
 			Output(text);
-			return scanner.next();
+			return scanner.nextLine();
 		}
 
 		public static long LongInput(String text) {
