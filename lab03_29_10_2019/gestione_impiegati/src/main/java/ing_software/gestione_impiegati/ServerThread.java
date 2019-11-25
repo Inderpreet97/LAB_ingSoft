@@ -47,20 +47,20 @@ public class ServerThread implements Runnable {
 					System.out.format("Thread %s received: %s from Client\n", id, msg.getCalledFunction().name());
 
 					if (os == null) {
-						os = new ObjectOutputStream(new BufferedOutputStream(
-								this.socket.getOutputStream()));
+						os = new ObjectOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));
 					}
 
 					// Check the differente called function from the message received
 					switch (msg.getCalledFunction()) {
-					
+
 					case login:
 						if (msg.getObj() instanceof Employee) {
 							Employee loggedEmployee = this.server.Login(((Employee) msg.getObj()));
 
 							if (loggedEmployee != null) {
 								// Login corrected
-								System.out.format("Thread %s login corrected for %s \n", id, loggedEmployee.getUsername());
+								System.out.format("Thread %s login corrected for %s \n", id,
+										loggedEmployee.getUsername());
 
 								// Send message "done" to the client
 								msg.setCalledFunction(Functions.done);
@@ -92,43 +92,54 @@ public class ServerThread implements Runnable {
 							os.flush();
 						}
 						break;
-						
-						
+
 					case logout:
 						threadRunning = false;
 						break;
-						
-						
+
 					case insertEmployee:
-						// Check if all data received are corrected
-						// Check if the fiscalCode and the username does not exist yet
 
 						if (msg.getObj() instanceof Employee) {
 							Employee employee = (Employee) msg.getObj();
-							if (this.server.searchEmployeeIndexByFiscalCode(employee.getFiscalCode()) >= 0) {
-								msg.setContent("Done");
+
+							if (this.server.addEmployee(employee)) {
+								msg.setContent("Employee added correctly");
 								msg.setCalledFunction(Functions.done);
 								os.writeObject(msg);
 								os.flush();
+
 							} else {
-								msg.setContent("FISCAL CODE ALREADY EXIST");
+								msg.setContent("Employee already registered");
 								msg.setCalledFunction(Functions.error);
 								os.writeObject(msg);
 								os.flush();
 							}
 						}
 						break;
-						
-						
+
 					case updateEmployee:
-						// Update
+						if (msg.getObj() instanceof Employee) {
+							Employee employee = (Employee) msg.getObj();
+
+							if (this.server.updateEmployee(employee)) {
+								msg.setContent("Employee updated correctly");
+								msg.setCalledFunction(Functions.done);
+								os.writeObject(msg);
+								os.flush();
+
+							} else {
+								msg.setContent("Employee not found");
+								msg.setCalledFunction(Functions.error);
+								os.writeObject(msg);
+								os.flush();
+							}
+						}
 						break;
-						
-						
+
 					case searchEmployee:
-						if(msg.getObj() instanceof Jobs) {
+						if (msg.getObj() instanceof Jobs) {
 							Jobs searchedJob = (Jobs) msg.getObj();
-							if(searchedJob.compareTo(loggedUser.getJob()) > 0) {
+							if (searchedJob.compareTo(loggedUser.getJob()) > 0) {
 								msg.setContent("The logged user have Insufficient Privileges");
 								msg.setCalledFunction(Functions.error);
 								os.writeObject(msg);
@@ -141,8 +152,7 @@ public class ServerThread implements Runnable {
 							}
 						}
 						break;
-						
-						
+
 					default:
 						msg.setContent("Unknown function");
 						msg.setCalledFunction(Functions.error);

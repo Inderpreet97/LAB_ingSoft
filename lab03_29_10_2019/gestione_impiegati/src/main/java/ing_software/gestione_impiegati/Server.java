@@ -1,6 +1,7 @@
 package ing_software.gestione_impiegati;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.ServerSocket;
@@ -121,7 +122,7 @@ public class Server {
 	 * @param username
 	 * @return index of employee or -1 if not found
 	**/
-	public int searchEmployeeIndexByUsername(String username) {
+	private int searchEmployeeIndexByUsername(String username) {
 		int index = 0;
 		for (Employee temp : employeeList) {
 			if (temp.getUsername().equals(username)) {
@@ -137,7 +138,7 @@ public class Server {
 	 * @param fiscalCode
 	 * @return index of employee or -1 if not found
 	**/
-	public int searchEmployeeIndexByFiscalCode(String fiscalCode) {
+	private int searchEmployeeIndexByFiscalCode(String fiscalCode) {
 		int index = 0;
 		for (Employee employee : employeeList) {
 			if (employee.getFiscalCode().toLowerCase().equals(fiscalCode.toLowerCase())) {
@@ -168,26 +169,37 @@ public class Server {
 	}
 	
 	/**
-	 * TODO Funzione da implementare
+	 * If the employee doesn't already exist, add it to Employee List
 	 * @param employee
-	 * @return
+	 * @return true if employee added, false otherwise
 	 */
 	public Boolean addEmployee(Employee employee) {
-		
+		// Check if fiscal code and username are NOT already registered
+		if (searchEmployeeIndexByFiscalCode(employee.getFiscalCode()) < 0 && searchEmployeeIndexByUsername(employee.getUsername()) < 0) {
+			employeeList.add(employee);
+			return true;
+		} 
 		return false;
 	}
 	
 	/**
-	 * TODO Funzione da implementare
+	 * Find the index of the employee and if it exists update it with new data
 	 * @param employee
 	 * @param oldUsername
-	 * @return
+	 * @return true if employee updated, false otherwise
 	 */
-	public Boolean updateEmployee(Employee employee, String oldUsername) {
+	public Boolean updateEmployee(Employee employee) {
+		int toUpdateEmployeeIndex = searchEmployeeIndexByFiscalCode(employee.getFiscalCode());
+		
+		if(toUpdateEmployeeIndex >= 0) {
+			employeeList.set(toUpdateEmployeeIndex, employee);
+		}
+		
+		// Employee not found
 		return false;
 	}
 	
-	// Read JSON employee
+	// Read JSON employee list
 	private static void readJSONEmployee() {
 
 		// JSON parser object to parse read file
@@ -226,7 +238,35 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
+	
+	// Write JSON employee list
+	@SuppressWarnings("unchecked")
 	private static void writeJSONEmployee() {
-		// TODO Write EmployeeList to file
+		// Create JSON string for Employee List
+				JSONArray employeeListJSON = new JSONArray();
+
+				for(Employee emp : employeeList) {
+					JSONObject empDetails = new JSONObject();
+					empDetails.put("fiscalCode", emp.getFiscalCode());
+					empDetails.put("username", emp.getUsername());
+					empDetails.put("password", emp.getPassword());
+					empDetails.put("name", emp.getName());
+					empDetails.put("surname", emp.getSurname());
+					empDetails.put("job", emp.getJob().name());
+					empDetails.put("branch", emp.getBranch());
+					empDetails.put("startDate", emp.getStartDate().toString());
+					empDetails.put("endDate", emp.getEndDate().toString());
+
+					employeeListJSON.add(empDetails);
+				}
+
+				// Write JSON file
+				try (FileWriter file = new FileWriter(employeeFileName)) {
+					file.write(employeeListJSON.toJSONString());
+					file.flush();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 	}
 }
