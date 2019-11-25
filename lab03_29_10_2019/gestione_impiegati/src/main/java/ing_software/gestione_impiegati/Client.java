@@ -33,8 +33,7 @@ public class Client {
 		// Functions on Message
 		public static Message send(Message message) {
 
-			// This functions send a message to the server and returns the message received
-			// from the server
+			// This functions send a message to the server and returns the message received from the server
 
 			try {
 				if (!client.equals(null)) {
@@ -114,27 +113,24 @@ public class Client {
 			String password;
 
 			do {
-				System.out.println("=========> Employee Manager <=========");
-				System.out.println("=========> Login <========= ");
+				Console.Output("=========> Employee Manager <=========");
+				Console.Output("=========> Login <========= ");
 
 				try {
-					System.out.print("Username: ");
-					username = scanner.nextLine();
+					
+					username = Console.Input("Username: ");
+					password = Console.Input("Password: ");
 
-					System.out.print("Password: ");
-					password = scanner.nextLine();
-
-					if (username.isEmpty() || password.isEmpty()) {
-						throw new Exception("Username or Password not inserted.");
-					}
+					if (username.isEmpty() || password.isEmpty()) { throw new Exception("Username or Password not inserted.");}
 
 					loggedUser = new Employee(username, password);
 					Message loginMessage = new Message(loggedUser, "", Functions.login);
 
 					connect();
-					// Send the login Message to the server
-					// The server returns another message
-
+					
+					/**
+					 * Send the login Message to the server, and receive a message from it
+					 */
 					Message returnMessage = send(loginMessage);
 
 					// Check the called Function from the server
@@ -142,15 +138,14 @@ public class Client {
 					if (returnMessage.getCalledFunction() == Functions.done) {
 						userIsLogged = true;
 						loggedUser = (Employee) returnMessage.getObj();
-						System.out.println("\n>> Logged in correctly\n");
+						Console.Output("\n>> Logged in correctly\n");
 					} else {
 						userIsLogged = false;
 						logout();
-						System.out.println("\n>> Wrong username or password\n");
+						Console.Output("\n>> Wrong username or password\n");
 					}
 
-					System.out.println("Press [enter] to continue...");
-					scanner.nextLine();
+					Console.EnterDefault();
 
 				} catch (IOException ex) {
 					disconnect();

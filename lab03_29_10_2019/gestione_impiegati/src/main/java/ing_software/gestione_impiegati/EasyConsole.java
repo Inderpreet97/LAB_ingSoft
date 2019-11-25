@@ -12,21 +12,21 @@ public class EasyConsole {
 	public static class ControlMenu {
 
 		public static String RunMenu(ArrayList<String> options) {
-			
+
 			// Print menu and return choice input from options, else return an empty string
-			
+
 			int choice = 0;
 			boolean loop = false;
-			
+
 			int index = 0;
 			for (String option : options) {
-				Console.OutputLN((index+1) + ") " + option);
+				Console.OutputLN((index + 1) + ") " + option);
 				index++;
 			}
-			
+
 			try {
-				while(!loop) {
-						
+				while (!loop) {
+
 					choice = Console.IntInput("Choice: ");
 					if (choice < 1 || choice > options.size()) {
 						Console.Output("Type the correct index");
@@ -38,15 +38,40 @@ public class EasyConsole {
 				Console.OutputLN(ex.getMessage());
 				return "";
 			}
-			
+
 			return options.get(choice - 1);
 		}
+		
+		public static int ChoiceMenu(ArrayList<String> options) {
+			int choice = 0;
+			
+			do {
+				int index = 0;
+				for (String option : options) {
+					Console.OutputLN((index+1) + ")" + option);
+					index++;
+				}
+				choice = Console.IntInput("Option: ");
+			} while (choice < 1 || choice > options.size());
+			
+			return choice;
+		}
+		
+	}
+
+	public enum InputType {
+		// TODO
 	}
 
 	public static class Console {
 
 		public static void Enter(String text) { // Print the text and waiting until the user types enter
 			System.out.print(text);
+			scanner.nextLine();
+		}
+
+		public static void EnterDefault() {
+			System.out.println("Press [enter] to continue...");
 			scanner.nextLine();
 		}
 

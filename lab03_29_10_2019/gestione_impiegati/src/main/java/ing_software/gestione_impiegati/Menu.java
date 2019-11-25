@@ -9,29 +9,38 @@ import ing_software.gestione_impiegati.EasyConsole.Console;
 import ing_software.gestione_impiegati.EasyConsole.ControlMenu;
 
 public class Menu {
-	
+
 	public static class MenuFunctionary {
 
-		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", "New employee", "Update employee"));
-		
+		protected static ArrayList<String> options = new ArrayList<String>(
+				Arrays.asList("Logout", "New employee", "Update employee"));
+
 		public static void Run() {
-			switch(ControlMenu.RunMenu(options)) {
-			case "Logout": 				logout();						break;
-			case "New Employee":		addEmployee();					break;
-			case "Update employee":		updateEmployee();				break;
-			case "":					Console.Output("Errore");		break;
+			switch (ControlMenu.RunMenu(options)) {
+			case "Logout":
+				logout();
+				break;
+			case "New Employee":
+				addEmployee();
+				break;
+			case "Update employee":
+				updateEmployee();
+				break;
+			case "":
+				Console.Output("Errore");
+				break;
 			}
 		}
-	
+
 		// Methods
-		
+
 		public static void logout() {
 			Console.Output("Logout");
 		}
 
 		public static void addEmployee() {
 			Console.Output("Insert");
-			
+
 			String fiscalCode = Console.Input("Fiscal code: ");
 			String username = Console.Input("Username: ");
 			String password = Console.Input("Password: ");
@@ -44,87 +53,117 @@ public class Menu {
 
 			LocalDate startDate = Console.LocalDateInput("Start date: ");
 			LocalDate endDate = Console.LocalDateInput("End date: ");
-			
-			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate, endDate);
-			
+
+			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
+					endDate);
+
 			Message message = new Message(employee, "", Functions.insertEmployee);
 			Message returnMessage = ClientManager.send(message);
-			
+
 			// Done or Error
 			if (ClientManager.checkMessage(returnMessage)) {
 				Console.OutputLN("Employee added");
 			} else {
-				// Retype
+				int choice = ControlMenu.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
+				if (choice == 1) {
+					addEmployee();
+				}
+				// Else end this function and return to menu
 			}
-			
-			
+
 		}
-		
+
 		public static void updateEmployee() {
-			
-			// TODO nel content ci metto l'hold username e nel messaggio riempio solo i campi da modificare
+
 			Console.Output("Update");
-			
+
 			ClientManager.loggedUser.print();
-			
+
+			Console.OutputLN("Update your profile");
+			Console.Output("Type to update, or press [Enter] if you do not want to modify");
+
 			String username = Console.Input("Username: ");
 			String name = Console.Input("Name: ");
 			String surname = Console.Input("Surname: ");
-			
-			Employee tempEmployee = new Employee(username, name, surname);
-			Message message = new Message(tempEmployee, ClientManager.loggedUser.getUsername(), Functions.updateEmployee);
-			Message returnMessage = ClientManager.send(message);
-			
-			if (ClientManager.checkMessage(returnMessage)) {
-				// TODO update the clientManager.loggedUser!!!
-				Console.Output("Done");
+
+			// Check if the parameters are all empty or not
+			if (username.isEmpty() && name.isEmpty() && surname.isEmpty()) {
+				Console.Output("No updates");
 			} else {
-				Console.Output("Error");
+
+				// Copy the logged User (backup) and set new parameters
+				Employee tempEmployee = ClientManager.loggedUser;
+				tempEmployee.setUsername(username);
+				tempEmployee.setName(name);
+				tempEmployee.setSurname(surname);
+
+				Message message = new Message(tempEmployee, "", Functions.updateEmployee);
+				Message returnMessage = ClientManager.send(message);
+
+				if (ClientManager.checkMessage(returnMessage)) {
+					Console.Output("Update done");
+				} else {
+					Console.Output(returnMessage.getContent());
+				}
+
 			}
-			
+
 		}
 
-		
 	}
 
-	public static class MenuManager extends MenuFunctionary{
-		
-		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", 
-				"New employee", "Update employee", "Worker list", "Functionary list", "Manager list"));;
+	public static class MenuManager extends MenuFunctionary {
+
+		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", "New employee",
+				"Update employee", "Worker list", "Functionary list", "Manager list"));;
 
 		public static void Run() {
-			
-			switch(ControlMenu.RunMenu(options)) {
-			case "Logout": 				logout();						break;
-			case "New Employee":		addEmployee();					break;
-			case "Update employee":		updateEmployee();				break;
-			case "Worker list":			search("worker");				break;
-			case "Functionary list":	search("functionary");			break;
-			case "Manager list":		search("manager");				break;
-			case "":					Console.Output("Errore");		break;
+
+			switch (ControlMenu.RunMenu(options)) {
+			case "Logout":
+				logout();
+				break;
+			case "New Employee":
+				addEmployee();
+				break;
+			case "Update employee":
+				updateEmployee();
+				break;
+			case "Worker list":
+				search("worker");
+				break;
+			case "Functionary list":
+				search("functionary");
+				break;
+			case "Manager list":
+				search("manager");
+				break;
+			case "":
+				Console.Output("Errore");
+				break;
 			}
 		}
-		
+
 		public static void search(String job) {
-			//TODO Cerca solo gli impiegati
+			// TODO Cerca solo gli impiegati
 			Message message = new Message(null, job, Functions.searchEmployee);
 			Message returnMessage = ClientManager.send(message);
-			
+
 			if (ClientManager.checkMessage(returnMessage)) {
 				// Get list of employee
 			} else {
 				Console.Output("Error occurred");
 			}
-			
+
 		}
 	}
 
 	public static class MenuAdmin extends MenuManager {
-		
+
 		public static void Run() {
 			MenuManager.Run();
 		}
-		
+
 	}
 
 }
