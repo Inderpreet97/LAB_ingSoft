@@ -94,6 +94,10 @@ public class ServerThread implements Runnable {
 						break;
 
 					case logout:
+						msg.setContent("logout");
+						msg.setCalledFunction(Functions.done);
+						os.writeObject(msg);
+						os.flush();
 						threadRunning = false;
 						break;
 
