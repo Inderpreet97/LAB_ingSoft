@@ -168,7 +168,7 @@ public class Client {
 				MenuAdmin.Run();
 				break;
 			default:
-				System.out.println("\nERROR: Unknown user!!!\n");
+				System.out.println("\nERROR: This use does not have a menu !!!\n");
 				break;
 			}
 

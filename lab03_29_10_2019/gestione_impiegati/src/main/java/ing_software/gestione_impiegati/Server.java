@@ -241,7 +241,7 @@ public class Server {
 	
 	// Write JSON employee list
 	@SuppressWarnings("unchecked")
-	private static void writeJSONEmployee() {
+	static void writeJSONEmployee() {
 		// Create JSON string for Employee List
 				JSONArray employeeListJSON = new JSONArray();
 

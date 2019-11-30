@@ -59,10 +59,6 @@ public class EasyConsole {
 		
 	}
 
-	public enum InputType {
-		// TODO
-	}
-
 	public static class Console {
 
 		public static void Enter(String text) { // Print the text and waiting until the user types enter
@@ -96,7 +92,9 @@ public class EasyConsole {
 
 		public static double DoubleInput(String text) {
 			Output(text);
-			return scanner.nextDouble();
+			double returnDouble = scanner.nextDouble();
+		    scanner.nextLine();
+			return returnDouble;
 		}
 
 		public static String Input(String text) {
@@ -106,27 +104,92 @@ public class EasyConsole {
 
 		public static long LongInput(String text) {
 			Output(text);
-			return scanner.nextLong();
+			long reutrnLong = scanner.nextLong();
+			scanner.nextLine();
+			return reutrnLong;
 		}
 
 		public static float FloatInput(String text) {
 			Output(text);
-			return scanner.nextFloat();
+			float returnFloat = scanner.nextFloat();
+			scanner.nextLine();
+			return returnFloat;
 		}
 
 		public static short ShortInput(String text) {
 			Output(text);
-			return scanner.nextShort();
+			short returnShort = scanner.nextShort();
+			scanner.nextLine();
+			return returnShort;
 		}
 
 		public static LocalDate LocalDateInput(String text) {
 			String date = Input(text);
 			if (!date.equals(null)) {
-				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("M/d/yyyy");
+				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
 				return LocalDate.parse(date, dateFormat);
 			}
 			return null;
 		}
+		
+		public static <E extends Enum<E>> E EnumInput (Class<E> enumClass, String text) {
+			OutputLN(text);
+			
+			E[] enumValues = enumClass.getEnumConstants();
+			
+			int index = 1;
+			
+			for (E enumVal: enumValues) {
+				OutputLN(index + ") " + enumVal.toString());
+				index++;
+	        }
+			
+			do {
+				index =  IntInput("Choice: ") - 1;
+			} while(index <= 0 && index > enumValues.length);
+			
+			E job = E.valueOf(enumClass, enumValues[index].toString());
+			
+			return job;
+		}
+		
+		public static <E extends Enum<E>> E EnumInput (Class<E> enumClass, String text, E[] blackListValues) {
+			OutputLN(text);
+			
+			E[] enumValues = enumClass.getEnumConstants();
+			
+			int realIndex = 0;
+			int relativeIndex = 1;
+			ArrayList<Integer> relativeIndexes = new ArrayList<Integer>();
+			
+			for (E enumVal: enumValues) {
+				Boolean toPrint = true;
+				
+				for(E blackListValue : blackListValues) {
+					if(blackListValue.equals(enumVal)) {
+						toPrint = false;
+						break;
+					}
+				}
+				
+				if(toPrint) {
+					OutputLN(relativeIndex + ") " + enumVal.toString());
+					relativeIndex++;
+					relativeIndexes.add(realIndex);
+				}
+				
+				realIndex++;
+	        }
+			
+			do {
+				relativeIndex =  IntInput("Choice: ") - 1;
+			} while(relativeIndex <= 0 && relativeIndex > relativeIndexes.size());
+			
+			E job = E.valueOf(enumClass, enumValues[relativeIndexes.get(relativeIndex)].toString());
+			
+			return job;
+		}
+		
 
 	}
 

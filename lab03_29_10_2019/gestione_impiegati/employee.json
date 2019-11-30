@@ -1,13 +1,1 @@
-[
-  {
-    "fiscalCode": "abc123abc123",
-    "username": "beppe",
-    "password": "beppe123",
-    "name": "Giuseppe",
-    "surname": "Urbano",
-    "job": "functionary",
-    "branch": "fidenza",
-    "startDate": "2019-11-04",
-    "endDate": "2019-11-11"
-  }
-]
+[{"password":"beppe123","endDate":"2019-11-11","surname":"Urbano","fiscalCode":"abc123abc123","name":"Giuseppe","job":"functionary","branch":"fidenza","startDate":"2019-11-04","username":"beppe"},{"password":"pippo123","endDate":"2020-01-12","surname":"Baudo","fiscalCode":"pippo123ABC","name":"Pippo","job":"worker","branch":"Fidenza","startDate":"2019-12-29","username":"pippo"}]

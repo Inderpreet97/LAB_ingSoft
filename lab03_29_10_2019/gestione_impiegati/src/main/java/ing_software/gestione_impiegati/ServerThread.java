@@ -111,6 +111,9 @@ public class ServerThread implements Runnable {
 								msg.setCalledFunction(Functions.done);
 								os.writeObject(msg);
 								os.flush();
+								
+								// Save the Employee List into file
+								Server.writeJSONEmployee();
 
 							} else {
 								msg.setContent("Employee already registered");
@@ -130,6 +133,9 @@ public class ServerThread implements Runnable {
 								msg.setCalledFunction(Functions.done);
 								os.writeObject(msg);
 								os.flush();
+								
+								// Save the Employee List into file
+								Server.writeJSONEmployee();
 
 							} else {
 								msg.setContent("Employee not found");
