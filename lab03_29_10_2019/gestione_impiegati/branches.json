@@ -1,0 +1,14 @@
+[ 
+   { 
+      "name":"Fidenza",
+      "address":"Via Gramsci"
+   },
+   { 
+      "name":"Parma",
+      "address":"Via Farini"
+   },
+   { 
+      "name":"Piacenza",
+      "address":"Via Berenini"
+   }
+]
