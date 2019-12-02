@@ -166,7 +166,9 @@ public class Menu {
 
 			if (ClientManager.checkMessage(returnMessage)) {
 				// Get list of employee from the object of returnMessage
-				@SuppressWarnings("unchecked")
+				
+				
+				
 				ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
 
 				// Print list
