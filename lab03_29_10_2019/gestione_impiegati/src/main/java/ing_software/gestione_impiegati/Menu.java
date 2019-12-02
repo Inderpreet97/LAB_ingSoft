@@ -1,6 +1,7 @@
 package ing_software.gestione_impiegati;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,11 +56,15 @@ public class Menu {
 
 			String branch = Console.Input("Branch: ");
 
-			LocalDate startDate = Console.LocalDateInput("Start date: ");
+			LocalDate startDate = Console.LocalDateInput("Start date [d/M/yyyy] : ");
 			
-			// TODO la end date dovrebbe essere opzionale
-			LocalDate endDate = Console.LocalDateInput("End date: ");
+			String date = Console.Input("End date [d/M/yyyy] (press enter to skip): ");
+			LocalDate endDate = null;
 			
+			if (!date.isEmpty()) {
+				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
+				endDate = LocalDate.parse(date, dateFormat);
+			}
 
 			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
 					endDate);
