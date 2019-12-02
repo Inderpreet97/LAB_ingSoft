@@ -163,10 +163,7 @@ public class Server {
 	 */
 	public ArrayList<Employee> getEmployeeListByJob(Jobs job) {
 
-		ArrayList<Employee> returnList = new ArrayList<Employee>() {
-			private static final long serialVersionUID = 1L;
-		};
-
+		ArrayList<Employee> returnList = new ArrayList<Employee>();
 		for (Employee employee : employeeList) {
 			if (employee.getJob().equals(job)) {
 				returnList.add(employee);

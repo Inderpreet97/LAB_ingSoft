@@ -144,13 +144,13 @@ public class Menu {
 					updateEmployee();
 					break;
 				case "Worker list":
-					search("worker");
+					search(Jobs.worker);
 					break;
 				case "Functionary list":
-					search("functionary");
+					search(Jobs.functionary);
 					break;
 				case "Manager list":
-					search("manager");
+					search(Jobs.manager);
 					break;
 				case "":
 					Console.Output("Errore");
@@ -159,9 +159,9 @@ public class Menu {
 			}
 		}
 
-		public static void search(String job) {
+		public static void search(Jobs job) {
 
-			Message message = new Message(null, job, Functions.searchEmployee);
+			Message message = new Message(job, job.toString(), Functions.searchEmployee);
 			Message returnMessage = ClientManager.send(message);
 
 			if (ClientManager.checkMessage(returnMessage)) {
@@ -169,6 +169,7 @@ public class Menu {
 				
 				
 				
+				@SuppressWarnings("unchecked")
 				ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
 
 				// Print list
@@ -213,16 +214,16 @@ public class Menu {
 					updateEmployee();
 					break;
 				case "Worker list":
-					search("worker");
+					search(Jobs.worker);
 					break;
 				case "Functionary list":
-					search("functionary");
+					search(Jobs.functionary);
 					break;
 				case "Manager list":
-					search("manager");
+					search(Jobs.manager);
 					break;
 				case "Admin list":
-					search("manager");
+					search(Jobs.admin);
 					break;
 				case "":
 					Console.Output("Errore");
