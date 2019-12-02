@@ -44,11 +44,11 @@ public class Menu {
 		public static void addEmployee() {
 			Console.Output("Insert");
 
-			String fiscalCode = Console.Input("Fiscal code: ");
-			String username = Console.Input("Username: ");
-			String password = Console.Input("Password: ");
-			String name = Console.Input("Name: ");
-			String surname = Console.Input("Surname: ");
+			String fiscalCode 	= Console.Input("Fiscal code: ");
+			String username 	= Console.Input("Username: ");
+			String password 	= Console.Input("Password: ");
+			String name 		= Console.Input("Name: ");
+			String surname 		= Console.Input("Surname: ");
 
 			Jobs job = Console.EnumInput(Jobs.class, "Select the job of the employee: ",
 					new Jobs[] { Jobs.admin, Jobs.manager });
@@ -58,7 +58,6 @@ public class Menu {
 			LocalDate startDate = Console.LocalDateInput("Start date: ");
 			LocalDate endDate = Console.LocalDateInput("End date: ");
 			
-
 			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
 					endDate);
 
@@ -80,16 +79,16 @@ public class Menu {
 
 		public static void updateEmployee() {
 
-			Console.Output("Update");
+			Console.OutputLN("Update");
 
 			ClientManager.loggedUser.print();
 
 			Console.OutputLN("Update your profile");
-			Console.Output("Type to update, or press [Enter] if you do not want to modify");
+			Console.OutputLN("Type to update, or press [Enter] if you do not want to modify");
 
-			String username = Console.Input("Username: ");
-			String name = Console.Input("Name: ");
-			String surname = Console.Input("Surname: ");
+			String username	= 	Console.Input("Username: ");
+			String name		=	Console.Input("Name: ");
+			String surname	= 	Console.Input("Surname: ");
 
 			// Check if the parameters are all empty or not
 			if (username.isEmpty() && name.isEmpty() && surname.isEmpty()) {
@@ -98,17 +97,18 @@ public class Menu {
 
 				// Copy the logged User (backup) and set new parameters
 				Employee tempEmployee = ClientManager.loggedUser;
-				tempEmployee.setUsername(username);
-				tempEmployee.setName(name);
-				tempEmployee.setSurname(surname);
+				
+				if (!username.isEmpty())		tempEmployee.setUsername(username);
+				if (!name.isEmpty())			tempEmployee.setName(name);
+				if (!surname.isEmpty())			tempEmployee.setSurname(surname);
 
 				Message message = new Message(tempEmployee, "", Functions.updateEmployee);
 				Message returnMessage = ClientManager.send(message);
 
 				if (ClientManager.checkMessage(returnMessage)) {
-					Console.Output("Update done");
+					Console.OutputLN("Update done");
 				} else {
-					Console.Output(returnMessage.getContent());
+					Console.OutputLN(returnMessage.getContent());
 				}
 
 			}
@@ -181,7 +181,6 @@ public class Menu {
 	}
 
 	public static class MenuAdmin extends MenuManager {
-		// TODO Aggiungere opzione Admin List
 		public static void Run() {
 			MenuManager.Run();
 		}

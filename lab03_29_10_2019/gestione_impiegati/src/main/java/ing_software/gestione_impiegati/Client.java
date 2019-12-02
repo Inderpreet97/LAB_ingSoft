@@ -22,7 +22,7 @@ public class Client {
 		public static Employee loggedUser;
 
 		private static final int SPORT = 4444;
-		private static final String SHOST = "192.168.";
+		private static final String SHOST = "localhost";
 
 		private static Socket client = null;
 		private static ObjectOutputStream outputStream = null;
