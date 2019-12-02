@@ -49,17 +49,18 @@ public class Menu {
 			String password = Console.Input("Password: ");
 			String name = Console.Input("Name: ");
 			String surname = Console.Input("Surname: ");
-			
-			
-			// TODO WORKING HERE 
-			//String jobString = Console.Input("Job: ");
-			//Jobs job = Jobs.valueOf(jobString);
-			Jobs job = Console.EnumInput(Jobs.class, "Select the job of the employee: ", new Jobs[] {Jobs.admin, Jobs.manager});
-			
+
+			// TODO WORKING HERE
+			// String jobString = Console.Input("Job: ");
+			// Jobs job = Jobs.valueOf(jobString);
+			Jobs job = Console.EnumInput(Jobs.class, "Select the job of the employee: ",
+					new Jobs[] { Jobs.admin, Jobs.manager });
+
 			String branch = Console.Input("Branch: ");
 
 			LocalDate startDate = Console.LocalDateInput("Start date: ");
 			LocalDate endDate = Console.LocalDateInput("End date: ");
+			
 
 			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
 					endDate);
@@ -71,8 +72,7 @@ public class Menu {
 			if (ClientManager.checkMessage(returnMessage)) {
 				Console.OutputLN("Employee added");
 			} else {
-				int choice = ControlMenu
-						.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
+				int choice = ControlMenu.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
 				if (choice == 1) {
 					addEmployee();
 				}
@@ -155,12 +155,27 @@ public class Menu {
 		}
 
 		public static void search(String job) {
-			// TODO Cerca solo gli impiegati
+			
 			Message message = new Message(null, job, Functions.searchEmployee);
 			Message returnMessage = ClientManager.send(message);
 
 			if (ClientManager.checkMessage(returnMessage)) {
-				// Get list of employee
+				// Get list of employee from the object of returnMessage
+				@SuppressWarnings("unchecked")
+				ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
+
+				// Print list
+				for (Employee employee : employeeList) {
+					Console.OutputLN("Fiscal code:" + employee.getFiscalCode());
+					Console.OutputLN("Username: " + employee.getUsername());
+					Console.OutputLN("Name: " + employee.getName());
+					Console.OutputLN("Surname: " + employee.getSurname());
+					Console.OutputLN("Branch: " + employee.getBranch());
+					Console.OutputLN("Job: " + employee.getJob());
+					Console.OutputLN(null);
+					Console.OutputLN(null);
+				}
+
 			} else {
 				Console.Output("Error occurred");
 			}

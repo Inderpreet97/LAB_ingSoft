@@ -21,10 +21,12 @@ public class Server {
 
 	// File names
 	private static String employeeFileName = "employee.json";
+	private static String branchFileName = "branches.json";
 
 	// Global list
-	//static ArrayList<Employee> employeeList = new ArrayList<Employee>();
+	// static ArrayList<Employee> employeeList = new ArrayList<Employee>();
 	private static CopyOnWriteArrayList<Employee> employeeList = new CopyOnWriteArrayList<Employee>();
+	private static CopyOnWriteArrayList<Branch> branchList = new CopyOnWriteArrayList<Branch>();
 
 	// Server attributes
 	private static final int PORT = 4444;
@@ -41,25 +43,27 @@ public class Server {
 		this.socket = new ServerSocket(PORT);
 	}
 
-	
 	private void run() {
-		
-		/* THREAD POOL:
+
+		/*
+		 * THREAD POOL:
 		 * 
-		 * Java Thread pool represents a group of worker threads that are waiting for the job and reuse many times.
+		 * Java Thread pool represents a group of worker threads that are waiting for
+		 * the job and reuse many times.
 		 * 
-		 * In case of thread pool, a group of fixed size threads are created. 
-		 * A thread from the thread pool is pulled out and assigned a job by the service provider. 
-		 * After completion of the job, thread is contained in the thread pool again.
+		 * In case of thread pool, a group of fixed size threads are created. A thread
+		 * from the thread pool is pulled out and assigned a job by the service
+		 * provider. After completion of the job, thread is contained in the thread pool
+		 * again.
 		 * 
 		 */
-		
+
 		this.pool = new ThreadPoolExecutor(COREPOOL, MAXPOOL, IDLETIME, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
 
 		/*
-		 *  Server stays "online" listening for incoming Clients.
-		 *  It accepts it the incoming call and assign it a new Thread
+		 * Server stays "online" listening for incoming Clients. It accepts it the
+		 * incoming call and assign it a new Thread
 		 */
 		while (true) {
 			try {
@@ -78,8 +82,8 @@ public class Server {
 		return this.pool;
 	}
 
-	// This functions simply closes the socket	
-	public void close() { 
+	// This functions simply closes the socket
+	public void close() {
 		try {
 			this.socket.close();
 		} catch (Exception e) {
@@ -89,21 +93,20 @@ public class Server {
 
 	// Server Main
 	public static void main(final String[] v) throws IOException {
-		readJSONEmployee();			// First, read the JSON File
-		new Server().run();			// Run the server
-		writeJSONEmployee();		// When server is closed, write on JSON File
+		readJSONEmployee(); // First, read the JSON File
+		new Server().run(); // Run the server
+		writeJSONEmployee(); // When server is closed, write on JSON File
 	}
-	
 
-	
 	/**************************************************************
 	 **
-	 ** 					Server functions
+	 ** Server functions
 	 **
 	 **************************************************************/
-	
+
 	/**
 	 * Search an employee by username and password
+	 * 
 	 * @param employee
 	 * @return the employee found or null
 	 **/
@@ -116,12 +119,13 @@ public class Server {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Search an employee in the employeeList using username
+	 * 
 	 * @param username
 	 * @return index of employee or -1 if not found
-	**/
+	 **/
 	private int searchEmployeeIndexByUsername(String username) {
 		int index = 0;
 		for (Employee temp : employeeList) {
@@ -132,12 +136,13 @@ public class Server {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Search an employee in the employeeList using fiscal code
+	 * 
 	 * @param fiscalCode
 	 * @return index of employee or -1 if not found
-	**/
+	 **/
 	private int searchEmployeeIndexByFiscalCode(String fiscalCode) {
 		int index = 0;
 		for (Employee employee : employeeList) {
@@ -148,57 +153,63 @@ public class Server {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Creates a new array of Employee that have the given Job
 	 * 
 	 * @param job
-	 * @return ArrayList of employee with given Job, if there aren't any return an empty array
+	 * @return ArrayList of employee with given Job, if there aren't any return an
+	 *         empty array
 	 */
-	public ArrayList<Employee> getEmployeeListByJob(Jobs job){
-		
-		ArrayList<Employee> returnList = new ArrayList<Employee>() {private static final long serialVersionUID = 1L;};
-		
+	public ArrayList<Employee> getEmployeeListByJob(Jobs job) {
+
+		ArrayList<Employee> returnList = new ArrayList<Employee>() {
+			private static final long serialVersionUID = 1L;
+		};
+
 		for (Employee employee : employeeList) {
 			if (employee.getJob().equals(job)) {
 				returnList.add(employee);
 			}
 		}
-		
+
 		return returnList;
 	}
-	
+
 	/**
 	 * If the employee doesn't already exist, add it to Employee List
+	 * 
 	 * @param employee
 	 * @return true if employee added, false otherwise
 	 */
 	public Boolean addEmployee(Employee employee) {
 		// Check if fiscal code and username are NOT already registered
-		if (searchEmployeeIndexByFiscalCode(employee.getFiscalCode()) < 0 && searchEmployeeIndexByUsername(employee.getUsername()) < 0) {
+		if (searchEmployeeIndexByFiscalCode(employee.getFiscalCode()) < 0
+				&& searchEmployeeIndexByUsername(employee.getUsername()) < 0) {
 			employeeList.add(employee);
 			return true;
-		} 
+		}
 		return false;
 	}
-	
+
 	/**
 	 * Find the index of the employee and if it exists update it with new data
+	 * 
 	 * @param employee
 	 * @param oldUsername
 	 * @return true if employee updated, false otherwise
 	 */
 	public Boolean updateEmployee(Employee employee) {
 		int toUpdateEmployeeIndex = searchEmployeeIndexByFiscalCode(employee.getFiscalCode());
-		
-		if(toUpdateEmployeeIndex >= 0) {
+
+		if (toUpdateEmployeeIndex >= 0) {
 			employeeList.set(toUpdateEmployeeIndex, employee);
 		}
-		
+
 		// Employee not found
 		return false;
 	}
-	
+
 	// Read JSON employee list
 	private static void readJSONEmployee() {
 
@@ -224,7 +235,7 @@ public class Server {
 				LocalDate startDate = LocalDate.parse((CharSequence) employeeJSON.get("startDate"));
 				LocalDate endDate = LocalDate.parse((CharSequence) employeeJSON.get("endDate"));
 
-				// Create the employee object from json object
+				// Create the employee object from JSON object
 				Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
 						endDate);
 
@@ -238,35 +249,91 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Write JSON employee list
 	@SuppressWarnings("unchecked")
 	static void writeJSONEmployee() {
 		// Create JSON string for Employee List
-				JSONArray employeeListJSON = new JSONArray();
+		JSONArray employeeListJSON = new JSONArray();
 
-				for(Employee emp : employeeList) {
-					JSONObject empDetails = new JSONObject();
-					empDetails.put("fiscalCode", emp.getFiscalCode());
-					empDetails.put("username", emp.getUsername());
-					empDetails.put("password", emp.getPassword());
-					empDetails.put("name", emp.getName());
-					empDetails.put("surname", emp.getSurname());
-					empDetails.put("job", emp.getJob().name());
-					empDetails.put("branch", emp.getBranch());
-					empDetails.put("startDate", emp.getStartDate().toString());
-					empDetails.put("endDate", emp.getEndDate().toString());
+		for (Employee emp : employeeList) {
+			JSONObject empDetails = new JSONObject();
+			empDetails.put("fiscalCode", emp.getFiscalCode());
+			empDetails.put("username", emp.getUsername());
+			empDetails.put("password", emp.getPassword());
+			empDetails.put("name", emp.getName());
+			empDetails.put("surname", emp.getSurname());
+			empDetails.put("job", emp.getJob().name());
+			empDetails.put("branch", emp.getBranch());
+			empDetails.put("startDate", emp.getStartDate().toString());
+			empDetails.put("endDate", emp.getEndDate().toString());
 
-					employeeListJSON.add(empDetails);
-				}
+			employeeListJSON.add(empDetails);
+		}
 
-				// Write JSON file
-				try (FileWriter file = new FileWriter(employeeFileName)) {
-					file.write(employeeListJSON.toJSONString());
-					file.flush();
+		// Write JSON file
+		try (FileWriter file = new FileWriter(employeeFileName)) {
+			file.write(employeeListJSON.toJSONString());
+			file.flush();
 
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+
+	// Read JSON employee list
+	@SuppressWarnings("unused")
+	private static void readJSONBranch() {
+
+		// JSON parser object to parse read file
+		JSONParser parser = new JSONParser();
+
+		try (Reader reader = new FileReader(branchFileName)) {
+			JSONArray branchListJSON = (JSONArray) parser.parse(reader);
+
+			for (int i = 0; i < branchListJSON.size(); i++) {
+
+				JSONObject branchJSON = (JSONObject) branchListJSON.get(i);
+
+				// Read Data
+				String name = (String) branchJSON.get("name");
+				String address = (String) branchJSON.get("address");
+
+				// Create the branch object from JSON object
+				Branch branch = new Branch(name, address);
+
+				// Add branch to global list
+				branchList.add(branch);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (org.json.simple.parser.ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	static void writeJSONBranch() {
+		// Create JSON string for Employee List
+		JSONArray branchListJSON = new JSONArray();
+
+		for (Branch branch : branchList) {
+			JSONObject branchDetails = new JSONObject();
+			
+			branchDetails.put("name", branch.getName());
+			branchDetails.put("address", branch.getAddress());
+			
+			branchListJSON.add(branchDetails);
+		}
+
+		// Write JSON file
+		try (FileWriter file = new FileWriter(branchFileName)) {
+			file.write(branchListJSON.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

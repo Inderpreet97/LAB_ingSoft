@@ -50,7 +50,7 @@ public class ServerThread implements Runnable {
 						os = new ObjectOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));
 					}
 
-					// Check the differente called function from the message received
+					// Check the different called function from the message received
 					switch (msg.getCalledFunction()) {
 
 					case login:
@@ -82,9 +82,9 @@ public class ServerThread implements Runnable {
 							}
 						} else {
 
-							// content = descrizione del messaggio
-							// calledFunction (done = successo) (error = non successo)
-							// if calledFunction = error -> content = descrizione errore
+							// content = message description
+							// calledFunction (done = success) (error = not success)
+							// if calledFunction = error -> content = error description
 
 							msg.setContent("Object is not instance of Employee");
 							msg.setCalledFunction(Functions.error);
@@ -155,6 +155,7 @@ public class ServerThread implements Runnable {
 								os.writeObject(msg);
 								os.flush();
 							} else {
+								// Object is the list 
 								msg.setObj(this.server.getEmployeeListByJob(searchedJob));
 								msg.setCalledFunction(Functions.done);
 								os.writeObject(msg);

@@ -41,22 +41,22 @@ public class EasyConsole {
 
 			return options.get(choice - 1);
 		}
-		
+
 		public static int ChoiceMenu(ArrayList<String> options) {
 			int choice = 0;
-			
+
 			do {
 				int index = 0;
 				for (String option : options) {
-					Console.OutputLN((index+1) + ")" + option);
+					Console.OutputLN((index + 1) + ")" + option);
 					index++;
 				}
 				choice = Console.IntInput("Option: ");
 			} while (choice < 1 || choice > options.size());
-			
+
 			return choice;
 		}
-		
+
 	}
 
 	public static class Console {
@@ -80,6 +80,11 @@ public class EasyConsole {
 			System.out.println(text);
 		}
 
+		public static void OutputTAB(Object text) {
+			Console.Output(text + "\t");
+			Console.OutputLN(null);
+		}
+
 		// INPUT
 
 		public static int IntInput(String text) {
@@ -87,13 +92,13 @@ public class EasyConsole {
 			int returnInt = scanner.nextInt();
 			scanner.nextLine();
 			return returnInt;
-			
+
 		}
 
 		public static double DoubleInput(String text) {
 			Output(text);
 			double returnDouble = scanner.nextDouble();
-		    scanner.nextLine();
+			scanner.nextLine();
 			return returnDouble;
 		}
 
@@ -131,65 +136,64 @@ public class EasyConsole {
 			}
 			return null;
 		}
-		
-		public static <E extends Enum<E>> E EnumInput (Class<E> enumClass, String text) {
+
+		public static <E extends Enum<E>> E EnumInput(Class<E> enumClass, String text) {
 			OutputLN(text);
-			
+
 			E[] enumValues = enumClass.getEnumConstants();
-			
+
 			int index = 1;
-			
-			for (E enumVal: enumValues) {
+
+			for (E enumVal : enumValues) {
 				OutputLN(index + ") " + enumVal.toString());
 				index++;
-	        }
-			
+			}
+
 			do {
-				index =  IntInput("Choice: ") - 1;
-			} while(index <= 0 && index > enumValues.length);
-			
+				index = IntInput("Choice: ") - 1;
+			} while (index <= 0 && index > enumValues.length);
+
 			E job = E.valueOf(enumClass, enumValues[index].toString());
-			
+
 			return job;
 		}
-		
-		public static <E extends Enum<E>> E EnumInput (Class<E> enumClass, String text, E[] blackListValues) {
+
+		public static <E extends Enum<E>> E EnumInput(Class<E> enumClass, String text, E[] blackListValues) {
 			OutputLN(text);
-			
+
 			E[] enumValues = enumClass.getEnumConstants();
-			
+
 			int realIndex = 0;
 			int relativeIndex = 1;
 			ArrayList<Integer> relativeIndexes = new ArrayList<Integer>();
-			
-			for (E enumVal: enumValues) {
+
+			for (E enumVal : enumValues) {
 				Boolean toPrint = true;
-				
-				for(E blackListValue : blackListValues) {
-					if(blackListValue.equals(enumVal)) {
+
+				for (E blackListValue : blackListValues) {
+					if (blackListValue.equals(enumVal)) {
 						toPrint = false;
 						break;
 					}
 				}
-				
-				if(toPrint) {
+
+				if (toPrint) {
 					OutputLN(relativeIndex + ") " + enumVal.toString());
 					relativeIndex++;
 					relativeIndexes.add(realIndex);
 				}
-				
+
 				realIndex++;
-	        }
-			
+			}
+
 			do {
-				relativeIndex =  IntInput("Choice: ") - 1;
-			} while(relativeIndex <= 0 && relativeIndex > relativeIndexes.size());
-			
+				relativeIndex = IntInput("Choice: ") - 1;
+			} while (relativeIndex <= 0 && relativeIndex > relativeIndexes.size());
+
 			E job = E.valueOf(enumClass, enumValues[relativeIndexes.get(relativeIndex)].toString());
-			
+
 			return job;
 		}
-		
 
 	}
 

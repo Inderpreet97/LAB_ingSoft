@@ -81,21 +81,22 @@ public class Client {
 
 		}
 
+		/**
+		 * 
+		 * Connect to the server, set all parameters to null in the catch block if exception occurred
+		 *
+		 */
 		public static void connect() throws UnknownHostException, IOException {
-
-			// Connect to the server, set all parameters to null in the catch block if
-			// exception occurred
-
 			client = new Socket(SHOST, SPORT);
 			outputStream = new ObjectOutputStream(client.getOutputStream());
 			inputStream = null;
 
 		}
 
+		/**
+		 * Disconnect the client from the server
+		 */
 		public static void disconnect() {
-
-			// Disconnect the client from the server
-
 			try {
 				client.close();
 			} catch (Exception ex) {
@@ -103,9 +104,11 @@ public class Client {
 			}
 		}
 
+		/**
+		 * Login
+		 */
 		public static void login() {
-			// LOGIN
-
+			
 			Boolean userIsLogged = false;
 			String username;
 			String password;
@@ -174,6 +177,10 @@ public class Client {
 
 		}
 
+		/**
+		 * Logout --> send a message to the server calling the logout function
+		 * Set the loggedUser in the Client as null and disconnect from the Server
+		 */
 		public static void logout() {
 			try {
 				loggedUser = null;
@@ -189,7 +196,6 @@ public class Client {
 		public static void main(final String[] v) throws IOException {
 
 			login();
-
 			logout();
 
 		}
