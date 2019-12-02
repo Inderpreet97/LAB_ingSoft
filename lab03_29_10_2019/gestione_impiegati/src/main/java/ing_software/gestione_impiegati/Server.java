@@ -209,6 +209,22 @@ public class Server {
 		// Employee not found
 		return false;
 	}
+	
+	/**
+	 * Check if the given branch exists in the branch list of the server
+	 * @param employeeBranch
+	 * @return true if the branch exists, false otherwise
+	 */
+	public boolean checkBranch(String employeeBranch) {
+		
+		for(Branch branch : branchList) {
+			if(branch.getName().equals(employeeBranch)){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	// Read JSON employee list
 	private static void readJSONEmployee() {

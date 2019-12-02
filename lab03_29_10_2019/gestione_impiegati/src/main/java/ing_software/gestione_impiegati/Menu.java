@@ -50,9 +50,6 @@ public class Menu {
 			String name = Console.Input("Name: ");
 			String surname = Console.Input("Surname: ");
 
-			// TODO WORKING HERE
-			// String jobString = Console.Input("Job: ");
-			// Jobs job = Jobs.valueOf(jobString);
 			Jobs job = Console.EnumInput(Jobs.class, "Select the job of the employee: ",
 					new Jobs[] { Jobs.admin, Jobs.manager });
 

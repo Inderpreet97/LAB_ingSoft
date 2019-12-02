@@ -105,22 +105,30 @@ public class ServerThread implements Runnable {
 
 						if (msg.getObj() instanceof Employee) {
 							Employee employee = (Employee) msg.getObj();
+							
+							if(this.server.checkBranch(employee.getBranch())) {
+								if (this.server.addEmployee(employee)) {
+									msg.setContent("Employee added correctly");
+									msg.setCalledFunction(Functions.done);
+									os.writeObject(msg);
+									os.flush();
+									
+									// Save the Employee List into file
+									Server.writeJSONEmployee();
 
-							if (this.server.addEmployee(employee)) {
-								msg.setContent("Employee added correctly");
-								msg.setCalledFunction(Functions.done);
-								os.writeObject(msg);
-								os.flush();
-								
-								// Save the Employee List into file
-								Server.writeJSONEmployee();
-
+								} else {
+									msg.setContent("Employee already registered");
+									msg.setCalledFunction(Functions.error);
+									os.writeObject(msg);
+									os.flush();
+								}
 							} else {
-								msg.setContent("Employee already registered");
+								msg.setContent("Branch not found");
 								msg.setCalledFunction(Functions.error);
 								os.writeObject(msg);
 								os.flush();
 							}
+							
 						}
 						break;
 
