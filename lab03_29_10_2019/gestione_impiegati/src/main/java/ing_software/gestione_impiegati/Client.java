@@ -185,7 +185,7 @@ public class Client {
 			try {
 				loggedUser = null;
 				Message message = new Message(null, "", Functions.logout);
-				send(message);	// Send a message to server and close the thread on server thread
+				send(message);			// Send a message to server and close the thread on server thread
 				disconnect();			// Close socket 
 				System.out.println("\n\nLogged out, see you soon!");
 			} catch (Exception ex) {

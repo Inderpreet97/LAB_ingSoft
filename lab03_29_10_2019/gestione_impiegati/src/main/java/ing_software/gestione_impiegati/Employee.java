@@ -3,6 +3,8 @@ package ing_software.gestione_impiegati;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import ing_software.gestione_impiegati.EasyConsole.Console;
+
 public class Employee implements Serializable{
 	
 	/**
@@ -53,7 +55,10 @@ public class Employee implements Serializable{
 	}
 	
 	public void print() {
-		
+		Console.OutputLN("Username: " + this.username);
+		Console.OutputLN("Name: " + this.name);
+		Console.OutputLN("Surname: " + this.surname);
+		Console.OutputLN("\n");
 	}
 	
 	// Getters & Setters

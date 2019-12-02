@@ -137,13 +137,14 @@ public class ServerThread implements Runnable {
 							Employee employee = (Employee) msg.getObj();
 
 							if (this.server.updateEmployee(employee)) {
+								
+								// Save the Employee List into file
+								Server.writeJSONEmployee();
+								
 								msg.setContent("Employee updated correctly");
 								msg.setCalledFunction(Functions.done);
 								os.writeObject(msg);
 								os.flush();
-								
-								// Save the Employee List into file
-								Server.writeJSONEmployee();
 
 							} else {
 								msg.setContent("Employee not found");

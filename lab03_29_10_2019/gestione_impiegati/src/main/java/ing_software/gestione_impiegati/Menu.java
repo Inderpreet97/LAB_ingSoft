@@ -100,7 +100,7 @@ public class Menu {
 
 			// Check if the parameters are all empty or not
 			if (username.isEmpty() && name.isEmpty() && surname.isEmpty()) {
-				Console.Output("No updates");
+				Console.OutputLN("No updates");
 			} else {
 
 				// Copy the logged User (backup) and set new parameters
@@ -170,15 +170,18 @@ public class Menu {
 				ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
 
 				// Print list
-				for (Employee employee : employeeList) {
-					Console.OutputLN("Fiscal code:" + employee.getFiscalCode());
-					Console.OutputLN("Username: " + employee.getUsername());
-					Console.OutputLN("Name: " + employee.getName());
-					Console.OutputLN("Surname: " + employee.getSurname());
-					Console.OutputLN("Branch: " + employee.getBranch());
-					Console.OutputLN("Job: " + employee.getJob());
-					Console.OutputLN(null);
-					Console.OutputLN(null);
+				if (employeeList.size() >= 0) {
+					for (Employee employee : employeeList) {
+						Console.OutputLN("Fiscal code:" + employee.getFiscalCode());
+						Console.OutputLN("Username: " + employee.getUsername());
+						Console.OutputLN("Name: " + employee.getName());
+						Console.OutputLN("Surname: " + employee.getSurname());
+						Console.OutputLN("Branch: " + employee.getBranch());
+						Console.OutputLN("Job: " + employee.getJob());
+						Console.OutputLN("\n");
+					}
+				}else {
+					Console.OutputLN("No " + job + " list");
 				}
 
 			} else {
