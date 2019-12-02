@@ -204,6 +204,7 @@ public class Server {
 
 		if (toUpdateEmployeeIndex >= 0) {
 			employeeList.set(toUpdateEmployeeIndex, employee);
+			return true;
 		}
 
 		// Employee not found
