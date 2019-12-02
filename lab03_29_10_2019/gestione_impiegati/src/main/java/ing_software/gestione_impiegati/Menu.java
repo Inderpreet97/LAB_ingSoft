@@ -56,6 +56,8 @@ public class Menu {
 			String branch = Console.Input("Branch: ");
 
 			LocalDate startDate = Console.LocalDateInput("Start date: ");
+			
+			// TODO la end date dovrebbe essere opzionale
 			LocalDate endDate = Console.LocalDateInput("End date: ");
 			
 			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
@@ -181,10 +183,42 @@ public class Menu {
 	}
 
 	public static class MenuAdmin extends MenuManager {
-		public static void Run() {
-			MenuManager.Run();
-		}
+		
+		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", "New employee",
+				"Update employee", "Worker list", "Functionary list", "Manager list", "Admin list"));;
 
+
+		public static void Run() {
+			Boolean running = true;
+			while (running) {
+				switch (ControlMenu.RunMenu(options)) {
+				case "Logout":
+					running = false;
+					break;
+				case "New Employee":
+					addEmployee();
+					break;
+				case "Update employee":
+					updateEmployee();
+					break;
+				case "Worker list":
+					search("worker");
+					break;
+				case "Functionary list":
+					search("functionary");
+					break;
+				case "Manager list":
+					search("manager");
+					break;
+				case "Admin list":
+					search("manager");
+					break;
+				case "":
+					Console.Output("Errore");
+					break;
+				}
+			}
+		}
 	}
 
 }
