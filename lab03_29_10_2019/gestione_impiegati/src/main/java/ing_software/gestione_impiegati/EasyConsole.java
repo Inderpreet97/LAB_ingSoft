@@ -61,7 +61,7 @@ public class EasyConsole {
 	}
 
 	public static class Console {
-		
+
 		public static void Enter(String text) { // Print the text and waiting until the user types enter
 			System.out.print(text);
 			scanner.nextLine();
@@ -89,18 +89,31 @@ public class EasyConsole {
 		// INPUT
 
 		public static int IntInput(String text) {
-			Output(text);
-			int returnInt = scanner.nextInt();
-			scanner.nextLine();
-			return returnInt;
-
+			do {
+				try {
+					Output(text);
+					int returnInt = scanner.nextInt();
+					scanner.nextLine();
+					return returnInt;
+				} catch (Exception ex) {
+					scanner.nextLine();
+					OutputLN(">> Input error");
+				}
+			} while (true);
 		}
 
 		public static double DoubleInput(String text) {
-			Output(text);
-			double returnDouble = scanner.nextDouble();
-			scanner.nextLine();
-			return returnDouble;
+			do {
+				try {
+					Output(text);
+					double returnDouble = scanner.nextDouble();
+					scanner.nextLine();
+					return returnDouble;
+				} catch (Exception ex) {
+					scanner.nextLine();
+					OutputLN(">> Input error");
+				}
+			} while (true);
 		}
 
 		public static String Input(String text) {
@@ -109,33 +122,60 @@ public class EasyConsole {
 		}
 
 		public static long LongInput(String text) {
-			Output(text);
-			long reutrnLong = scanner.nextLong();
-			scanner.nextLine();
-			return reutrnLong;
+			do {
+				try {
+					Output(text);
+					long reutrnLong = scanner.nextLong();
+					scanner.nextLine();
+					return reutrnLong;
+				} catch (Exception ex) {
+					scanner.nextLine();
+					OutputLN(">> Input error");
+				}
+			} while (true);
 		}
 
 		public static float FloatInput(String text) {
-			Output(text);
-			float returnFloat = scanner.nextFloat();
-			scanner.nextLine();
-			return returnFloat;
+			do {
+				try {
+					Output(text);
+					float returnFloat = scanner.nextFloat();
+					scanner.nextLine();
+					return returnFloat;
+				} catch (Exception ex) {
+					scanner.nextLine();
+					OutputLN(">> Input error");
+				}
+			} while (true);
 		}
 
 		public static short ShortInput(String text) {
-			Output(text);
-			short returnShort = scanner.nextShort();
-			scanner.nextLine();
-			return returnShort;
+			do {
+				try {
+					Output(text);
+					short returnShort = scanner.nextShort();
+					scanner.nextLine();
+					return returnShort;
+				} catch (Exception ex) {
+					scanner.nextLine();
+					OutputLN(">> Input error");
+				}
+			} while (true);
 		}
 
 		public static LocalDate LocalDateInput(String text) {
-			String date = Input(text);
-			if (!date.isEmpty()) {
-				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
-				return LocalDate.parse(date, dateFormat);
-			}
-			return null;
+			do {
+				try {
+					String date = Input(text);
+					if (!date.isEmpty()) {
+						DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
+						return LocalDate.parse(date, dateFormat);
+					}
+					return null;
+				} catch (Exception ex) {
+					OutputLN(">> Input error");
+				}
+			} while (true);
 		}
 
 		public static <E extends Enum<E>> E EnumInput(Class<E> enumClass, String text) {

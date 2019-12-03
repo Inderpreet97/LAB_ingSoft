@@ -114,8 +114,8 @@ public class Client {
 			String password;
 
 			do {
-				Console.OutputLN("EMPLOYEE MANAGER");
-				Console.OutputLN("LOGIN");
+				Console.OutputLN("======= EMPLOYEE MANAGER =======");
+				Console.OutputLN("\n>> LOGIN <<");
 
 				try {
 					
