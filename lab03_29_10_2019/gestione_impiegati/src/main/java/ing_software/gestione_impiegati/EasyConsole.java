@@ -47,6 +47,7 @@ public class EasyConsole {
 
 			do {
 				int index = 0;
+				Console.OutputLN("");
 				for (String option : options) {
 					Console.OutputLN((index + 1) + ")" + option);
 					index++;

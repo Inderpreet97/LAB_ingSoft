@@ -43,7 +43,7 @@ public class Menu {
 		// Methods
 
 		public static void addEmployee() {
-			Console.Output("Insert");
+			Console.Output("\n>> Add Employee <<\n");
 
 			String fiscalCode 	= Console.Input("Fiscal code: ");
 			String username 	= Console.Input("Username: ");
@@ -87,12 +87,11 @@ public class Menu {
 
 		public static void updateEmployee() {
 
-			Console.OutputLN("Update");
+			Console.OutputLN("\n>> Update your profile <<\n");
 
 			ClientManager.loggedUser.print();
 
-			Console.OutputLN("Update your profile");
-			Console.OutputLN("Type to update, or press [Enter] if you do not want to modify");
+			Console.OutputLN("Type to update, or press [Enter] if you do not want to modify\n");
 
 			String username	= 	Console.Input("Username: ");
 			String name		=	Console.Input("Name: ");
@@ -100,7 +99,7 @@ public class Menu {
 
 			// Check if the parameters are all empty or not
 			if (username.isEmpty() && name.isEmpty() && surname.isEmpty()) {
-				Console.OutputLN("No updates");
+				Console.OutputLN("\n>> No updates\n");
 			} else {
 
 				// Copy the logged User (backup) and set new parameters
@@ -114,7 +113,7 @@ public class Menu {
 				Message returnMessage = ClientManager.send(message);
 
 				if (ClientManager.checkMessage(returnMessage)) {
-					Console.OutputLN("Update done");
+					Console.OutputLN("\n>> Update done\n");
 				} else {
 					Console.OutputLN(returnMessage.getContent());
 				}
