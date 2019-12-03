@@ -1,1 +1,46 @@
-[{"password":"beppe123","endDate":"2019-11-11","surname":"Urbano","fiscalCode":"abc123abc123","name":"Giuseppe","job":"functionary","branch":"fidenza","startDate":"2019-11-04","username":"beppe"},{"password":"pippo123","endDate":"2020-01-12","surname":"Baudo","fiscalCode":"pippo123ABC","name":"Filippo","job":"functionary","branch":"Fidenza","startDate":"2019-12-29","username":"pippo"},{"password":"marco123","endDate":"2020-01-12","surname":"Rossi","fiscalCode":null,"name":"Marco","job":"manager","branch":"Fidenza","startDate":"2019-12-29","username":"marco"},{"password":"luca123","endDate":"2020-01-12","surname":"Verdi","fiscalCode":null,"name":"Luca","job":"admin","branch":"Fidenza","startDate":"2019-12-29","username":"luca"}]
+[ 
+   { 
+      "password":"beppe123",
+      "endDate":"2019-11-11",
+      "surname":"Urbano",
+      "fiscalCode":"abc123abc123",
+      "name":"Giuseppe",
+      "job":"functionary",
+      "branch":"fidenza",
+      "startDate":"2019-11-04",
+      "username":"beppe"
+   },
+   { 
+      "password":"pippo123",
+      "endDate":"2020-01-12",
+      "surname":"Baudo",
+      "fiscalCode":"pippo123ABC",
+      "name":"Filippo",
+      "job":"functionary",
+      "branch":"Fidenza",
+      "startDate":"2019-12-29",
+      "username":"pippo"
+   },
+   { 
+      "password":"marco123",
+      "endDate":"2020-01-12",
+      "surname":"Rossi",
+      "fiscalCode":"MARCOROSSI25",
+      "name":"Marco",
+      "job":"manager",
+      "branch":"Fidenza",
+      "startDate":"2019-12-29",
+      "username":"marco"
+   },
+   { 
+      "password":"luca123",
+      "endDate":"2020-01-12",
+      "surname":"Verdi",
+      "fiscalCode":"LUCAVERDIH17",
+      "name":"Luca",
+      "job":"admin",
+      "branch":"Fidenza",
+      "startDate":"2019-12-29",
+      "username":"luca"
+   }
+]

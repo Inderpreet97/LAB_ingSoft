@@ -61,7 +61,7 @@ public class EasyConsole {
 	}
 
 	public static class Console {
-
+		
 		public static void Enter(String text) { // Print the text and waiting until the user types enter
 			System.out.print(text);
 			scanner.nextLine();

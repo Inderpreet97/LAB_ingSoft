@@ -8,7 +8,7 @@ import ing_software.gestione_impiegati.EasyConsole.Console;
 public class Employee implements Serializable{
 	
 	/**
-	 * attributo richiesto dall'interfaccia Serializable 
+	 * attribute required by the Serializable interface 
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +32,7 @@ public class Employee implements Serializable{
 		this.fiscalCode = fiscalCode;
 		this.username = username;
 		this.password = password;
-		this.name = name;
+		this.name = name;	
 		this.surname = surname;
 		this.job = job;
 		this.branch = branch;
@@ -58,6 +58,9 @@ public class Employee implements Serializable{
 		Console.OutputLN("Username: " + this.username);
 		Console.OutputLN("Name: " + this.name);
 		Console.OutputLN("Surname: " + this.surname);
+		Console.OutputLN("Fiscal code: "+ this.fiscalCode);
+		Console.OutputLN("Branch: " + this.branch);
+		Console.OutputLN("Job: " + this.job.toString());
 		Console.OutputLN("\n");
 	}
 	

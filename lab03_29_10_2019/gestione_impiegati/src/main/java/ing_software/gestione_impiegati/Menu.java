@@ -21,21 +21,13 @@ public class Menu {
 			Boolean running = true;
 			while (running) {
 				switch (ControlMenu.RunMenu(options).toLowerCase()) {
-				case "logout":
-					running = false;
-					break;
-				case "new employee":
-					addEmployee();
-					break;
-				case "update employee":
-					updateEmployee();
-					break;
-				case "":
-					Console.Output("Error");
-					break;
-				default:
-					Console.Output("Unknown command");
-					break;
+				
+				case "logout":				running = false;						break;
+				case "new employee":		addEmployee();							break;
+				case "update employee":		updateEmployee();						break;	
+				case "":					Console.Output("Error");				break;
+				default:					Console.Output("Unknown command");		break;
+				
 				}
 			}
 		}
@@ -133,27 +125,14 @@ public class Menu {
 			Boolean running = true;
 			while (running) {
 				switch (ControlMenu.RunMenu(options)) {
-				case "Logout":
-					running = false;
-					break;
-				case "New Employee":
-					addEmployee();
-					break;
-				case "Update employee":
-					updateEmployee();
-					break;
-				case "Worker list":
-					search(Jobs.worker);
-					break;
-				case "Functionary list":
-					search(Jobs.functionary);
-					break;
-				case "Manager list":
-					search(Jobs.manager);
-					break;
-				case "":
-					Console.Output("Errore");
-					break;
+				
+				case "Logout":				running = false;				break;
+				case "New Employee":		addEmployee();					break;
+				case "Update employee":		updateEmployee();				break;
+				case "Worker list":			search(Jobs.worker);			break;
+				case "Functionary list":	search(Jobs.functionary);		break;
+				case "Manager list":		search(Jobs.manager);			break;
+				case "":					Console.Output("Errore");		break;
 				}
 			}
 		}
@@ -165,8 +144,6 @@ public class Menu {
 
 			if (ClientManager.checkMessage(returnMessage)) {
 				// Get list of employee from the object of returnMessage
-				
-				
 				
 				@SuppressWarnings("unchecked")
 				ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
@@ -195,38 +172,23 @@ public class Menu {
 
 	public static class MenuAdmin extends MenuManager {
 
-		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", "New employee",
-				"Update employee", "Worker list", "Functionary list", "Manager list", "Admin list"));;
+		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList(
+				"Logout", "New employee", "Update employee", "Worker list", "Functionary list", "Manager list", "Admin list"));;
 
 
 		public static void Run() {
 			Boolean running = true;
 			while (running) {
 				switch (ControlMenu.RunMenu(options)) {
-				case "Logout":
-					running = false;
-					break;
-				case "New Employee":
-					addEmployee();
-					break;
-				case "Update employee":
-					updateEmployee();
-					break;
-				case "Worker list":
-					search(Jobs.worker);
-					break;
-				case "Functionary list":
-					search(Jobs.functionary);
-					break;
-				case "Manager list":
-					search(Jobs.manager);
-					break;
-				case "Admin list":
-					search(Jobs.admin);
-					break;
-				case "":
-					Console.Output("Errore");
-					break;
+				
+				case "Logout":				running = false;				break;
+				case "New Employee":		addEmployee();					break;
+				case "Update employee":		updateEmployee();				break;
+				case "Worker list":			search(Jobs.worker);			break;
+				case "Functionary list":	search(Jobs.functionary);		break;
+				case "Manager list":		search(Jobs.manager);			break;
+				case "Admin list":			search(Jobs.admin);				break;
+				case "":					Console.Output("Errore");		break;
 				}
 			}
 		}
