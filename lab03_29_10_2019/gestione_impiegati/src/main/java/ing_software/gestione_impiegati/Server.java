@@ -94,8 +94,10 @@ public class Server {
 	// Server Main
 	public static void main(final String[] v) throws IOException {
 		readJSONEmployee(); // First, read the JSON File
+		readJSONBranch();
 		new Server().run(); // Run the server
 		writeJSONEmployee(); // When server is closed, write on JSON File
+		writeJSONBranch();
 	}
 
 	/**************************************************************
@@ -216,7 +218,7 @@ public class Server {
 	public boolean checkBranch(String employeeBranch) {
 		
 		for(Branch branch : branchList) {
-			if(branch.getName().equals(employeeBranch)){
+			if(branch.getName().toLowerCase().equals(employeeBranch.toLowerCase())){
 				return true;
 			}
 		}
