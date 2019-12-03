@@ -21,13 +21,13 @@ public class Menu {
 			Boolean running = true;
 			while (running) {
 				switch (ControlMenu.RunMenu(options).toLowerCase()) {
-				
+
 				case "logout":				running = false;						break;
 				case "new employee":		addEmployee();							break;
 				case "update employee":		updateEmployee();						break;	
 				case "":					Console.Output("Error");				break;
 				default:					Console.Output("Unknown command");		break;
-				
+
 				}
 			}
 		}
@@ -58,16 +58,27 @@ public class Menu {
 				endDate = LocalDate.parse(date, dateFormat);
 			}
 
-			Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
-					endDate);
+			if(!(fiscalCode.isEmpty() || username.isEmpty() || password.isEmpty() 
+					|| name.isEmpty() || surname.isEmpty() || branch.isEmpty() || startDate.equals(null))) {
+				Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
+						endDate);
 
-			Message message = new Message(employee, "", Functions.insertEmployee);
-			Message returnMessage = ClientManager.send(message);
+				Message message = new Message(employee, "", Functions.insertEmployee);
+				Message returnMessage = ClientManager.send(message);
 
-			// Done or Error
-			if (ClientManager.checkMessage(returnMessage)) {
-				Console.OutputLN("Employee added");
+				// Done or Error
+				if (ClientManager.checkMessage(returnMessage)) {
+					Console.OutputLN("Employee added");
+				} else {
+					int choice = ControlMenu.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
+					if (choice == 1) {
+						addEmployee();
+					}
+					// Else end this function and return to menu
+				}
+				
 			} else {
+				Console.OutputLN("\n>> Some data is missing");
 				int choice = ControlMenu.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
 				if (choice == 1) {
 					addEmployee();
@@ -121,53 +132,53 @@ public class Menu {
 		protected static ArrayList<String> options = new ArrayList<String>(Arrays.asList("Logout", "New employee",
 				"Update employee", "Worker list", "Functionary list", "Manager list"));;
 
-		public static void Run() {
-			Boolean running = true;
-			while (running) {
-				switch (ControlMenu.RunMenu(options)) {
-				
-				case "Logout":				running = false;				break;
-				case "New Employee":		addEmployee();					break;
-				case "Update employee":		updateEmployee();				break;
-				case "Worker list":			search(Jobs.worker);			break;
-				case "Functionary list":	search(Jobs.functionary);		break;
-				case "Manager list":		search(Jobs.manager);			break;
-				case "":					Console.Output("Errore");		break;
-				}
-			}
-		}
+				public static void Run() {
+					Boolean running = true;
+					while (running) {
+						switch (ControlMenu.RunMenu(options)) {
 
-		public static void search(Jobs job) {
-
-			Message message = new Message(job, job.toString(), Functions.searchEmployee);
-			Message returnMessage = ClientManager.send(message);
-
-			if (ClientManager.checkMessage(returnMessage)) {
-				// Get list of employee from the object of returnMessage
-				
-				@SuppressWarnings("unchecked")
-				ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
-
-				// Print list
-				if (employeeList.size() >= 0) {
-					for (Employee employee : employeeList) {
-						Console.OutputLN("Fiscal code:" + employee.getFiscalCode());
-						Console.OutputLN("Username: " + employee.getUsername());
-						Console.OutputLN("Name: " + employee.getName());
-						Console.OutputLN("Surname: " + employee.getSurname());
-						Console.OutputLN("Branch: " + employee.getBranch());
-						Console.OutputLN("Job: " + employee.getJob());
-						Console.OutputLN("\n");
+						case "Logout":				running = false;				break;
+						case "New Employee":		addEmployee();					break;
+						case "Update employee":		updateEmployee();				break;
+						case "Worker list":			search(Jobs.worker);			break;
+						case "Functionary list":	search(Jobs.functionary);		break;
+						case "Manager list":		search(Jobs.manager);			break;
+						case "":					Console.Output("Errore");		break;
+						}
 					}
-				}else {
-					Console.OutputLN("No " + job + " list");
 				}
 
-			} else {
-				Console.Output("Error occurred");
-			}
+				public static void search(Jobs job) {
 
-		}
+					Message message = new Message(job, job.toString(), Functions.searchEmployee);
+					Message returnMessage = ClientManager.send(message);
+
+					if (ClientManager.checkMessage(returnMessage)) {
+						// Get list of employee from the object of returnMessage
+
+						@SuppressWarnings("unchecked")
+						ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
+
+						// Print list
+						if (employeeList.size() >= 0) {
+							for (Employee employee : employeeList) {
+								Console.OutputLN("Fiscal code:" + employee.getFiscalCode());
+								Console.OutputLN("Username: " + employee.getUsername());
+								Console.OutputLN("Name: " + employee.getName());
+								Console.OutputLN("Surname: " + employee.getSurname());
+								Console.OutputLN("Branch: " + employee.getBranch());
+								Console.OutputLN("Job: " + employee.getJob());
+								Console.OutputLN("\n");
+							}
+						}else {
+							Console.OutputLN("No " + job + " list");
+						}
+
+					} else {
+						Console.Output("Error occurred");
+					}
+
+				}
 	}
 
 	public static class MenuAdmin extends MenuManager {
@@ -176,22 +187,22 @@ public class Menu {
 				"Logout", "New employee", "Update employee", "Worker list", "Functionary list", "Manager list", "Admin list"));;
 
 
-		public static void Run() {
-			Boolean running = true;
-			while (running) {
-				switch (ControlMenu.RunMenu(options)) {
-				
-				case "Logout":				running = false;				break;
-				case "New Employee":		addEmployee();					break;
-				case "Update employee":		updateEmployee();				break;
-				case "Worker list":			search(Jobs.worker);			break;
-				case "Functionary list":	search(Jobs.functionary);		break;
-				case "Manager list":		search(Jobs.manager);			break;
-				case "Admin list":			search(Jobs.admin);				break;
-				case "":					Console.Output("Errore");		break;
+				public static void Run() {
+					Boolean running = true;
+					while (running) {
+						switch (ControlMenu.RunMenu(options)) {
+
+						case "Logout":				running = false;				break;
+						case "New Employee":		addEmployee();					break;
+						case "Update employee":		updateEmployee();				break;
+						case "Worker list":			search(Jobs.worker);			break;
+						case "Functionary list":	search(Jobs.functionary);		break;
+						case "Manager list":		search(Jobs.manager);			break;
+						case "Admin list":			search(Jobs.admin);				break;
+						case "":					Console.Output("Errore");		break;
+						}
+					}
 				}
-			}
-		}
 	}
 
 }

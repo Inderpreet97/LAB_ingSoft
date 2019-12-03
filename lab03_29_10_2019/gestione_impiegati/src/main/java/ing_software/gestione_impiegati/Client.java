@@ -22,7 +22,7 @@ public class Client {
 		public static Employee loggedUser;
 
 		private static final int SPORT = 4444;
-		private static final String SHOST = "localhost";
+		private static final String SHOST = "192.168.43.73";
 
 		private static Socket client = null;
 		private static ObjectOutputStream outputStream = null;
@@ -114,8 +114,8 @@ public class Client {
 			String password;
 
 			do {
-				Console.OutputLN("=========> Employee Manager <=========");
-				Console.OutputLN("=========> Login <========= ");
+				Console.OutputLN("EMPLOYEE MANAGER");
+				Console.OutputLN("LOGIN");
 
 				try {
 					
@@ -154,7 +154,8 @@ public class Client {
 					ex.printStackTrace();
 					
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					Console.OutputLN("");
+					Console.OutputLN(ex.getMessage());
 					Console.EnterDefault();
 				}
 				

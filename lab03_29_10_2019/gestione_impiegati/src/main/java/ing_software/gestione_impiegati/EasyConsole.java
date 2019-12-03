@@ -131,7 +131,7 @@ public class EasyConsole {
 
 		public static LocalDate LocalDateInput(String text) {
 			String date = Input(text);
-			if (!date.equals(null)) {
+			if (!date.isEmpty()) {
 				DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
 				return LocalDate.parse(date, dateFormat);
 			}
@@ -189,7 +189,7 @@ public class EasyConsole {
 
 			do {
 				relativeIndex = IntInput("Choice: ") - 1;
-			} while (relativeIndex <= 0 && relativeIndex > relativeIndexes.size());
+			} while (relativeIndex < 0 || relativeIndex >= relativeIndexes.size());
 
 			E job = E.valueOf(enumClass, enumValues[relativeIndexes.get(relativeIndex)].toString());
 

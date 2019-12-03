@@ -247,7 +247,13 @@ public class Server {
 				Jobs job = Jobs.valueOf(jobString);
 				String branch = (String) employeeJSON.get("branch");
 				LocalDate startDate = LocalDate.parse((CharSequence) employeeJSON.get("startDate"));
-				LocalDate endDate = LocalDate.parse((CharSequence) employeeJSON.get("endDate"));
+				
+				String endDateString = (String) employeeJSON.get("endDate");
+				LocalDate endDate = null;
+				
+				if(!endDateString.isEmpty()) {
+					endDate = LocalDate.parse(endDateString);
+				}
 
 				// Create the employee object from JSON object
 				Employee employee = new Employee(fiscalCode, username, password, name, surname, job, branch, startDate,
@@ -285,7 +291,12 @@ public class Server {
 			empDetails.put("job", emp.getJob().name());
 			empDetails.put("branch", emp.getBranch());
 			empDetails.put("startDate", emp.getStartDate().toString());
-			empDetails.put("endDate", emp.getEndDate().toString());
+			
+			if(emp.getEndDate() == null) {
+				empDetails.put("endDate", "");
+			} else {
+				empDetails.put("endDate", emp.getEndDate().toString());
+			}
 
 			employeeListJSON.add(empDetails);
 		}
