@@ -61,6 +61,8 @@ public class Employee implements Serializable{
 		Console.OutputLN("Fiscal code: "+ this.fiscalCode);
 		Console.OutputLN("Branch: " + this.branch);
 		Console.OutputLN("Job: " + this.job.toString());
+		Console.OutputLN("Start date: "+ this.startDate.toString());
+		Console.OutputLN("End date: "+ this.endDate);
 		Console.OutputLN("\n");
 	}
 	
