@@ -68,7 +68,7 @@ public class Menu {
 
 				// Done or Error
 				if (ClientManager.checkMessage(returnMessage)) {
-					Console.OutputLN("Employee added");
+					Console.OutputLN("\n>> Employee added \n\n");
 				} else {
 					int choice = ControlMenu.ChoiceMenu(new ArrayList<String>(Arrays.asList("Add correct employee", "Return to Menu")));
 					if (choice == 1) {
@@ -88,11 +88,44 @@ public class Menu {
 
 		}
 
+		@SuppressWarnings("unchecked")
 		public static void updateEmployee() {
+			
+			ArrayList<String> optionsArray = new ArrayList<String>();
+			optionsArray.add("Update your profile");
+			
+			Message message = new Message(ClientManager.loggedUser.getJob(), ClientManager.loggedUser.getJob().toString(), Functions.searchEmployee);
+			Message returnMessage = ClientManager.send(message);
+			
+			ArrayList<Employee> employeeList = new ArrayList<Employee>();
+			
+			if (ClientManager.checkMessage(returnMessage)) {
+				// Get list of employee from the object of returnMessage
+				
+				employeeList = (ArrayList<Employee>) returnMessage.getObj();
 
-			Console.OutputLN("\n>> Update your profile <<\n");
-
-			ClientManager.loggedUser.print();
+				if (employeeList.size() > 0) {
+					for (Employee employee : employeeList) {
+						optionsArray.add(employee.getFiscalCode());
+					}
+				}
+			} else {
+				Console.Output("Error occurred");
+			}
+			
+			int choice = ControlMenu.ChoiceMenu(optionsArray);
+			
+			Employee toUpdateEmployee = null;
+			
+			if(choice == 1) {
+				Console.OutputLN("\n>> Update your profile <<\n");
+				toUpdateEmployee = ClientManager.loggedUser;
+			} else {
+				Console.OutputLN("");
+				toUpdateEmployee = employeeList.get(choice - 2);
+			}
+			
+			toUpdateEmployee.print();
 
 			Console.OutputLN("Type to update, or press [Enter] if you do not want to modify\n");
 
@@ -105,15 +138,12 @@ public class Menu {
 				Console.OutputLN("\n>> No updates\n");
 			} else {
 
-				// Copy the logged User (backup) and set new parameters
-				Employee tempEmployee = ClientManager.loggedUser;
+				if (!username.isEmpty())		toUpdateEmployee.setUsername(username);
+				if (!name.isEmpty())			toUpdateEmployee.setName(name);
+				if (!surname.isEmpty())			toUpdateEmployee.setSurname(surname);
 
-				if (!username.isEmpty())		tempEmployee.setUsername(username);
-				if (!name.isEmpty())			tempEmployee.setName(name);
-				if (!surname.isEmpty())			tempEmployee.setSurname(surname);
-
-				Message message = new Message(tempEmployee, "", Functions.updateEmployee);
-				Message returnMessage = ClientManager.send(message);
+				message = new Message(toUpdateEmployee, "", Functions.updateEmployee);
+				returnMessage = ClientManager.send(message);
 
 				if (ClientManager.checkMessage(returnMessage)) {
 					Console.OutputLN("\n>> Update done\n");
@@ -160,18 +190,20 @@ public class Menu {
 						ArrayList<Employee> employeeList = (ArrayList<Employee>) returnMessage.getObj();
 
 						// Print list
-						if (employeeList.size() >= 0) {
+						if (employeeList.size() > 0) {
+							int index = 1;
 							for (Employee employee : employeeList) {
-								Console.OutputLN("Fiscal code:" + employee.getFiscalCode());
+								Console.OutputLN("\nEmployee " + index + " :");
+								Console.OutputLN("Fiscal code: " + employee.getFiscalCode());
 								Console.OutputLN("Username: " + employee.getUsername());
 								Console.OutputLN("Name: " + employee.getName());
 								Console.OutputLN("Surname: " + employee.getSurname());
 								Console.OutputLN("Branch: " + employee.getBranch());
 								Console.OutputLN("Job: " + employee.getJob());
-								Console.OutputLN("\n");
+								index ++;
 							}
-						}else {
-							Console.OutputLN("No " + job + " list");
+						} else {
+							Console.OutputLN("\n>> " + job + " list is empty\n");
 						}
 
 					} else {
