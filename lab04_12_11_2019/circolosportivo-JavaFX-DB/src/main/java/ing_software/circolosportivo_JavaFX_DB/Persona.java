@@ -1,11 +1,30 @@
 package ing_software.circolosportivo_JavaFX_DB;
 
-public abstract class Persona {
-	private String nome;
-	private String cognome;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Persona")
+public class Persona {
+	@Id
+	@Column(name = "email", nullable = false)
 	private String email;
+	
+	@Column(name = "nome", nullable = false)
+	private String nome;
+	
+	@Column(name = "cognome", nullable = false)
+	private String cognome;
+	
+	@Column(name = "password", nullable = false)
 	private String password;
 
+	public Persona() {
+
+	}
+	
 	public Persona(String nome, String cognome, String email, String password) {
 		this.nome = nome;
 		this.cognome = cognome;
