@@ -1,4 +1,4 @@
-package ing_software.circolo_sportivo;
+package ing_software.circolosportivo_JavaFX_DB;
 
 public abstract class Attivita {
 	private String Nome;
