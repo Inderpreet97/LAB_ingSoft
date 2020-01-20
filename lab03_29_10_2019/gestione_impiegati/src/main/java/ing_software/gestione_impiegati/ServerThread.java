@@ -11,7 +11,6 @@ public class ServerThread implements Runnable {
 
 	private Server server;
 	private Socket socket;
-	private Employee loggedUser = null;
 
 	public ServerThread(final Server s, final Socket c) {
 		this.server = s;
@@ -31,10 +30,11 @@ public class ServerThread implements Runnable {
 		}
 
 		String id = String.valueOf(this.hashCode());
-
+		
 		boolean threadRunning = true;
 
 		while (threadRunning) {
+
 			try {
 				Object obj = is.readObject();
 
@@ -47,31 +47,32 @@ public class ServerThread implements Runnable {
 					System.out.format("Thread %s received: %s from Client\n", id, msg.getCalledFunction().name());
 
 					if (os == null) {
-						os = new ObjectOutputStream(new BufferedOutputStream(this.socket.getOutputStream()));
+						os = new ObjectOutputStream(new BufferedOutputStream(
+								this.socket.getOutputStream()));
 					}
 
-					// Check the different called function from the message received
+					// Check the differente called function from the message received
 					switch (msg.getCalledFunction()) {
-
 					case login:
 						if (msg.getObj() instanceof Employee) {
 							Employee loggedEmployee = this.server.Login(((Employee) msg.getObj()));
-
 							if (loggedEmployee != null) {
 								// Login corrected
-								System.out.format("Thread %s login corrected for %s \n", id,
-										loggedEmployee.getUsername());
+								System.out.print("Login corrected for " + loggedEmployee.getUsername());
+								System.out.print(" - " + loggedEmployee.getName() + " " + loggedEmployee.getSurname());
+								System.out.println(" - " + loggedEmployee.getFiscalCode());
 
 								// Send message "done" to the client
+								// TODO in set content, describe the message or simply "Done"?
+								msg.setContent("Done");      
 								msg.setCalledFunction(Functions.done);
 								msg.setObj(loggedEmployee);
 								os.writeObject(msg);
 								os.flush();
-								loggedUser = loggedEmployee;
 
 							} else {
 								// Login not corrected
-								System.out.format("Thread %s login failed \n", id);
+								System.out.println("Login not corrected");
 
 								// Send message "error" to the client
 								msg.setContent("Login not corrected, please enter corrected credentials");
@@ -82,9 +83,9 @@ public class ServerThread implements Runnable {
 							}
 						} else {
 
-							// content = message description
-							// calledFunction (done = success) (error = not success)
-							// if calledFunction = error -> content = error description
+							// content = descrizione del messaggio
+							// calledFunction (done = successo) (error = non successo)
+							// if calledFunction = error -> content = descrizione errore
 
 							msg.setContent("Object is not instance of Employee");
 							msg.setCalledFunction(Functions.error);
@@ -92,105 +93,49 @@ public class ServerThread implements Runnable {
 							os.flush();
 						}
 						break;
-
 					case logout:
-						msg.setContent("logout");
-						msg.setCalledFunction(Functions.done);
-						os.writeObject(msg);
-						os.flush();
 						threadRunning = false;
 						break;
-
 					case insertEmployee:
+						// Check if all data received are corrected
+						// Check if the fiscalCode and the username does not exist yet
 
 						if (msg.getObj() instanceof Employee) {
 							Employee employee = (Employee) msg.getObj();
-							
-							if(this.server.checkBranch(employee.getBranch())) {
-								if (this.server.addEmployee(employee)) {
-									msg.setContent("Employee added correctly");
-									msg.setCalledFunction(Functions.done);
-									os.writeObject(msg);
-									os.flush();
-									
-									// Save the Employee List into file
-									Server.writeJSONEmployee();
-
-								} else {
-									msg.setContent("Employee already registered");
-									msg.setCalledFunction(Functions.error);
-									os.writeObject(msg);
-									os.flush();
-								}
+							if (this.server.searchEmployeeByFiscalCode(employee.getFiscalCode())) {
+								msg.setContent("Done");
+								msg.setCalledFunction(Functions.done);
+								os.writeObject(msg);
+								os.flush();
 							} else {
-								msg.setContent("Branch not found");
+								msg.setContent("FISCAL CODE ALREADY EXIST");
 								msg.setCalledFunction(Functions.error);
 								os.writeObject(msg);
 								os.flush();
 							}
-							
 						}
-						break;
 
+						break;
 					case updateEmployee:
-						if (msg.getObj() instanceof Employee) {
-							Employee employee = (Employee) msg.getObj();
-
-							if (this.server.updateEmployee(employee)) {
-								
-								// Save the Employee List into file
-								Server.writeJSONEmployee();
-								
-								msg.setContent("Employee updated correctly");
-								msg.setCalledFunction(Functions.done);
-								os.writeObject(msg);
-								os.flush();
-
-							} else {
-								msg.setContent("Employee not found");
-								msg.setCalledFunction(Functions.error);
-								os.writeObject(msg);
-								os.flush();
-							}
-						}
+						// Update
 						break;
-
 					case searchEmployee:
-						if (msg.getObj() instanceof Jobs) {
-							Jobs searchedJob = (Jobs) msg.getObj();
-							if (searchedJob.compareTo(loggedUser.getJob()) > 0) {
-								msg.setContent("The logged user have Insufficient Privileges");
-								msg.setCalledFunction(Functions.error);
-								os.writeObject(msg);
-								os.flush();
-							} else {
-								// Object is the list 
-								msg.setObj(this.server.getEmployeeListByJob(searchedJob));
-								msg.setCalledFunction(Functions.done);
-								os.writeObject(msg);
-								os.flush();
-							}
-						}
 						break;
-
 					default:
-						msg.setContent("Unknown function");
-						msg.setCalledFunction(Functions.error);
-						os.writeObject(msg);
-						os.flush();
 						break;
 					}
-				}
+				} 
 			} catch (Exception e) {
 				e.printStackTrace();
 				threadRunning = false;
 			}
 		}
-
+		
 		// Close the connection with a single client
 		try {
 			this.socket.close();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
