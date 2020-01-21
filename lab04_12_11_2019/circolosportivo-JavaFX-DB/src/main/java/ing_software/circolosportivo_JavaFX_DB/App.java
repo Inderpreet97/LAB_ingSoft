@@ -11,11 +11,20 @@ public class App {
 	public static Scanner scanner;
 
 	public static void main(String[] args) {
+		scanner = new Scanner(System.in);
 
 		// Operazioni con il DB
 		testDB();
 
-		scanner = new Scanner(System.in);
+		//consoleApp();
+
+		System.out.println("Programma terminato.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+
+		scanner.close();
+	}
+
+	private static void consoleApp() {
 
 		attivita = new Attivita[] { new Corso("calcio"), new Corso("tennis"), new Gara("Torneo di calcio"),
 				new Gara("Torneo di tennis") };
@@ -66,50 +75,30 @@ public class App {
 			System.out.println(" }");
 		}
 
-		System.out.println("Premere un tasto per terminare....");
-		scanner.nextLine();
-
-		scanner.close();
 	}
 
 	private static void testDB() {
-		/*
-		 * Save few objects with hibernate
-		 */
-		String personaId1 = App.savePersona("abc","Sam", "Disilva", "2017-05-10");
-		String personaId2 = App.savePersona("asd","Joshua", "Brill", "2017-05-15");
-		String personaId3 = App.savePersona("qwe","Peter", "Pan", "2017-05-20");
-		String personaId4 = App.savePersona("zxc","Bill", "Laurent", "2017-05-12");
-		
-		// Una riga di codice per togliere dei warning
-		personaId1.compareTo(personaId3);
+
 		/*
 		 * Retrieve all saved objects
 		 */
 		List<Persona> persone = App.getAllPersone();
 		System.out.println("List of all persisted personas >>>");
 		for (Persona persona : persone) {
-			System.out.println("Persisted persona :" + persona);
+			System.out.println(String.format("Persona> Nome: %s, Cognome: %s, Email: %s, Psw: %s",persona.getNome(),persona.getCognome(), persona.getEmail(),persona.getPassword()));
 		}
 
 		/*
 		 * Update an object
+		 * 
+		 * App.updatePersona(personaId4, "2017-05-18");
 		 */
-		App.updatePersona(personaId4, "2017-05-18");
 
 		/*
 		 * Deletes an object
+		 * 
+		 * App.deletePersona(personaId2);
 		 */
-		App.deletePersona(personaId2);
-
-		/*
-		 * Retrieve all saved objects
-		 */
-		List<Persona> remaingPersone = App.getAllPersone();
-		System.out.println("List of all remained persisted persone >>>");
-		for (Persona persona : remaingPersone) {
-			System.out.println("Persisted persona :" + persona);
-		}
 	}
 
 	// METODI DI HIBERNATE
@@ -124,6 +113,7 @@ public class App {
 		session.beginTransaction();
 
 		String returnEmail = (String) session.save(persona);
+
 		session.getTransaction().commit();
 		session.close();
 		return returnEmail;
@@ -138,7 +128,7 @@ public class App {
 		session.beginTransaction();
 
 		@SuppressWarnings("unchecked")
-		List<Persona> persone = (List<Persona>) session.createQuery("FROM Persona s ORDER BY s.cognome ASC").list();
+		List<Persona> persone = (List<Persona>) session.createQuery("FROM Persona p ORDER BY p.cognome ASC").list(); // "p" è un alias, usa i nomi delle classi e non le tabelle
 
 		session.getTransaction().commit();
 		session.close();
@@ -163,11 +153,11 @@ public class App {
 	/**
 	 * This method deletes a specific Persona object
 	 */
-	public static void deletePersona(String personaId2) {
+	public static void deletePersona(String email) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 
-		Persona employee = (Persona) session.get(Persona.class, personaId2);
+		Persona employee = (Persona) session.get(Persona.class, email);
 		session.delete(employee);
 		session.getTransaction().commit();
 		session.close();
