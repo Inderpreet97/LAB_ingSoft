@@ -5,7 +5,7 @@ public class Socio extends Persona{
 	public Socio(String nome, String cognome, String email, String password) {
 		super(nome, cognome, email, password);
 	}
-	
+
 	public Boolean iscrizioneAttivita() {
 		try {
 			System.out.println("\n------>> Iscrizione Attivita <<------");

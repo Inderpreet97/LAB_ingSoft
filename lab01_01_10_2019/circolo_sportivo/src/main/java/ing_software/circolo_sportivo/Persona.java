@@ -3,7 +3,7 @@ package ing_software.circolo_sportivo;
 public abstract class Persona {
 	private String nome;
 	private String cognome;
-	private String email;
+	protected String email;
 	private String password;
 
 	public Persona(String nome, String cognome, String email, String password) {
