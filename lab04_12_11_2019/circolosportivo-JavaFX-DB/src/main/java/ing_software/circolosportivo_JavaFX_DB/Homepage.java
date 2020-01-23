@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 
 public class Homepage extends Application {
 	
-	private final String FXMLFILE = "ing_software/circolosportivo_JavaFX_DB/FXML/loginFXML.fxml";
+	private final String LoginFXML = "ing_software/circolosportivo_JavaFX_DB/FXML/loginFXML.fxml";
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(FXMLFILE));
+		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(LoginFXML));
 
 		primaryStage.setTitle("FXML Welcome");
 		primaryStage.setScene(new Scene(root, 300, 275));

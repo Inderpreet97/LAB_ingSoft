@@ -1,11 +1,32 @@
 package ing_software.circolosportivo_JavaFX_DB;
 
-public abstract class Attivita {
-	private String Nome;
-	private Persona[] persone;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="Attivita")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="attivita_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue("null")
+public class Attivita {
+	
+	@Id
+	@Column(name = "nome", nullable = false)
+	private String nome;
+	
+	private Persona[] persone;
+	
+	public Attivita() {	}
+	
 	public Attivita(String nome) {
-		Nome = nome;
+		this.nome = nome;
 		this.persone = new Persona[] {};
 	}
 
@@ -31,11 +52,11 @@ public abstract class Attivita {
 	}
 
 	public String getNome() {
-		return Nome;
+		return nome;
 	}
 
 	public void setNome(String nome) {
-		Nome = nome;
+		this.nome = nome;
 	}
 
 	public Persona[] getPersone() {
