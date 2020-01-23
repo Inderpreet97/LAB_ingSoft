@@ -5,16 +5,6 @@ public class Socio extends Persona{
 	public Socio(String nome, String cognome, String email, String password) {
 		super(nome, cognome, email, password);
 	}
-	
-	public Boolean iscriviti(String nomeAttivita){
-
-		String queryIdAttivita = "FROM Attivita WHERE Attivita.Nome = nomeAttivita";
-		String query = "INSERT INTO PARTECIPAZIONE(Attivita, Persona) VALUES(" + this.email + "," + queryIdAttivita + ");";
-
-		// EseguiQuery(query);
-
-		return true;
-	}
 
 	public Boolean iscrizioneAttivita() {
 		try {
