@@ -11,7 +11,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Attivita")
+@Table(name="attivita")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="attivita_type", discriminatorType = DiscriminatorType.INTEGER)
 @DiscriminatorValue("null")

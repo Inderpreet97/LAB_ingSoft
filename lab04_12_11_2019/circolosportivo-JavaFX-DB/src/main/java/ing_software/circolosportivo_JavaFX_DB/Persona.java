@@ -11,7 +11,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Persona")
+@Table(name="persona")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // In che modo salvare le sottoclassi -> unica tabella con un discriminatore
 @DiscriminatorColumn(name="persona_type", discriminatorType = DiscriminatorType.INTEGER) // Discriminatore intero -> "1" è Socio, "2" è Amministratore
 @DiscriminatorValue("null") // Se nel caso in una riga nella colonna "persona_type" ci dovesse essere un null la riga verrebbe mappata di default in Persona
