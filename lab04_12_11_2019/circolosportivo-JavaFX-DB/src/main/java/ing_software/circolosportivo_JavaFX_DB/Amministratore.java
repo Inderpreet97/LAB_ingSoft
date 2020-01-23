@@ -3,6 +3,8 @@ package ing_software.circolosportivo_JavaFX_DB;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import org.hibernate.Session;
+
 @Entity
 @DiscriminatorValue("2")
 public class Amministratore extends Socio {
@@ -11,243 +13,218 @@ public class Amministratore extends Socio {
 		super(nome, cognome, email, password);
 	}
 
-	public Boolean aggiungiPersona() {
+	// Aggiunge un socio o un Amministrare nella tabella persona
+	public static Boolean aggiungiPersona(String nome, String cognome, String email, String password, int personaType) {
 		try {
-			int userChoice;
-			System.out.println("\n------>> Aggiungi Persona <<------");
+			if (personaType == 1) { // aggiungi socio
+				Socio persona = new Socio(nome, cognome, email, password);
 
-			do {
-				try {
-					System.out.println("\nCosa vuou aggiungere?");
-					System.out.print("1) Socio\n2) Amministratore\nScelta: ");
-					userChoice = App.scanner.nextInt();
-					App.scanner.nextLine(); // Perchè nextInt() non legge "\n" e quindi viene letto da questo nextLine()
-				} catch (Exception ex) {
-					System.out.println("Errore: " + ex.getMessage());
-					System.out.println("Premere un tasto per continuare...");
-					App.scanner.nextLine();
-					userChoice = 0;
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				session.beginTransaction();
+
+				String returnEmail = (String) session.save(persona);
+
+				if (returnEmail.equals(email)) {
+					session.getTransaction().commit();
+					session.close();
+					return true;
+				} else {
+					session.getTransaction().rollback();
+					session.close();
+					return false;
 				}
-			} while (userChoice < 1 || userChoice > 2);
 
-			System.out.print("Nome: ");
-			String nome = App.scanner.nextLine();
-			System.out.print("Cognome: ");
-			String cognome = App.scanner.nextLine();
-			System.out.print("Email: ");
-			String email = App.scanner.nextLine();
-			System.out.print("Password: ");
-			String password = App.scanner.nextLine();
+			} else if (personaType == 2) { // aggiungi amministratore
+				Amministratore persona = new Amministratore(nome, cognome, email, password);
 
-			if (userChoice == 1) {
-				Socio socio = new Socio(nome, cognome, email, password);
-				App.circolo = App.aggiungiElementoArray(App.circolo, socio);
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				session.beginTransaction();
 
-			} else if (userChoice == 2) {
-				Amministratore amministratore = new Amministratore(nome, cognome, email, password);
-				App.circolo = App.aggiungiElementoArray(App.circolo, amministratore);
+				String returnEmail = (String) session.save(persona);
+
+				session.getTransaction().commit();
+				session.close();
+
+				if (returnEmail.equals(email)) {
+					session.getTransaction().commit();
+					session.close();
+					return true;
+				} else {
+					session.getTransaction().rollback();
+					session.close();
+					return false;
+				}
 			}
 
-			return true;
+			// personaType non corretto
+			return false;
 
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public Boolean rimuoviPersona() {
+	// Rimuove persona dalla tabella persona
+	public static Boolean rimuoviPersona(String email) {
 		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
 
-			System.out.println("\n------>> Rimuovi Persona <<------");
+			Persona persona = (Persona) session.get(Persona.class, email);
 			
-			// Stampa lista persone presenti nel circolo
-			for (int index = 0; index < App.circolo.length; index++) {
-				System.out.print(index + ")\t" + App.circolo[index].getNome() + "\t" + App.circolo[index].getCognome());
-				System.out.println("\t" + App.circolo[index].getEmail());
+			if(persona == null) {
+				throw new Exception("Persona non trovata");
 			}
-
-			int userChoice;
-			do {
-				try {
-					System.out.print("\nIndice persona da rimuovere: ");
-					userChoice = App.scanner.nextInt();
-					App.scanner.nextLine(); // Perchè nextInt() non legge "\n" e quindi viene letto da questo nextLine()
-				} catch (Exception ex) {
-					System.out.println("Errore: " + ex.getMessage());
-					System.out.println("Premere un tasto per continuare...");
-					App.scanner.nextLine();
-					userChoice = -1;
-				}
-			} while (userChoice < 0 || userChoice > App.circolo.length);
-
-			for (Attivita attivita : App.attivita) {
-				attivita.rimuoviPersona(App.circolo[userChoice]);
-			}
-
-			App.circolo = App.rimuoviElementoArray(App.circolo, App.circolo[userChoice]);
-
+			
+			session.delete(persona);
+			session.getTransaction().commit();
+			session.close();
+			
 			return true;
-
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public Boolean modificaPersona() {
+	// Aggiorna i dati di una persona
+	public static Boolean modificaPersona(String oldEmail, String email, String nome, String cognome, String password) {
 		try {
-			System.out.println("\n------>> Modifica Persona <<------");
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			Persona persona = (Persona) session.get(Persona.class, oldEmail);
 			
-			// Stampa lista persone presenti nel circolo
-			for (int index = 0; index < App.circolo.length; index++) {
-				System.out.print(index + ")\t" + App.circolo[index].getNome() + "\t" + App.circolo[index].getCognome());
-				System.out.println("\t" + App.circolo[index].getEmail());
+			if(persona == null) {
+				throw new Exception("Persona non trovata");
 			}
-
-			int userChoice;
-			do {
-				try {
-					System.out.print("\nIndice persona da modificare: ");
-					userChoice = App.scanner.nextInt();
-					App.scanner.nextLine(); // Perchè nextInt() non legge "\n" e quindi viene letto da questo nextLine()
-				} catch (Exception ex) {
-					System.out.println("Errore: " + ex.getMessage());
-					System.out.println("Premere un tasto per continuare...");
-					App.scanner.nextLine();
-					userChoice = -1;
-				}
-			} while (userChoice < 0 || userChoice > App.circolo.length);
-
-			System.out.println("\nInserire i nuovi dati");
-			System.out.print("Nome: ");
-			String nome = App.scanner.nextLine();
-			System.out.print("Cognome: ");
-			String cognome = App.scanner.nextLine();
-			System.out.print("Email: ");
-			String email = App.scanner.nextLine();
-			System.out.print("Password: ");
-			String password = App.scanner.nextLine();
-
-			App.circolo[userChoice].setNome(nome);
-			App.circolo[userChoice].setCognome(cognome);
-			App.circolo[userChoice].setEmail(email);
-			App.circolo[userChoice].setPassword(password);
-
+			
+			if(!email.isEmpty()) {
+				persona.setEmail(email);
+			}
+			
+			if(!nome.isEmpty()) {
+				persona.setNome(nome);
+			}
+			
+			if(!cognome.isEmpty()) {
+				persona.setCognome(cognome);
+			}
+			
+			if(!password.isEmpty()) {
+				persona.setPassword(password);
+			}
+			
+			// session.update(persona);//No need to update manually as it will be updated
+			// automatically on transaction close.
+			session.getTransaction().commit();
+			session.close();
+			
 			return true;
-
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public Boolean aggiungiAttivita() {
+	// Aggiunge Corso o Gara
+	public static Boolean aggiungiAttivita(String nome, int attivitaType) {
 		try {
-			int userChoice;
+			if (attivitaType == 1) { // aggiungi Gara
+				Gara attivita = new Gara(nome);
 
-			System.out.println("\n------>> Aggiungi Attivita <<------");
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				session.beginTransaction();
 
-			do {
-				try {
-					System.out.println("\nCosa vuoi aggiungere?");
-					System.out.print("1) Gara\n2) Corso\nScelta: ");
-					userChoice = App.scanner.nextInt();
-					App.scanner.nextLine(); // Perchè nextInt() non legge "\n" e quindi viene letto da questo nextLine()
-				} catch (Exception ex) {
-					System.out.println("Errore: " + ex.getMessage());
-					System.out.println("Premere un tasto per continuare...");
-					App.scanner.nextLine();
-					userChoice = 0;
+				String returnNome = (String) session.save(attivita);
+
+				if (returnNome.equals(nome)) {
+					session.getTransaction().commit();
+					session.close();
+					return true;
+				} else {
+					session.getTransaction().rollback();
+					session.close();
+					return false;
 				}
-			} while (userChoice < 1 || userChoice > 2);
 
-			System.out.print("Nome: ");
-			String nome = App.scanner.nextLine();
+			} else if (attivitaType == 2) { // aggiungi Corso
+				Corso attivita = new Corso(nome);
 
-			if (userChoice == 1) {
-				Gara gara = new Gara(nome);
-				App.attivita = App.aggiungiElementoArray(App.attivita, gara);
+				Session session = HibernateUtil.getSessionFactory().openSession();
+				session.beginTransaction();
 
-			} else if (userChoice == 2) {
-				Corso corso = new Corso(nome);
-				App.attivita = App.aggiungiElementoArray(App.attivita, corso);
+				String returnNome = (String) session.save(attivita);
+
+				if (returnNome.equals(nome)) {
+					session.getTransaction().commit();
+					session.close();
+					return true;
+				} else {
+					session.getTransaction().rollback();
+					session.close();
+					return false;
+				}
 			}
 
-			return true;
+			// attivitaType non corretto
+			return false;
 
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public Boolean rimuoviAttivita() {
+	// Rimuovi attivita
+	public static Boolean rimuoviAttivita(String nome) {
 		try {
-			System.out.println("\n------>> Rimuovi Attivita <<------");
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			Attivita attivita = (Attivita) session.get(Attivita.class, nome);
 			
-			// Stampa lista attività presenti nel circolo
-			for (int index = 0; index < App.attivita.length; index++) {
-				System.out.println(index + ")\t" + App.attivita[index].getNome());
+			if(attivita == null) {
+				throw new Exception("Attività non trovata");
 			}
-
-			int userChoice;
-			do {
-				try {
-					System.out.print("\nIndice attivita da rimuovere: ");
-					userChoice = App.scanner.nextInt();
-					App.scanner.nextLine(); // Perchè nextInt() non legge "\n" e quindi viene letto da questo nextLine()
-				} catch (Exception ex) {
-					System.out.println("Errore: " + ex.getMessage());
-					System.out.println("Premere un tasto per continuare...");
-					App.scanner.nextLine();
-					userChoice = -1;
-				}
-			} while (userChoice < 0 || userChoice > App.attivita.length);
-
-			App.attivita = App.rimuoviElementoArray(App.attivita, App.attivita[userChoice]);
-
+			
+			session.delete(attivita);
+			session.getTransaction().commit();
+			session.close();
+			
 			return true;
-
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
 
-	public Boolean modificaAttivita() {
+	public static Boolean modificaAttivita(String oldName, String nome) {
 		try {
-			System.out.println("\n------>> Modifica Attivita <<------");
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			Attivita attivita = (Attivita) session.get(Attivita.class, oldName);
 			
-			// Stampa lista attività presenti nel circolo
-			for (int index = 0; index < App.attivita.length; index++) {
-				System.out.println(index + ")\t" + App.attivita[index].getNome());
+			if(attivita == null) {
+				throw new Exception("attivita non trovata");
 			}
-
-			int userChoice;
-			do {
-				try {
-					System.out.print("\nIndice attivita da modificare: ");
-					userChoice = App.scanner.nextInt();
-					App.scanner.nextLine(); // Perchè nextInt() non legge "\n" e quindi viene letto da questo nextLine()
-				} catch (Exception ex) {
-					System.out.println("Errore: " + ex.getMessage());
-					System.out.println("Premere un tasto per continuare...");
-					App.scanner.nextLine();
-					userChoice = -1;
-				}
-			} while (userChoice < 0 || userChoice > App.attivita.length);
 			
-			System.out.println("\nInserire i nuovi dati");
-			System.out.print("Nome: ");
-			String nome = App.scanner.nextLine();
+			if(!nome.isEmpty()) {
+				attivita.setNome(nome);
+			}
 			
-			App.attivita[userChoice].setNome(nome);
-
+			// session.update(Attivita);//No need to update manually as it will be updated
+			// automatically on transaction close.
+			session.getTransaction().commit();
+			session.close();
+			
 			return true;
-
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

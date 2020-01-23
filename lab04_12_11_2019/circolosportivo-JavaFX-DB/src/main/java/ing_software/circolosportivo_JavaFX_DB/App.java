@@ -87,37 +87,10 @@ public class App {
 		for (Persona persona : persone) {
 			System.out.println(String.format("Persona> Nome: %s, Cognome: %s, Email: %s, Psw: %s",persona.getNome(),persona.getCognome(), persona.getEmail(),persona.getPassword()));
 		}
-
-		/*
-		 * Update an object
-		 * 
-		 * App.updatePersona(personaId4, "2017-05-18");
-		 */
-
-		/*
-		 * Deletes an object
-		 * 
-		 * App.deletePersona(personaId2);
-		 */
 	}
 
 	// METODI DI HIBERNATE
 
-	/**
-	 * This method saves a persona object in database
-	 */
-	public static String savePersona(String email, String firstName, String lastName, String password) {
-		Persona persona = new Persona(firstName, lastName, email, password);
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		String returnEmail = (String) session.save(persona);
-
-		session.getTransaction().commit();
-		session.close();
-		return returnEmail;
-	}
 
 	/**
 	 * This method returns list of all persisted Persona objects/tuples from
@@ -133,34 +106,6 @@ public class App {
 		session.getTransaction().commit();
 		session.close();
 		return persone;
-	}
-
-	/**
-	 * This method updates a specific Persona object
-	 */
-	public static void updatePersona(String email, String password) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Persona persona = (Persona) session.get(Persona.class, email);
-		persona.setPassword(password);
-		// session.update(employee);//No need to update manually as it will be updated
-		// automatically on transaction close.
-		session.getTransaction().commit();
-		session.close();
-	}
-
-	/**
-	 * This method deletes a specific Persona object
-	 */
-	public static void deletePersona(String email) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		Persona employee = (Persona) session.get(Persona.class, email);
-		session.delete(employee);
-		session.getTransaction().commit();
-		session.close();
 	}
 
 	// ------- NON TOCCARE QUESTI METODI -------
