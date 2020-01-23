@@ -9,5 +9,11 @@
 		 <property name="show_sql">true</property>
 		 <property name="format_sql">false</property>
 		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Persona"/>
+		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Socio"/>
+		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Amministratore"/>
+		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Attivita"/>
+		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Corso"/>
+		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Gara"/>
+		 <mapping class="ing_software.circolosportivo_JavaFX_DB.Partecipazione"/>
 	 </session-factory>
 </hibernate-configuration>

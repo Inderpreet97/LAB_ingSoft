@@ -3,10 +3,12 @@ package ing_software.circolosportivo_JavaFX_DB;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="partecipazione")
+@IdClass(PartecipazionePrimaryKey.class)
 public class Partecipazione {
 	@Id
 	@Column(name = "attivita", nullable = false)
