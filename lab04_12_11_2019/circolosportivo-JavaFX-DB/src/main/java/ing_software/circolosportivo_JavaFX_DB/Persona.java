@@ -1,12 +1,20 @@
 package ing_software.circolosportivo_JavaFX_DB;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Persona")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // In che modo salvare le sottoclassi -> unica tabella con un discriminatore
+@DiscriminatorColumn(name="persona_type", discriminatorType = DiscriminatorType.INTEGER) // Discriminatore intero -> "1" è Socio, "2" è Amministratore
+@DiscriminatorValue("null") // Se nel caso in una riga nella colonna "persona_type" ci dovesse essere un null la riga verrebbe mappata di default in Persona
 public class Persona {
 	@Id
 	@Column(name = "email", nullable = false)

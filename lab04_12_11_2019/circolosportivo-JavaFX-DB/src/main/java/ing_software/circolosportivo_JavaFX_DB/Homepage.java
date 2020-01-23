@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Homepage extends Application {
 	
-	private final String FXMLFILE = "ing_software/circolosportivo_JavaFX_DB/loginFXML.fxml";
+	private final String FXMLFILE = "ing_software/circolosportivo_JavaFX_DB/FXML/loginFXML.fxml";
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		

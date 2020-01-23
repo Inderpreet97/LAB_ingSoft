@@ -1,4 +1,4 @@
-package ing_software.circolosportivo_JavaFX_DB;
+package ing_software.circolosportivo_JavaFX_DB.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
