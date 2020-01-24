@@ -26,15 +26,55 @@ public class App {
 
 	private static void testDB_MetodiNuovi() {
 		Amministratore.aggiungiPersona("persona1", "persona1", "persona1", "persona1", 1);
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Amministratore.aggiungiPersona("persona2", "persona2","persona2", "persona2", 2);
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Amministratore.aggiungiAttivita("attivita1", 1);
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Amministratore.aggiungiAttivita("attivita2", 2);
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Socio.iscrizioneAttivita("attivita1", "persona1");
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Socio.iscrizioneAttivita("attivita2", "persona1");
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Socio.iscrizioneAttivita("attivita1", "persona2");
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Socio.iscrizioneAttivita("attivita2", "persona2");
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Socio.lasciaAttivita("attivita2", "persona1");
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Amministratore.rimuoviPersona("persona2");
+		
+		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
+		scanner.nextLine();
+		
 		Amministratore.rimuoviAttivita("attivita2");
 	}
 

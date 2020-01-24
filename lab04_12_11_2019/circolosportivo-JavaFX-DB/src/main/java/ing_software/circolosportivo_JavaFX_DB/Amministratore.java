@@ -9,6 +9,10 @@ import org.hibernate.Session;
 @DiscriminatorValue("2")
 public class Amministratore extends Socio {
 
+	public Amministratore() {
+		super();
+	}
+	
 	public Amministratore(String nome, String cognome, String email, String password) {
 		super(nome, cognome, email, password);
 	}
@@ -41,9 +45,6 @@ public class Amministratore extends Socio {
 				session.beginTransaction();
 
 				String returnEmail = (String) session.save(persona);
-
-				session.getTransaction().commit();
-				session.close();
 
 				if (returnEmail.equals(email)) {
 					session.getTransaction().commit();

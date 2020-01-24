@@ -13,6 +13,10 @@ public class Socio extends Persona {
 		super(nome, cognome, email, password);
 	}
 
+	public Socio() {
+		super();
+	}
+
 	public static Boolean iscrizioneAttivita(String nomeAttivita, String emailPersona) {
 		try {
 			Partecipazione partecipazione = new Partecipazione(nomeAttivita, emailPersona);

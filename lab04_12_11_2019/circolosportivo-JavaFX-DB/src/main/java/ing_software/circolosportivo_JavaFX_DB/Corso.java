@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("2")
 public class Corso extends Attivita {
+	
+	public Corso() {
+		super();
+	}
 
 	public Corso(String nome) {
 		super(nome);

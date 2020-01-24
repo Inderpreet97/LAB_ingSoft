@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("1")
 public class Gara extends Attivita {
-
+	
+	public Gara() {
+		super();
+	}
 	public Gara(String nome) {
 		super(nome);
 	}
