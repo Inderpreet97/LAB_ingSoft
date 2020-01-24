@@ -21,13 +21,11 @@ public class Attivita {
 	@Column(name = "nome", nullable = false)
 	private String nome;
 	
-	private Persona[] persone;
 	
 	public Attivita() {	}
 	
 	public Attivita(String nome) {
 		this.nome = nome;
-		this.persone = new Persona[] {};
 	}
 
 	public String getNome() {
@@ -36,10 +34,6 @@ public class Attivita {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Persona[] getPersone() {
-		return persone;
 	}
 	
 	/** TOOD Forse non servono, ricrodarsi di cancellare questi metodi se non usati
