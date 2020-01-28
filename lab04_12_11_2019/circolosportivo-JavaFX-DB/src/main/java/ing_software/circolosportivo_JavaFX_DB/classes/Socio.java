@@ -1,9 +1,7 @@
-package ing_software.circolosportivo_JavaFX_DB;
+package ing_software.circolosportivo_JavaFX_DB.classes;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-
-import org.hibernate.Session;
 
 @Entity
 @DiscriminatorValue("1")
@@ -15,48 +13,6 @@ public class Socio extends Persona {
 
 	public Socio() {
 		super();
-	}
-
-	public static Boolean iscrizioneAttivita(String nomeAttivita, String emailPersona) {
-		try {
-			Partecipazione partecipazione = new Partecipazione(nomeAttivita, emailPersona);
-
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-
-			session.save(partecipazione);
-
-			session.getTransaction().commit();
-			session.close();
-			return true;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public static Boolean lasciaAttivita(String nomeAttivita, String emailPersona) {
-		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-			
-			Partecipazione partecipazione = (Partecipazione) session.get(Partecipazione.class, new PartecipazionePrimaryKey(nomeAttivita, emailPersona));
-			
-			if(partecipazione == null) {
-				throw new Exception("Partecipazione non trovata");
-			}
-			
-			session.delete(partecipazione);
-			session.getTransaction().commit();
-			session.close();
-			
-			return true;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 	
 	/*

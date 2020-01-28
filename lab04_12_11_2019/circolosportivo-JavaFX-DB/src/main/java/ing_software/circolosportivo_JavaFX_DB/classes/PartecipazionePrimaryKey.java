@@ -1,4 +1,4 @@
-package ing_software.circolosportivo_JavaFX_DB;
+package ing_software.circolosportivo_JavaFX_DB.classes;
 
 import java.io.Serializable;
 

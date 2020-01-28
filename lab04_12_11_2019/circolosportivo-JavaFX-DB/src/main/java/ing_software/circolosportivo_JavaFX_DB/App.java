@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 import org.hibernate.Session;
 
+import ing_software.circolosportivo_JavaFX_DB.classes.Attivita;
+import ing_software.circolosportivo_JavaFX_DB.classes.Persona;
+
 public class App {
 	public static Attivita[] attivita;
 	public static Persona[] circolo;
@@ -12,7 +15,6 @@ public class App {
 
 	public static void main(String[] args) {
 		scanner = new Scanner(System.in);
-		
 		
 		// Operazioni con il DB
 		testDB_MetodiNuovi();
@@ -25,70 +27,70 @@ public class App {
 	}
 
 	private static void testDB_MetodiNuovi() {
-		Amministratore.aggiungiPersona("persona1", "persona1", "persona1", "persona1", 1);
+		DatabaseMethods.aggiungiPersona("persona1", "persona1", "persona1", "persona1", 1);
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Amministratore.aggiungiPersona("persona2", "persona2","persona2", "persona2", 2);
+		DatabaseMethods.aggiungiPersona("persona2", "persona2","persona2", "persona2", 2);
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Amministratore.aggiungiAttivita("attivita1", 1);
+		DatabaseMethods.aggiungiAttivita("attivita1", 1);
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Amministratore.aggiungiAttivita("attivita2", 2);
+		DatabaseMethods.aggiungiAttivita("attivita2", 2);
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Socio.iscrizioneAttivita("attivita1", "persona1");
+		DatabaseMethods.iscrizioneAttivita("attivita1", "persona1");
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Socio.iscrizioneAttivita("attivita2", "persona1");
+		DatabaseMethods.iscrizioneAttivita("attivita2", "persona1");
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Socio.iscrizioneAttivita("attivita1", "persona2");
+		DatabaseMethods.iscrizioneAttivita("attivita1", "persona2");
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Socio.iscrizioneAttivita("attivita2", "persona2");
+		DatabaseMethods.iscrizioneAttivita("attivita2", "persona2");
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Socio.lasciaAttivita("attivita2", "persona1");
+		DatabaseMethods.lasciaAttivita("attivita2", "persona1");
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Amministratore.rimuoviPersona("persona2");
+		DatabaseMethods.rimuoviPersona("persona2");
 		
 		System.out.println("Operazione eseguita.\nPremere un tasto per terminare....");
 		scanner.nextLine();
 		
-		Amministratore.rimuoviAttivita("attivita2");
+		DatabaseMethods.rimuoviAttivita("attivita2");
 	}
 
-	private static void testDB() {
-
-		/*
-		 * Retrieve all saved objects
-		 */
-		List<Persona> persone = App.getAllPersone();
-		System.out.println("List of all persisted personas >>>");
-		for (Persona persona : persone) {
-			System.out.println(String.format("Persona> Nome: %s, Cognome: %s, Email: %s, Psw: %s",persona.getNome(),persona.getCognome(), persona.getEmail(),persona.getPassword()));
-		}
-	}
+//	private static void testDB() {
+//
+//		/*
+//		 * Retrieve all saved objects
+//		 */
+//		List<Persona> persone = App.getAllPersone();
+//		System.out.println("List of all persisted personas >>>");
+//		for (Persona persona : persone) {
+//			System.out.println(String.format("Persona> Nome: %s, Cognome: %s, Email: %s, Psw: %s",persona.getNome(),persona.getCognome(), persona.getEmail(),persona.getPassword()));
+//		}
+//	}
 
 	// METODI DI HIBERNATE
 

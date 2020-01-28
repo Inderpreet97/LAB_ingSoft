@@ -1,22 +1,17 @@
 package ing_software.circolosportivo_JavaFX_DB;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-
 import org.hibernate.Session;
 
-@Entity
-@DiscriminatorValue("2")
-public class Amministratore extends Socio {
+import ing_software.circolosportivo_JavaFX_DB.classes.Amministratore;
+import ing_software.circolosportivo_JavaFX_DB.classes.Attivita;
+import ing_software.circolosportivo_JavaFX_DB.classes.Corso;
+import ing_software.circolosportivo_JavaFX_DB.classes.Gara;
+import ing_software.circolosportivo_JavaFX_DB.classes.Partecipazione;
+import ing_software.circolosportivo_JavaFX_DB.classes.PartecipazionePrimaryKey;
+import ing_software.circolosportivo_JavaFX_DB.classes.Persona;
+import ing_software.circolosportivo_JavaFX_DB.classes.Socio;
 
-	public Amministratore() {
-		super();
-	}
-	
-	public Amministratore(String nome, String cognome, String email, String password) {
-		super(nome, cognome, email, password);
-	}
-
+public class DatabaseMethods {
 	// Aggiunge un socio o un Amministrare nella tabella persona
 	public static Boolean aggiungiPersona(String nome, String cognome, String email, String password, int personaType) {
 		try {
@@ -73,17 +68,17 @@ public class Amministratore extends Socio {
 			session.beginTransaction();
 
 			Persona persona = (Persona) session.get(Persona.class, email);
-			
-			if(persona == null) {
+
+			if (persona == null) {
 				throw new Exception("Persona non trovata");
 			}
-			
+
 			session.delete(persona);
 			session.getTransaction().commit();
 			session.close();
-			
+
 			return true;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -97,32 +92,32 @@ public class Amministratore extends Socio {
 			session.beginTransaction();
 
 			Persona persona = (Persona) session.get(Persona.class, oldEmail);
-			
-			if(persona == null) {
+
+			if (persona == null) {
 				throw new Exception("Persona non trovata");
 			}
-			
-			if(!email.isEmpty()) {
+
+			if (!email.isEmpty()) {
 				persona.setEmail(email);
 			}
-			
-			if(!nome.isEmpty()) {
+
+			if (!nome.isEmpty()) {
 				persona.setNome(nome);
 			}
-			
-			if(!cognome.isEmpty()) {
+
+			if (!cognome.isEmpty()) {
 				persona.setCognome(cognome);
 			}
-			
-			if(!password.isEmpty()) {
+
+			if (!password.isEmpty()) {
 				persona.setPassword(password);
 			}
-			
+
 			// session.update(persona);//No need to update manually as it will be updated
 			// automatically on transaction close.
 			session.getTransaction().commit();
 			session.close();
-			
+
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,17 +181,17 @@ public class Amministratore extends Socio {
 			session.beginTransaction();
 
 			Attivita attivita = (Attivita) session.get(Attivita.class, nome);
-			
-			if(attivita == null) {
+
+			if (attivita == null) {
 				throw new Exception("Attività non trovata");
 			}
-			
+
 			session.delete(attivita);
 			session.getTransaction().commit();
 			session.close();
-			
+
 			return true;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -209,21 +204,64 @@ public class Amministratore extends Socio {
 			session.beginTransaction();
 
 			Attivita attivita = (Attivita) session.get(Attivita.class, oldName);
-			
-			if(attivita == null) {
+
+			if (attivita == null) {
 				throw new Exception("attivita non trovata");
 			}
-			
-			if(!nome.isEmpty()) {
+
+			if (!nome.isEmpty()) {
 				attivita.setNome(nome);
 			}
-			
+
 			// session.update(Attivita);//No need to update manually as it will be updated
 			// automatically on transaction close.
 			session.getTransaction().commit();
 			session.close();
-			
+
 			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static Boolean iscrizioneAttivita(String nomeAttivita, String emailPersona) {
+		try {
+			Partecipazione partecipazione = new Partecipazione(nomeAttivita, emailPersona);
+
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			session.save(partecipazione);
+
+			session.getTransaction().commit();
+			session.close();
+			return true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static Boolean lasciaAttivita(String nomeAttivita, String emailPersona) {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			Partecipazione partecipazione = (Partecipazione) session.get(Partecipazione.class,
+					new PartecipazionePrimaryKey(nomeAttivita, emailPersona));
+
+			if (partecipazione == null) {
+				throw new Exception("Partecipazione non trovata");
+			}
+
+			session.delete(partecipazione);
+			session.getTransaction().commit();
+			session.close();
+
+			return true;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
