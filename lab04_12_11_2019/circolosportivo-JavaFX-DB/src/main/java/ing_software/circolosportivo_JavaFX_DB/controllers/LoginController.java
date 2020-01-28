@@ -1,7 +1,8 @@
 package ing_software.circolosportivo_JavaFX_DB.controllers;
 
 import java.io.IOException;
-import javafx.event.*;
+
+import ing_software.circolosportivo_JavaFX_DB.DatabaseMethods;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,21 +18,30 @@ public class LoginController {
   public void initialize() {}
   
   public void initManager(final Scene scene) {
-    loginButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override public void handle(ActionEvent event) {
-        String sessionID = authorize();
-        if (sessionID != null) {
+    
+    loginButton.setOnAction(e -> {
+    	String userType = authorize();
+    	
+        if (userType != null) {
+        	
+        	String resourceUrl = "";
+        	
+        	if(userType == "socio") {
+        		resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/socioview.fxml";
+        	} else if (userType == "admin") {
+        		resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/adminview.fxml";
+        	} 
+        	
         	try {
     			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-    					.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/mainview.fxml"));
+    					.getResource(resourceUrl));
     			scene.setRoot((Parent) loader.load());
-    			MainViewController controller = loader.<MainViewController>getController();
-    			controller.initSessionID(scene, sessionID);
+    			SocioViewController controller = loader.<SocioViewController>getController();
+    			controller.initSessionID(scene, userType);
     		} catch (IOException ex) {
     			ex.printStackTrace();
     		}
         }
-      }
     });
   }
 
@@ -42,16 +52,10 @@ public class LoginController {
    * otherwise, return null.
    */   
   private String authorize() {
-    return 
-      "open".equals(user.getText()) && "sesame".equals(password.getText()) 
-            ? generateSessionID() 
-            : null;
+	  if(!DatabaseMethods.checkEmailPassoword(user.getText(), password.getText())) {
+		  return null;
+	  } 	  
+	  return DatabaseMethods.getPersonaType(user.getText());
   }
   
-  private static int sessionID = 0;
-
-  private String generateSessionID() {
-    sessionID++;
-    return "xyzzy - session " + sessionID;
-  }
 }

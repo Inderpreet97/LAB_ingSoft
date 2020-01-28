@@ -1,5 +1,7 @@
 package ing_software.circolosportivo_JavaFX_DB;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 import ing_software.circolosportivo_JavaFX_DB.classes.Amministratore;
@@ -12,6 +14,64 @@ import ing_software.circolosportivo_JavaFX_DB.classes.Persona;
 import ing_software.circolosportivo_JavaFX_DB.classes.Socio;
 
 public class DatabaseMethods {
+	// Cerca un Persona tramite email e password
+	public static Boolean checkEmailPassoword(String email, String password) {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			Persona persona = (Persona) session.get(Persona.class, email);
+
+			if (persona == null) {
+				return false;
+			}
+			
+			if(password.equals(persona.getPassword())) {
+				return true;
+			}
+			
+			session.getTransaction().commit();
+			session.close();
+
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	// Restituisce il tipo di account di una Persona
+	public static String getPersonaType(String email) {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			@SuppressWarnings("unchecked")
+			List<Persona> personaList = (List<Persona>) session.createQuery("FROM Persona p WHERE p.email = :email").setParameter("email", email).list();
+			
+			
+			if(personaList == null) {
+				return null;
+			}
+			
+			if(personaList.get(0) instanceof Socio) {
+				System.out.println("ciao");
+				return "socio";
+			}
+			
+			if(personaList.get(0) instanceof Amministratore) {
+				return "admin";
+			}
+
+			session.getTransaction().commit();
+			session.close();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	// Aggiunge un socio o un Amministrare nella tabella persona
 	public static Boolean aggiungiPersona(String nome, String cognome, String email, String password, int personaType) {
 		try {

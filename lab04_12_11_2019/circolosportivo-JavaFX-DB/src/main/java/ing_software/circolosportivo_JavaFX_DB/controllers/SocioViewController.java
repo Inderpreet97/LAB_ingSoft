@@ -7,14 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 /** Controls the main application screen */
-public class MainViewController {
+public class SocioViewController {
   @FXML private Button logoutButton;
   @FXML private Label  sessionLabel;
   
   public void initialize() {}
   
-  public void initSessionID(final Scene scene, String sessionID) {
-    sessionLabel.setText(sessionID);
+  public void initSessionID(final Scene scene, String userType) {
+    sessionLabel.setText(userType);
     logoutButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override public void handle(ActionEvent event) {
         MainApp.logout();
