@@ -25,11 +25,11 @@ public class DatabaseMethods {
 			if (persona == null) {
 				return false;
 			}
-			
-			if(password.equals(persona.getPassword())) {
+
+			if (password.equals(persona.getPassword())) {
 				return true;
 			}
-			
+
 			session.getTransaction().commit();
 			session.close();
 
@@ -39,7 +39,7 @@ public class DatabaseMethods {
 			return false;
 		}
 	}
-	
+
 	// Restituisce il tipo di account di una Persona
 	public static String getPersonaType(String email) {
 		try {
@@ -47,25 +47,46 @@ public class DatabaseMethods {
 			session.beginTransaction();
 
 			@SuppressWarnings("unchecked")
-			List<Persona> personaList = (List<Persona>) session.createQuery("FROM Persona p WHERE p.email = :email").setParameter("email", email).list();
-			
-			
-			if(personaList == null) {
+			List<Persona> personaList = (List<Persona>) session.createQuery("FROM Persona p WHERE p.email = :email")
+					.setParameter("email", email).list();
+
+			if (personaList == null) {
 				return null;
 			}
-			
-			if(personaList.get(0) instanceof Socio) {
-				System.out.println("ciao");
+
+			if (personaList.get(0) instanceof Socio) {
 				return "socio";
 			}
-			
-			if(personaList.get(0) instanceof Amministratore) {
+
+			if (personaList.get(0) instanceof Amministratore) {
 				return "admin";
 			}
 
 			session.getTransaction().commit();
 			session.close();
 			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// Restituisce la lista delle attività alle quali l'utente è iscritto
+	public static List<Partecipazione> getPartecipazioni(String userEmail) {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			@SuppressWarnings("unchecked")
+			List<Partecipazione> persone = (List<Partecipazione>) session
+					.createQuery("FROM Partecipazione p WHERE p.emailPersona = :email").setParameter("email", userEmail)
+					.list();
+
+			session.getTransaction().commit();
+			session.close();
+
+			return persone;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

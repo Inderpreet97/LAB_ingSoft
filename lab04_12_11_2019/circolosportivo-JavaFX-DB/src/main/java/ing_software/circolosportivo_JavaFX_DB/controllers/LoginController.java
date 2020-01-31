@@ -37,7 +37,7 @@ public class LoginController {
     					.getResource(resourceUrl));
     			scene.setRoot((Parent) loader.load());
     			SocioViewController controller = loader.<SocioViewController>getController();
-    			controller.initSessionID(scene, userType);
+    			controller.initSession(scene, user.getText());
     		} catch (IOException ex) {
     			ex.printStackTrace();
     		}
