@@ -93,6 +93,26 @@ public class DatabaseMethods {
 		}
 	}
 
+	// Restituisce la lista di tutte le attività
+	public static List<Attivita> getAttivitaList() {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			@SuppressWarnings("unchecked")
+			List<Attivita> attivita = (List<Attivita>) session.createQuery("FROM Attivita").list();
+
+			session.getTransaction().commit();
+			session.close();
+
+			return attivita;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	// Aggiunge un socio o un Amministrare nella tabella persona
 	public static Boolean aggiungiPersona(String nome, String cognome, String email, String password, int personaType) {
 		try {

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import ing_software.circolosportivo_JavaFX_DB.DatabaseMethods;
 import ing_software.circolosportivo_JavaFX_DB.MainApp;
+import ing_software.circolosportivo_JavaFX_DB.classes.Attivita;
 import ing_software.circolosportivo_JavaFX_DB.classes.Partecipazione;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,7 +60,9 @@ public class SocioViewController {
 
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == ButtonType.OK) {
-						DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(), rowData.getNomeAttivita());
+						System.out.println(rowData.getNomeAttivita() + " - " + rowData.getEmailPersona());
+						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(), rowData.getEmailPersona());
+						if(risultato) refreshTable();
 					} else {
 						// ... user chose CANCEL or closed the dialog
 					}
@@ -74,28 +77,27 @@ public class SocioViewController {
 
 	@FXML
 	void onOpenDialog(final ActionEvent event) throws IOException {
-		
-		// https://code.makery.ch/blog/javafx-dialogs-official/
+
+		List<Attivita> attivita = DatabaseMethods.getAttivitaList();
 		
 		List<String> choices = new ArrayList<>();
-		choices.add("a");
-		choices.add("b");
-		choices.add("c");
+		
+		attivita.forEach(a -> choices.add(a.getNome()));
 
-		ChoiceDialog<String> dialog = new ChoiceDialog<>("b", choices);
+		ChoiceDialog<String> dialog = new ChoiceDialog<>("---", choices);
 		dialog.setTitle("Choice Dialog");
-		dialog.setHeaderText("Look, a Choice Dialog");
-		dialog.setContentText("Choose your letter:");
+		dialog.setHeaderText("A quale attivita vuoi iscriverti?");
+		dialog.setContentText("Scegli l'attività:");
 
 		// Traditional way to get the response value.
 		// iSPresent == false se l'utente fa cancel o non sceglie niente
 		Optional<String> result = dialog.showAndWait();
+		
 		if (result.isPresent()){
-		    System.out.println("Your choice: " + result.get());
+			Boolean risultato = DatabaseMethods.iscrizioneAttivita(result.get(), loggedUser);
+			if (risultato) refreshTable();
+			
 		}
-
-		// The Java 8 way to get the response value (with lambda expression).
-		result.ifPresent(letter -> System.out.println("Your choice: " + letter));
 		
 	}
 
