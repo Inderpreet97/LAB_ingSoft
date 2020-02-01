@@ -16,6 +16,24 @@ class AdminViewController {
 
 	public void initialize() {
 	}
+	
+	/*  
+	 
+	 	XXX CODICE EXTRA PER APRIRE UNA FINESTRA POP-UP
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddPersonDialog.fxml"));
+
+		Parent parent = fxmlLoader.load();
+
+		AddPersonDialogController dialogController = fxmlLoader.<AddPersonDialogController>getController();
+		dialogController.setAppMainObservableList(iscrizioniList);
+
+		Scene scene = new Scene(parent, 300, 200);
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setScene(scene);
+		stage.showAndWait();
+
+	 */
 
 	public void initSessionID(final Scene scene, String sessionID) {
 		sessionLabel.setText(sessionID);
