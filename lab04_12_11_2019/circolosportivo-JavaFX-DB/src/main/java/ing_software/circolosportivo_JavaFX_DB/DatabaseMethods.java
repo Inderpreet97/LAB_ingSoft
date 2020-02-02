@@ -54,12 +54,12 @@ public class DatabaseMethods {
 				return null;
 			}
 
-			if (personaList.get(0) instanceof Socio) {
-				return "socio";
-			}
-
 			if (personaList.get(0) instanceof Amministratore) {
 				return "admin";
+			}
+			
+			if (personaList.get(0) instanceof Socio) {
+				return "socio";
 			}
 
 			session.getTransaction().commit();

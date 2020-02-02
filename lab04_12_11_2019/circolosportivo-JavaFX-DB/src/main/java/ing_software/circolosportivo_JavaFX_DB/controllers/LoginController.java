@@ -11,51 +11,58 @@ import javafx.scene.control.*;
 
 /** Controls the login screen */
 public class LoginController {
-  @FXML private TextField user;
-  @FXML private TextField password;
-  @FXML private Button loginButton;
-  
-  public void initialize() {}
-  
-  public void initManager(final Scene scene) {
-    
-    loginButton.setOnAction(e -> {
-    	String userType = authorize();
-    	
-        if (userType != null) {
-        	
-        	String resourceUrl = "";
-        	
-        	if(userType == "socio") {
-        		resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/socioview.fxml";
-        	} else if (userType == "admin") {
-        		resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/adminview.fxml";
-        	} 
-        	
-        	try {
-    			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
-    					.getResource(resourceUrl));
-    			scene.setRoot((Parent) loader.load());
-    			SocioViewController controller = loader.<SocioViewController>getController();
-    			controller.initSession(scene, user.getText());
-    		} catch (IOException ex) {
-    			ex.printStackTrace();
-    		}
-        }
-    });
-  }
+	@FXML
+	private TextField user;
+	@FXML
+	private TextField password;
+	@FXML
+	private Button loginButton;
 
-  /**
-   * Check authorization credentials.
-   * 
-   * If accepted, return a sessionID for the authorized session
-   * otherwise, return null.
-   */   
-  private String authorize() {
-	  if(!DatabaseMethods.checkEmailPassoword(user.getText(), password.getText())) {
-		  return null;
-	  } 	  
-	  return DatabaseMethods.getPersonaType(user.getText());
-  }
-  
+	public void initialize() {
+	}
+
+	public void initManager(final Scene scene) {
+
+		loginButton.setOnAction(e -> {
+			String userType = authorize();
+
+			if (userType != null) {
+
+				String resourceUrl = "";
+				try {
+
+					if (userType == "socio") {
+						resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/socioview.fxml";
+						FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(resourceUrl));
+						scene.setRoot((Parent) loader.load());
+						SocioViewController controller = loader.<SocioViewController>getController();
+						controller.initSession(scene, user.getText());
+					} else if (userType == "admin") {
+						resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/adminview.fxml";
+						FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(resourceUrl));
+						scene.setRoot((Parent) loader.load());
+						AdminViewController controller = loader.<AdminViewController>getController();
+						controller.initSession(scene, user.getText());
+					}
+
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Check authorization credentials.
+	 * 
+	 * If accepted, return a sessionID for the authorized session otherwise, return
+	 * null.
+	 */
+	private String authorize() {
+		if (!DatabaseMethods.checkEmailPassoword(user.getText(), password.getText())) {
+			return null;
+		}
+		return DatabaseMethods.getPersonaType(user.getText());
+	}
+
 }

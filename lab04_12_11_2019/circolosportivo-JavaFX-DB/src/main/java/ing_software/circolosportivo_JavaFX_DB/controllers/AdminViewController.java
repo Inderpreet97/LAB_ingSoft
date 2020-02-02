@@ -25,7 +25,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-class AdminViewController {
+public class AdminViewController {
 	private String loggedUser;
 	@FXML
 	private TableView<Partecipazione> partecipazioniTable;
@@ -100,7 +100,22 @@ class AdminViewController {
 	}
 	
 	@FXML
-	void onOpenDialog(final ActionEvent event) throws IOException {
+	void aggiungiUtente (final ActionEvent event) throws IOException {
+		
+	}
+	
+	@FXML
+	void aggiungiAttivita (final ActionEvent event) throws IOException {
+		
+	}
+	
+	@FXML
+	void modificaUtente (final ActionEvent event) throws IOException {
+		
+	}
+	
+	@FXML
+	void nuovaIscrizione(final ActionEvent event) throws IOException {
 		
 		// https://code.makery.ch/blog/javafx-dialogs-official/
 		List<Attivita> attivita = DatabaseMethods.getAttivitaList();

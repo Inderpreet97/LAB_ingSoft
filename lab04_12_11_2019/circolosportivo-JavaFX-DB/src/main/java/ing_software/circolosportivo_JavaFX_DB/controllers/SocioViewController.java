@@ -76,7 +76,7 @@ public class SocioViewController {
 	
 
 	@FXML
-	void onOpenDialog(final ActionEvent event) throws IOException {
+	void nuovaIscrizione(final ActionEvent event) throws IOException {
 
 		List<Attivita> attivita = DatabaseMethods.getAttivitaList();
 		

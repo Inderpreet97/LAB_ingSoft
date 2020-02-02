@@ -1,41 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<StackPane prefWidth="231.0" xmlns:fx="http://javafx.com/fxml" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AdminViewController">
+<StackPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AdminViewController">
   <children>
-    <StackPane>
-      <children>
-        <VBox spacing="10.0">
-          <children>
-            <GridPane>
-              <children>
-                <Label text="Session ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Label fx:id="sessionLabel" text="Undefined" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-              </children>
+      <BorderPane>
+         <center>
+            <TableView fx:id="partecipazioniTable" maxHeight="140.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="colAttivita" maxWidth="-1.0" minWidth="209.0" prefWidth="-1.0" text="Attività Iscritte" />
+              </columns>
+            </TableView>
+         </center>
+         <bottom>
+            <GridPane BorderPane.alignment="CENTER">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
               </rowConstraints>
+               <children>
+                  <GridPane alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#nuovaIscrizione" text="Nuova Iscrizione" GridPane.halignment="CENTER" />
+                        <Button onAction="#aggiungiUtente" mnemonicParsing="false" text="Aggiungi Utente" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <Button onAction="#aggiungiAttivita" mnemonicParsing="false" text="Aggiungi Attività" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button onAction="#modificaUtente" mnemonicParsing="false" text="Modifica Utente" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                     </children>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </GridPane>
+                 <Button id="loginButton" fx:id="logoutButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+               </children>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
             </GridPane>
-            <StackPane prefHeight="-1.0" prefWidth="-1.0">
-              <children>
-                <Button id="loginButton" fx:id="logoutButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Logout" StackPane.alignment="CENTER_RIGHT" />
-              </children>
-            </StackPane>
-          </children>
-        </VBox>
-      </children>
-    </StackPane>
+         </bottom>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <top>
+            <Label alignment="CENTER" text="Double Click on Activity to unsubscribe" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
   </children>
   <padding>
     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
