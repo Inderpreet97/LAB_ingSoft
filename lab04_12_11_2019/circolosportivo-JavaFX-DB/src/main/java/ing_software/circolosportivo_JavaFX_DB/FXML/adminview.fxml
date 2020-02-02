@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane prefWidth="231.0" xmlns:fx="http://javafx.com/fxml" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.SocioViewController">
+<StackPane prefWidth="231.0" xmlns:fx="http://javafx.com/fxml" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AdminViewController">
   <children>
     <StackPane>
       <children>

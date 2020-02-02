@@ -45,7 +45,6 @@ class AdminViewController {
 		this.loggedUser = loggedUser;
 		refreshTable();
 		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
 			public void handle(ActionEvent event) {
 				MainApp.logout();
 			}
