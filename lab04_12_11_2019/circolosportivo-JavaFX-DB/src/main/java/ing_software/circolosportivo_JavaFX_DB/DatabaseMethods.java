@@ -368,4 +368,23 @@ public class DatabaseMethods {
 			return false;
 		}
 	}
+
+	public static List<Persona> getPersonaList() {
+		try {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+
+			@SuppressWarnings("unchecked")
+			List<Persona> persone = (List<Persona>) session.createQuery("FROM Persona").list();
+
+			session.getTransaction().commit();
+			session.close();
+
+			return persone;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

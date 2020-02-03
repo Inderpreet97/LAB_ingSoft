@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AddActivityDialogController">
+	<children>
+		<VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+			<children>
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adding Activity Dialog" />
+				<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+					<children>
+						<Label alignment="CENTER_RIGHT" minWidth="100.0" text="nome" />
+						<TextField fx:id="textFieldNome" HBox.hgrow="ALWAYS" />
+					</children>
+					<padding>
+						<Insets right="30.0" />
+					</padding>
+				</HBox>
+            <Label fx:id="labelError" prefHeight="18.0" prefWidth="291.0" />
+				<HBox alignment="CENTER_RIGHT" spacing="20.0">
+					<children>
+						<ToggleButton fx:id="toggleBtnCorso" mnemonicParsing="false" selected="true" text="Corso" />
+						<ToggleButton fx:id="toggleBtnGara" mnemonicParsing="false" text="Gara">
+							<HBox.margin>
+								<Insets right="40.0" />
+							</HBox.margin>
+						</ToggleButton>
+						<Button mnemonicParsing="false" onAction="#btnAddActivityClicked" text="Add" />
+					</children>
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+					<padding>
+						<Insets right="30.0" />
+					</padding>
+				</HBox>
+			</children>
+		</VBox>
+	</children>
+</AnchorPane>

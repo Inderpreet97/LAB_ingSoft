@@ -19,7 +19,6 @@ import javafx.beans.property.StringProperty;
 public class Partecipazione {
 
 	private StringProperty nomeAttivita;
-
 	private StringProperty emailPersona;
 
 	public Partecipazione() {

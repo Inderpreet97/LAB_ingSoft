@@ -14,6 +14,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,6 +26,10 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+//SITO PER FARE ALTRE TIPO DI FINESTRE POP-UP https://code.makery.ch/blog/javafx-dialogs-official/
 
 public class AdminViewController {
 	private String loggedUser;
@@ -49,16 +55,16 @@ public class AdminViewController {
 				MainApp.logout();
 			}
 		});
-		
-		partecipazioniTable.setRowFactory( tv -> {
-		    TableRow<Partecipazione> row = new TableRow<>();
-		    row.setOnMouseClicked(event -> {
-		        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-		        	Partecipazione rowData = row.getItem();
-		            System.out.println(rowData);
-		            
-		            Alert alert = new Alert(AlertType.CONFIRMATION);
-					
+
+		partecipazioniTable.setRowFactory(tv -> {
+			TableRow<Partecipazione> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!row.isEmpty())) {
+					Partecipazione rowData = row.getItem();
+					System.out.println(rowData);
+
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+
 					alert.setTitle("Conferma");
 					alert.setHeaderText("DISISCRIZIONE ATTIVITÀ");
 					alert.setContentText("Vuoi veramente disiscriverti?");
@@ -66,62 +72,71 @@ public class AdminViewController {
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == ButtonType.OK) {
 						System.out.println(rowData.getNomeAttivita() + " - " + rowData.getEmailPersona());
-						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(), rowData.getEmailPersona());
-						if(risultato) refreshTable();
+						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(),
+								rowData.getEmailPersona());
+						if (risultato)
+							refreshTable();
 					} else {
 						// ... user chose CANCEL or closed the dialog
 					}
-		        }
-		    });
-			
-		    return row;
+				}
+			});
+
+			return row;
 		});
-		
-		
-		// SITO PER FARE ALTRE TIPO DI FINESTRE POP-UP https://code.makery.ch/blog/javafx-dialogs-official/
-		
-		/*  
-		 
-	 	XXX CODICE EXTRA PER APRIRE UNA FINESTRA POP-UP AL CLICK SU BOTTONE
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddPersonDialog.fxml"));
+
+	}
+
+	@FXML
+	void aggiungiUtente(final ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddPersonDialog.fxml"));
 
 		Parent parent = fxmlLoader.load();
-
-		AddPersonDialogController dialogController = fxmlLoader.<AddPersonDialogController>getController();
-		dialogController.setAppMainObservableList(iscrizioniList);
 
 		Scene scene = new Scene(parent, 300, 200);
 		Stage stage = new Stage();
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setScene(scene);
 		stage.showAndWait();
+	}
 
-	 */
-	}
-	
 	@FXML
-	void aggiungiUtente (final ActionEvent event) throws IOException {
-		
+	void aggiungiAttivita(final ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddActivityDialog.fxml"));
+
+		Parent parent = fxmlLoader.load();
+
+		Scene scene = new Scene(parent, 300, 200);
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setScene(scene);
+		stage.showAndWait();
 	}
-	
+
 	@FXML
-	void aggiungiAttivita (final ActionEvent event) throws IOException {
-		
+	void modificaUtente(final ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/modificaUtenteDialog.fxml"));
+
+		Parent parent = fxmlLoader.load();
+
+		Scene scene = new Scene(parent);
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setScene(scene);
+		stage.showAndWait();
 	}
-	
-	@FXML
-	void modificaUtente (final ActionEvent event) throws IOException {
-		
-	}
-	
+
 	@FXML
 	void nuovaIscrizione(final ActionEvent event) throws IOException {
-		
+
 		// https://code.makery.ch/blog/javafx-dialogs-official/
 		List<Attivita> attivita = DatabaseMethods.getAttivitaList();
-		
+
 		List<String> choices = new ArrayList<>();
-		
+
 		attivita.forEach(a -> choices.add(a.getNome()));
 
 		ChoiceDialog<String> dialog = new ChoiceDialog<>("---", choices);
@@ -132,11 +147,12 @@ public class AdminViewController {
 		// Traditional way to get the response value.
 		// iSPresent == false se l'utente fa cancel o non sceglie niente
 		Optional<String> result = dialog.showAndWait();
-		
-		if (result.isPresent()){
+
+		if (result.isPresent()) {
 			Boolean risultato = DatabaseMethods.iscrizioneAttivita(result.get(), loggedUser);
-			if (risultato) refreshTable();
-			
+			if (risultato)
+				refreshTable();
+
 		}
 	}
 
@@ -152,5 +168,3 @@ public class AdminViewController {
 		partecipazioniTable.setItems(iscrizioniList);
 	}
 }
-	
-	
