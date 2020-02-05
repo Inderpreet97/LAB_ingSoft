@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -45,7 +44,7 @@
 				<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
 					<children>
 						<Label alignment="CENTER_RIGHT" minWidth="100.0" text="email" />
-						<TextField fx:id="textFieldEmail" HBox.hgrow="ALWAYS" />
+						<TextField fx:id="textFieldEmail" disable="true" editable="false" HBox.hgrow="ALWAYS" />
 					</children>
 					<padding>
 						<Insets right="30.0" />
@@ -63,13 +62,7 @@
             <Label fx:id="labelError" prefHeight="18.0" prefWidth="291.0" />
 				<HBox alignment="CENTER_RIGHT" spacing="20.0">
 					<children>
-						<ToggleButton fx:id="toggleBtnSocio" mnemonicParsing="false" selected="true" text="Socio" />
-						<ToggleButton fx:id="toggleBtnAdmin" mnemonicParsing="false" text="Admin">
-							<HBox.margin>
-								<Insets right="40.0" />
-							</HBox.margin>
-						</ToggleButton>
-						<Button mnemonicParsing="false" onAction="#btnAddPersonClicked" text="Modifica" />
+						<Button mnemonicParsing="false" onAction="#btnModificaPersonaClicked" text="Modifica" />
 					</children>
 					<opaqueInsets>
 						<Insets />

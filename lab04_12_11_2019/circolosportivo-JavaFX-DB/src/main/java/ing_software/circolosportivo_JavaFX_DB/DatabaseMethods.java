@@ -187,19 +187,15 @@ public class DatabaseMethods {
 	}
 
 	// Aggiorna i dati di una persona
-	public static Boolean modificaPersona(String oldEmail, String email, String nome, String cognome, String password) {
+	public static Boolean modificaPersona(String email, String nome, String cognome, String password) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
 
-			Persona persona = (Persona) session.get(Persona.class, oldEmail);
+			Persona persona = (Persona) session.get(Persona.class, email);
 
 			if (persona == null) {
 				throw new Exception("Persona non trovata");
-			}
-
-			if (!email.isEmpty()) {
-				persona.setEmail(email);
 			}
 
 			if (!nome.isEmpty()) {
@@ -213,7 +209,7 @@ public class DatabaseMethods {
 			if (!password.isEmpty()) {
 				persona.setPassword(password);
 			}
-
+			
 			// session.update(persona);//No need to update manually as it will be updated
 			// automatically on transaction close.
 			session.getTransaction().commit();
