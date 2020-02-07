@@ -19,7 +19,7 @@ public class DatabaseMethods {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-
+			
 			Persona persona = (Persona) session.get(Persona.class, email);
 
 			if (persona == null) {

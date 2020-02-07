@@ -17,6 +17,8 @@ public class LoginController {
 	private TextField password;
 	@FXML
 	private Button loginButton;
+	@FXML
+	private Label labelError;
 
 	public void initialize() {
 	}
@@ -30,7 +32,6 @@ public class LoginController {
 
 				String resourceUrl = "";
 				try {
-
 					if (userType == "socio") {
 						resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/socioview.fxml";
 						FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(resourceUrl));
@@ -59,7 +60,13 @@ public class LoginController {
 	 * null.
 	 */
 	private String authorize() {
+		if(user.getText().isEmpty() || password.getText().isEmpty()) {
+			labelError.setText("Email or Password is missing!");
+			return null;
+		}
+		
 		if (!DatabaseMethods.checkEmailPassoword(user.getText(), password.getText())) {
+			labelError.setText("Email or Password is wrong!");
 			return null;
 		}
 		return DatabaseMethods.getPersonaType(user.getText());
