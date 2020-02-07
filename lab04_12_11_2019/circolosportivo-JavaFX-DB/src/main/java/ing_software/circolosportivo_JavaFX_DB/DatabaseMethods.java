@@ -17,6 +17,10 @@ public class DatabaseMethods {
 	// Cerca un Persona tramite email e password
 	public static Boolean checkEmailPassoword(String email, String password) {
 		try {
+			
+			// https://forum.zkoss.org/question/102178/how-to-check-username-and-password-in-hibernate-criteria-with-case-sensitive/
+			// TODO Make the login Case Sensitive
+			
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
 			
