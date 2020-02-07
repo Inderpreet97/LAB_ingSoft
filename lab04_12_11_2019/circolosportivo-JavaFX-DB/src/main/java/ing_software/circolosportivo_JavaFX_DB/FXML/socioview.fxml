@@ -47,6 +47,7 @@
                      </GridPane.margin>
                   </GridPane>
                  <Button id="loginButton" fx:id="logoutButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label fx:id="labelError" GridPane.rowIndex="1" />
                </children>
                <BorderPane.margin>
                   <Insets top="10.0" />

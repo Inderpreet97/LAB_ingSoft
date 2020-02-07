@@ -42,15 +42,16 @@
                     </rowConstraints>
                      <children>
                         <Button alignment="CENTER" mnemonicParsing="false" onAction="#nuovaIscrizione" text="Nuova Iscrizione" GridPane.halignment="CENTER" />
-                        <Button onAction="#aggiungiUtente" mnemonicParsing="false" text="Aggiungi Utente" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                        <Button onAction="#aggiungiAttivita" mnemonicParsing="false" text="Aggiungi Attività" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Button onAction="#modificaUtente" mnemonicParsing="false" text="Modifica Utente" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" onAction="#aggiungiUtente" text="Aggiungi Utente" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <Button mnemonicParsing="false" onAction="#aggiungiAttivita" text="Aggiungi Attività" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" onAction="#modificaUtente" text="Modifica Utente" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                      </children>
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </GridPane>
                  <Button id="loginButton" fx:id="logoutButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Logout" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label fx:id="labelError" GridPane.rowIndex="1" />
                </children>
                <BorderPane.margin>
                   <Insets top="10.0" />

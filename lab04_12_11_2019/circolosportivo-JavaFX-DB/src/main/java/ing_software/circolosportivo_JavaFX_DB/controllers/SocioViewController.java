@@ -31,6 +31,9 @@ public class SocioViewController {
 	@FXML
 	private Button logoutButton;
 
+	@FXML
+	private Label labelError;
+
 	public void initialize() {
 		colAttivita.setCellValueFactory(new PropertyValueFactory<>("nomeAttivita"));
 	}
@@ -44,44 +47,47 @@ public class SocioViewController {
 				MainApp.logout();
 			}
 		});
-		
-		partecipazioniTable.setRowFactory( tv -> {
-		    TableRow<Partecipazione> row = new TableRow<>();
-		    row.setOnMouseClicked(event -> {
-		        if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-		        	Partecipazione rowData = row.getItem();
-		            System.out.println(rowData);
-		            
-		            Alert alert = new Alert(AlertType.CONFIRMATION);
-					
+
+		partecipazioniTable.setRowFactory(tv -> {
+			TableRow<Partecipazione> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!row.isEmpty())) {
+					Partecipazione rowData = row.getItem();
+					System.out.println(rowData);
+
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+
 					alert.setTitle("Conferma");
 					alert.setHeaderText("DISISCRIZIONE ATTIVITÀ");
 					alert.setContentText("Vuoi veramente disiscriverti?");
 
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == ButtonType.OK) {
-						System.out.println(rowData.getNomeAttivita() + " - " + rowData.getEmailPersona());
-						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(), rowData.getEmailPersona());
-						if(risultato) refreshTable();
+						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(),
+								rowData.getEmailPersona());
+						if (risultato) {
+							refreshTable();
+							labelError.setText("");
+						} else {
+							labelError.setText("Errore durante la disiscrizione");
+						}
 					} else {
 						// ... user chose CANCEL or closed the dialog
 					}
-		        }
-		    });
-			
-		    return row;
+				}
+			});
+
+			return row;
 		});
 	}
-	
-	
 
 	@FXML
 	void nuovaIscrizione(final ActionEvent event) throws IOException {
 
 		List<Attivita> attivita = DatabaseMethods.getAttivitaList();
-		
+
 		List<String> choices = new ArrayList<>();
-		
+
 		attivita.forEach(a -> choices.add(a.getNome()));
 
 		ChoiceDialog<String> dialog = new ChoiceDialog<>("---", choices);
@@ -92,13 +98,18 @@ public class SocioViewController {
 		// Traditional way to get the response value.
 		// iSPresent == false se l'utente fa cancel o non sceglie niente
 		Optional<String> result = dialog.showAndWait();
-		
-		if (result.isPresent()){
+
+		if (result.isPresent()) {
 			Boolean risultato = DatabaseMethods.iscrizioneAttivita(result.get(), loggedUser);
-			if (risultato) refreshTable();
-			
+			if (risultato) {
+				refreshTable();
+				labelError.setText("");
+			} else {
+
+				labelError.setText("Errore durante l'iscrizione");
+			}
 		}
-		
+
 	}
 
 	public void refreshTable() {

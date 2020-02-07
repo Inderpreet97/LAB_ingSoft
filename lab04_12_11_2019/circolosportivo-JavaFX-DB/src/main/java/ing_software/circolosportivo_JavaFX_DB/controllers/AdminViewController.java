@@ -21,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -42,6 +43,9 @@ public class AdminViewController {
 
 	@FXML
 	private Button logoutButton;
+
+	@FXML
+	Label labelError;
 
 	public void initialize() {
 		colAttivita.setCellValueFactory(new PropertyValueFactory<>("nomeAttivita"));
@@ -74,8 +78,12 @@ public class AdminViewController {
 						System.out.println(rowData.getNomeAttivita() + " - " + rowData.getEmailPersona());
 						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(),
 								rowData.getEmailPersona());
-						if (risultato)
+						if (risultato) {
 							refreshTable();
+							labelError.setText("");
+						} else {
+							labelError.setText("Errore durante la disiscrizione");
+						}
 					} else {
 						// ... user chose CANCEL or closed the dialog
 					}
@@ -150,9 +158,12 @@ public class AdminViewController {
 
 		if (result.isPresent()) {
 			Boolean risultato = DatabaseMethods.iscrizioneAttivita(result.get(), loggedUser);
-			if (risultato)
+			if (risultato) {
 				refreshTable();
-
+				labelError.setText("");
+			} else {
+				labelError.setText("Errore durante l'iscrizione");
+			}
 		}
 	}
 
