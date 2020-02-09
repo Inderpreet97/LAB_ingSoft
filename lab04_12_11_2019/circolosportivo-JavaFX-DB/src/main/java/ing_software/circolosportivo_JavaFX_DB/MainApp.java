@@ -19,7 +19,8 @@ public class MainApp extends Application {
 		scene = new Scene(new StackPane());
 	    
 		showLoginScreen();
-
+		
+		stage.setTitle("Circolo Sportivo");
 	    stage.setScene(scene);
 	    stage.show();
 	}
