@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Gen 24, 2020 alle 16:00
+-- Creato il: Feb 09, 2020 alle 01:11
 -- Versione del server: 10.1.36-MariaDB
 -- Versione PHP: 7.2.10
 
@@ -33,6 +33,14 @@ CREATE TABLE `attivita` (
   `attivita_type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `attivita`
+--
+
+INSERT INTO `attivita` (`nome`, `attivita_type`) VALUES
+('calcio', 1),
+('Gara calcio', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -44,6 +52,16 @@ CREATE TABLE `partecipazione` (
   `persona` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `partecipazione`
+--
+
+INSERT INTO `partecipazione` (`attivita`, `persona`) VALUES
+('calcio', 'admin@circolo.it'),
+('calcio', 'indi@circolo.it'),
+('Gara calcio', 'admin@circolo.it'),
+('Gara calcio', 'indi@circolo.it');
+
 -- --------------------------------------------------------
 
 --
@@ -54,9 +72,17 @@ CREATE TABLE `persona` (
   `email` varchar(255) NOT NULL,
   `nome` varchar(255) NOT NULL,
   `cognome` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) CHARACTER SET latin7 COLLATE latin7_general_cs NOT NULL,
   `persona_type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `persona`
+--
+
+INSERT INTO `persona` (`email`, `nome`, `cognome`, `password`, `persona_type`) VALUES
+('admin@circolo.it', 'admin', 'admin', 'admin123', 2),
+('indi@circolo.it', 'Inderpreet', 'Singh', 'indi123', 1);
 
 --
 -- Indici per le tabelle scaricate
