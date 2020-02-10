@@ -96,13 +96,13 @@ public class AdminViewController {
 	}
 
 	@FXML
-	void aggiungiUtente(final ActionEvent event) throws IOException {
+	void gestioneAttivita(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddPersonDialog.fxml"));
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/gestioneAttivitayDialog.fxml"));
 
 		Parent parent = fxmlLoader.load();
 
-		Scene scene = new Scene(parent, 300, 200);
+		Scene scene = new Scene(parent);
 		Stage stage = new Stage();
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setScene(scene);
@@ -110,25 +110,14 @@ public class AdminViewController {
 	}
 
 	@FXML
-	void aggiungiAttivita(final ActionEvent event) throws IOException {
+	void gestioneUtenti(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddActivityDialog.fxml"));
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/gestioneUtentiDialog.fxml"));
 
 		Parent parent = fxmlLoader.load();
-
-		Scene scene = new Scene(parent, 300, 200);
-		Stage stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
-		stage.setScene(scene);
-		stage.showAndWait();
-	}
-
-	@FXML
-	void modificaUtente(final ActionEvent event) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/modificaUtenteDialog.fxml"));
-
-		Parent parent = fxmlLoader.load();
+		
+		GestioneUtentiDialogController controller = fxmlLoader.<GestioneUtentiDialogController>getController();
+		controller.setLoggedUser(loggedUser);
 
 		Scene scene = new Scene(parent);
 		Stage stage = new Stage();

@@ -24,13 +24,17 @@ public class LoginController {
 	}
 
 	public void initManager(final Scene scene) {
-
+		
 		loginButton.setOnAction(e -> {
+			
+			// userType = null if login failed
 			String userType = authorize();
 
 			if (userType != null) {
-
 				String resourceUrl = "";
+				
+				// Load the correct FXML based on user type
+				
 				try {
 					if (userType == "socio") {
 						resourceUrl = "ing_software/circolosportivo_JavaFX_DB/FXML/socioview.fxml";
@@ -56,8 +60,7 @@ public class LoginController {
 	/**
 	 * Check authorization credentials.
 	 * 
-	 * If accepted, return a sessionID for the authorized session otherwise, return
-	 * null.
+	 * @return If accepted, return the user type for the authorized user otherwise, return null.
 	 */
 	private String authorize() {
 		if(user.getText().isEmpty() || password.getText().isEmpty()) {

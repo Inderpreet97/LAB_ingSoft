@@ -29,10 +29,16 @@ public class MainApp extends Application {
 		launch(args);
 	}
 	
+	/**
+	 * After the logout returns to the Login Screen
+	 */
 	public static void logout() {
 		showLoginScreen();
 	}
 
+	/**
+	 * Load the Login Screen
+	 */
 	private static void showLoginScreen() {
 		try {
 			FXMLLoader loader = new FXMLLoader(MainApp.class.getClassLoader().getResource("ing_software/circolosportivo_JavaFX_DB/FXML/login.fxml"));

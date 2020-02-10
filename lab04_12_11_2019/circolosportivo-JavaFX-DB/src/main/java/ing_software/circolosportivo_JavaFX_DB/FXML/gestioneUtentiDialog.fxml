@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.GestioneUtentiDialogController">
+	<children>
+		<VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+			<children>
+				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gestione Utenti" />
+            <TableView fx:id="personaTable" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="colNome" prefWidth="100.0" text="Nome" />
+                <TableColumn fx:id="colCognome" prefWidth="100.0" text="Cognome" />
+                <TableColumn fx:id="colEmail" prefWidth="190" text="Email" />
+              </columns>
+            </TableView>
+				<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#aggiungiUtente" text="Aggiungi" />
+                  <Button mnemonicParsing="false" onAction="#btnModificaPersonaClicked" text="Modifica" />
+                  <Button mnemonicParsing="false" onAction="#eliminaUtente" text="Elimina" textAlignment="CENTER" textFill="#bc0000" />
+               </children>
+				</HBox>
+            <Label fx:id="labelError" />
+			</children>
+		</VBox>
+	</children>
+</AnchorPane>

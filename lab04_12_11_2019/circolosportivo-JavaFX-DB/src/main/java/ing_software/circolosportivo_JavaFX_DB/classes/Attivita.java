@@ -35,28 +35,4 @@ public class Attivita {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	/** TOOD Forse non servono, ricrodarsi di cancellare questi metodi se non usati
-			 public Boolean aggiungPersona(Persona persona) {
-				try {
-					this.persone = App.aggiungiElementoArray(this.persone, persona);
-					return true;
-				} catch (Exception ex) {
-					System.out.println("Error: " + ex.getMessage());
-					return false;
-				}
-			}
-		
-			public Boolean rimuoviPersona(Persona persona) {
-				try {
-					this.persone = App.rimuoviElementoArray(this.persone, persona);
-					return true;
-				} catch (Exception ex) {
-					System.out.println("Error: " + ex.getMessage());
-					return false;
-				}
-		
-			}
-	 */
-
 }

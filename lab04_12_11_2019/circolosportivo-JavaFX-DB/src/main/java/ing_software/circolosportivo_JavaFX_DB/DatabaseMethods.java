@@ -13,13 +13,18 @@ import ing_software.circolosportivo_JavaFX_DB.classes.PartecipazionePrimaryKey;
 import ing_software.circolosportivo_JavaFX_DB.classes.Persona;
 import ing_software.circolosportivo_JavaFX_DB.classes.Socio;
 
+/**
+ * Static Class with public methods used to query the DB
+ */
 public class DatabaseMethods {
-	// Cerca un Persona tramite email e password
+	/**
+	 * Cerca un Persona tramite email e password
+	 * @param email
+	 * @param password
+	 * @return true if user found with the given email and password, false otherwise
+	 */
 	public static Boolean checkEmailPassoword(String email, String password) {
 		try {
-			
-			// https://forum.zkoss.org/question/102178/how-to-check-username-and-password-in-hibernate-criteria-with-case-sensitive/
-			// TODO Make the login Case Sensitive
 			
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
@@ -44,7 +49,11 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Restituisce il tipo di account di una Persona
+	/**
+	 * Restituisce il tipo di account di una Persona
+	 * @param email
+	 * @return string representing the user type, null if user not found or in case of error
+	 */
 	public static String getPersonaType(String email) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -75,7 +84,11 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Restituisce la lista delle attività alle quali l'utente è iscritto
+	/**
+	 * Restituisce la lista delle attività alle quali l'utente è iscritto
+	 * @param userEmail
+	 * @return
+	 */
 	public static List<Partecipazione> getPartecipazioni(String userEmail) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -97,7 +110,9 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Restituisce la lista di tutte le attività
+	/**
+	 * @return Restituisce la lista di tutte le attività
+	 */
 	public static List<Attivita> getAttivitaList() {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -117,7 +132,15 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Aggiunge un socio o un Amministrare nella tabella persona
+	/**
+	 * Aggiunge una Persona nella tabella persona
+	 * @param nome
+	 * @param cognome
+	 * @param email
+	 * @param password
+	 * @param personaType, 1 per Socio, 2 per Amministratore
+	 * @return True se persona aggiunta correttamente, False altrimenti
+	 */
 	public static Boolean aggiungiPersona(String nome, String cognome, String email, String password, int personaType) {
 		try {
 			if (personaType == 1) { // aggiungi socio
@@ -166,7 +189,11 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Rimuove persona dalla tabella persona
+	/**
+	 * Rimuove persona dalla tabella persona
+	 * @param email
+	 * @return True persona rimossa, False altrimenti
+	 */
 	public static Boolean rimuoviPersona(String email) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -190,7 +217,14 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Aggiorna i dati di una persona
+	/**
+	 * Aggiorna i dati di una persona, non è possibile modificare l'email
+	 * @param email
+	 * @param nome
+	 * @param cognome
+	 * @param password
+	 * @return True se i dati vengono aggiornati, False altrimenti
+	 */
 	public static Boolean modificaPersona(String email, String nome, String cognome, String password) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -214,8 +248,8 @@ public class DatabaseMethods {
 				persona.setPassword(password);
 			}
 			
-			// session.update(persona);//No need to update manually as it will be updated
-			// automatically on transaction close.
+			// session.update(persona);
+			// No need to update manually as it will be updated automatically on transaction close.
 			session.getTransaction().commit();
 			session.close();
 
@@ -226,7 +260,12 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Aggiunge Corso o Gara
+	/**
+	 * Aggiunge un'attività
+	 * @param nome
+	 * @param attivitaType, 1 = Gara, 2 = Corso
+	 * @return True se aggiunta correttamente, False altrimenti
+	 */
 	public static Boolean aggiungiAttivita(String nome, int attivitaType) {
 		try {
 			if (attivitaType == 1) { // aggiungi Gara
@@ -275,7 +314,11 @@ public class DatabaseMethods {
 		}
 	}
 
-	// Rimuovi attivita
+	/**
+	 * Rimuovi attivita
+	 * @param nome
+	 * @return True se rimossa correttamente, False altrimenti 
+	 */
 	public static Boolean rimuoviAttivita(String nome) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -298,34 +341,13 @@ public class DatabaseMethods {
 			return false;
 		}
 	}
-
-	public static Boolean modificaAttivita(String oldName, String nome) {
-		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-
-			Attivita attivita = (Attivita) session.get(Attivita.class, oldName);
-
-			if (attivita == null) {
-				throw new Exception("attivita non trovata");
-			}
-
-			if (!nome.isEmpty()) {
-				attivita.setNome(nome);
-			}
-
-			// session.update(Attivita);//No need to update manually as it will be updated
-			// automatically on transaction close.
-			session.getTransaction().commit();
-			session.close();
-
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
+	
+	/**
+	 * Iscrive una persona ad un'attività
+	 * @param nomeAttivita
+	 * @param emailPersona
+	 * @return True se iscrizione avvenuta correttamente, False altrimenti
+	 */
 	public static Boolean iscrizioneAttivita(String nomeAttivita, String emailPersona) {
 		try {
 			Partecipazione partecipazione = new Partecipazione(nomeAttivita, emailPersona);
@@ -344,7 +366,13 @@ public class DatabaseMethods {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Disiscrive una persona da un'attività
+	 * @param nomeAttivita
+	 * @param emailPersona
+	 * @return True se disiscrizione avvenuta correttamente, False altrimenti
+	 */
 	public static Boolean lasciaAttivita(String nomeAttivita, String emailPersona) {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();
@@ -368,7 +396,10 @@ public class DatabaseMethods {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * @return lista persone presenti nel DB
+	 */
 	public static List<Persona> getPersonaList() {
 		try {
 			Session session = HibernateUtil.getSessionFactory().openSession();

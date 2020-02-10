@@ -10,7 +10,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
-public class AddPersonDialogController {
+public class GestioneAttivitaDialogController {
 	@FXML
 	private TextField textFieldNome;
 	@FXML
@@ -30,8 +30,6 @@ public class AddPersonDialogController {
 
 	private ToggleGroup toggleUserType;
 	
-	private GestioneUtentiDialogController parentController;
-	
 	public void initialize() {
 		toggleBtnSocio.setUserData(1);
 		toggleBtnAdmin.setUserData(2);
@@ -42,9 +40,7 @@ public class AddPersonDialogController {
 		toggleBtnAdmin.setToggleGroup(toggleUserType);
 	}
 	
-	public void setController(GestioneUtentiDialogController controller) {
-		parentController = controller;
-	}
+	// TODO TUTTO QUANTO 
 	
 	@FXML
 	void btnAddPersonClicked(final ActionEvent event) {
@@ -60,13 +56,14 @@ public class AddPersonDialogController {
 			Boolean risultato = DatabaseMethods.aggiungiPersona(nome, cognome, email, password, userType);
 			
 			if(risultato) {
-				parentController.refreshTable();
 				closeStage(event);
 			} else {
+				System.out.println("UTENTE NON AGGIUNTO");
 				labelError.setText("Utente non aggiunto");
 			}
 		} else {
-			labelError.setText("Dati mancanti, inserire tutti i dati e riprovare");
+			System.out.println("Dati mancanti, inserire tutti i dati e riprovare");
+			labelError.setText("Utente non aggiunto");
 		}
 	}
 
