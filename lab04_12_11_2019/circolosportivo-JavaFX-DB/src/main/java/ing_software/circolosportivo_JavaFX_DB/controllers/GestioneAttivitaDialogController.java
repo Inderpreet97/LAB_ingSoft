@@ -1,76 +1,126 @@
 package ing_software.circolosportivo_JavaFX_DB.controllers;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
 import ing_software.circolosportivo_JavaFX_DB.DatabaseMethods;
+import ing_software.circolosportivo_JavaFX_DB.classes.Attivita;
+import ing_software.circolosportivo_JavaFX_DB.classes.Corso;
+import ing_software.circolosportivo_JavaFX_DB.classes.Gara;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GestioneAttivitaDialogController {
 	@FXML
-	private TextField textFieldNome;
+	private TableView<Attivita> attivitaTable;
+	private ObservableList<Attivita> attivitaList = FXCollections.observableArrayList();
+
 	@FXML
-	private TextField textFieldCognome;
+	private TableColumn<String, String> colTipo;
 	@FXML
-	private TextField textFieldEmail;
-	@FXML
-	private TextField textFieldPassword;
+	private TableColumn<String, String> colNome;
 	
 	@FXML
 	private Label labelError;
 	
-	@FXML 
-	private ToggleButton toggleBtnSocio;
-	@FXML 
-	private ToggleButton toggleBtnAdmin;
-
-	private ToggleGroup toggleUserType;
+	private Attivita selectedAttivita = null;
 	
 	public void initialize() {
-		toggleBtnSocio.setUserData(1);
-		toggleBtnAdmin.setUserData(2);
+		colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		colTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+
+		refreshTable();
 		
-		toggleUserType = new ToggleGroup();
-		
-		toggleBtnSocio.setToggleGroup(toggleUserType);
-		toggleBtnAdmin.setToggleGroup(toggleUserType);
+		attivitaTable.setRowFactory(tv -> {
+			TableRow<Attivita> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (!row.isEmpty()) {
+					selectedAttivita = row.getItem();
+				}
+			});
+			return row;
+		});
 	}
 	
-	// TODO TUTTO QUANTO 
+	public void refreshTable() {
+		List<Attivita> attivitaListDB = DatabaseMethods.getAttivitaList();
+		
+		attivitaList = FXCollections.observableArrayList();
+		
+		attivitaListDB.forEach(attivita -> {
+			
+			if(attivita instanceof Corso) {
+				attivita.setTipo("corso");
+				attivitaList.add(attivita);
+				
+			} else if(attivita instanceof Gara) {
+				attivita.setTipo("gara");
+				attivitaList.add(attivita);
+			}
+		});
+		
+		attivitaTable.setItems(attivitaList);
+		
+		selectedAttivita = null;
+		labelError.setText("");
+	}
 	
 	@FXML
-	void btnAddPersonClicked(final ActionEvent event) {
+	void btnAggiungiAttivitaClicked(final ActionEvent event) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/AddActivityDialog.fxml"));
+
+		Parent parent = fxmlLoader.load();
 		
-		String nome = textFieldNome.getText().trim();
-		String cognome = textFieldCognome.getText().trim();
-		String email = textFieldEmail.getText().trim();
-		String password = textFieldPassword.getText().trim();
+		AddActivityDialogController controller = fxmlLoader.<AddActivityDialogController>getController();
+		controller.setController(this);
 		
-		if(!(nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty())) {
-			int userType = (int) toggleUserType.getSelectedToggle().getUserData();
-			
-			Boolean risultato = DatabaseMethods.aggiungiPersona(nome, cognome, email, password, userType);
-			
-			if(risultato) {
-				closeStage(event);
+		Scene scene = new Scene(parent);
+		Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setScene(scene);
+		stage.showAndWait();
+	}
+	
+	@FXML
+	void btnEliminaAttivitaClicked(final ActionEvent event) {
+		if (selectedAttivita != null) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+
+			alert.setTitle("Conferma");
+			alert.setHeaderText("ELIMINA ATTIVITA");
+			alert.setContentText("Vuoi veramente eliminare " + selectedAttivita.getNome() + " ?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				Boolean risultato = DatabaseMethods.rimuoviAttivita(selectedAttivita.getNome());
+				if (risultato) {
+					refreshTable();
+					labelError.setText("Attivita eliminata");
+				} else {
+					labelError.setText("Errore durante l'eliminazione");
+				}
 			} else {
-				System.out.println("UTENTE NON AGGIUNTO");
-				labelError.setText("Utente non aggiunto");
+				// ... user chose CANCEL or closed the dialog
 			}
 		} else {
-			System.out.println("Dati mancanti, inserire tutti i dati e riprovare");
-			labelError.setText("Utente non aggiunto");
+			labelError.setText("No activity selected");
 		}
-	}
-
-
-	private void closeStage(final ActionEvent event) {
-		Node source = (Node) event.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
 	}
 }

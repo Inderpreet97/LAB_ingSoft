@@ -21,12 +21,14 @@ public class AddActivityDialogController {
 	private ToggleButton toggleBtnCorso;
 	@FXML 
 	private ToggleButton toggleBtnGara;
+	
+	private GestioneAttivitaDialogController parentController;
 
 	private ToggleGroup toggleActivityType;
 	
 	public void initialize() {
-		toggleBtnCorso.setUserData(1);
-		toggleBtnGara.setUserData(2);
+		toggleBtnCorso.setUserData(2);
+		toggleBtnGara.setUserData(1);
 		
 		toggleActivityType = new ToggleGroup();
 		
@@ -39,20 +41,19 @@ public class AddActivityDialogController {
 		
 		String nome = textFieldNome.getText().trim();
 		
-		if(!nome.isEmpty()) {
+		if(!nome.isEmpty() && toggleActivityType.getSelectedToggle() != null) {
 			
 			int activityType = (int) toggleActivityType.getSelectedToggle().getUserData();
 			
 			Boolean risultato = DatabaseMethods.aggiungiAttivita(nome, activityType);
 			
 			if(risultato) {
+				parentController.refreshTable();
 				closeStage(event);
 			} else {
-				System.out.println("Attività NON AGGIUNTA");
 				labelError.setText("Attività non aggiunta");
 			}
 		} else {
-			System.out.println("Dati mancanti, inserire tutti i dati e riprovare");
 			labelError.setText("Dati mancanti, inserire tutti i dati e riprovare");
 		}
 	}
@@ -62,5 +63,9 @@ public class AddActivityDialogController {
 		Node source = (Node) event.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
+	}
+
+	public void setController(GestioneAttivitaDialogController controller) {
+		parentController = controller;
 	}
 }

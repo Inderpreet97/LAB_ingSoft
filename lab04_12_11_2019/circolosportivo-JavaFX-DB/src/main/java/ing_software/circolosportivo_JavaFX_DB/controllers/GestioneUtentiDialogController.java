@@ -77,6 +77,8 @@ public class GestioneUtentiDialogController {
 		});
 
 		personaTable.setItems(personaList);
+		
+		selectedUser = null;
 		labelError.setText("");
 	}
 

@@ -98,7 +98,7 @@ public class AdminViewController {
 	@FXML
 	void gestioneAttivita(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
-				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/gestioneAttivitayDialog.fxml"));
+				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/gestioneAttivitaDialog.fxml"));
 
 		Parent parent = fxmlLoader.load();
 

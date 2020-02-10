@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="300.0" minWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AddActivityDialogController">
+<AnchorPane minHeight="300.0" minWidth="287.0" prefHeight="300.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AddActivityDialogController">
 	<children>
 		<VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
 			<children>
@@ -25,23 +25,30 @@
 					</padding>
 				</HBox>
             <Label fx:id="labelError" prefHeight="18.0" prefWidth="291.0" />
-				<HBox alignment="CENTER_RIGHT" spacing="20.0">
+				<HBox alignment="CENTER" spacing="20.0">
 					<children>
 						<ToggleButton fx:id="toggleBtnCorso" mnemonicParsing="false" selected="true" text="Corso" />
 						<ToggleButton fx:id="toggleBtnGara" mnemonicParsing="false" text="Gara">
 							<HBox.margin>
-								<Insets right="40.0" />
+								<Insets />
 							</HBox.margin>
 						</ToggleButton>
-						<Button mnemonicParsing="false" onAction="#btnAddActivityClicked" text="Add" />
 					</children>
 					<opaqueInsets>
 						<Insets />
 					</opaqueInsets>
-					<padding>
-						<Insets right="30.0" />
-					</padding>
 				</HBox>
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+      						<Button mnemonicParsing="false" onAction="#btnAddActivityClicked" text="Add" />
+               </children>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
 			</children>
 		</VBox>
 	</children>

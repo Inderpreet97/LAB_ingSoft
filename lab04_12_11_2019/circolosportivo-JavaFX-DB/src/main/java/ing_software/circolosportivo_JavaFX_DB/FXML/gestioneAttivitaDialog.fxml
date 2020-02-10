@@ -14,7 +14,7 @@
 		<VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
 			<children>
 				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gestione Attivita" />
-            <TableView fx:id="personaTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="attivitaTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
                 <TableColumn fx:id="colTipo" prefWidth="100.0" text="Tipo" />
                 <TableColumn fx:id="colNome" prefWidth="196.0" text="Nome" />
@@ -22,12 +22,11 @@
             </TableView>
 				<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
                <children>
-                  <Button mnemonicParsing="false" text="Button" />
-                  <Button mnemonicParsing="false" text="Button" />
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" onAction="#btnAggiungiAttivitaClicked" text="Aggiungi" />
+                  <Button mnemonicParsing="false" onAction="#btnEliminaAttivitaClicked" text="Elimina" textFill="#f80000" />
                </children>
 				</HBox>
-            <Label fx:id="labelError" prefHeight="18.0" prefWidth="291.0" />
+            <Label fx:id="labelError" prefHeight="18.0" prefWidth="291.0" textAlignment="CENTER" />
 			</children>
 		</VBox>
 	</children>
