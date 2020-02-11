@@ -47,7 +47,8 @@ public class GestioneUtentiDialogController {
 		colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		colCognome.setCellValueFactory(new PropertyValueFactory<>("cognome"));
 		colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-
+		
+		// Single Click on Table Row Event
 		personaTable.setRowFactory(tv -> {
 			TableRow<Persona> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -81,7 +82,13 @@ public class GestioneUtentiDialogController {
 		selectedUser = null;
 		labelError.setText("");
 	}
-
+	
+	/**
+	 * Apri finestra di Aggiunta di un nuovo Utente
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void aggiungiUtente(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
@@ -98,7 +105,13 @@ public class GestioneUtentiDialogController {
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
-
+	
+	/**
+	 * Dialogo di Eliminazione di un Utente
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void eliminaUtente(final ActionEvent event) throws IOException {
 		if (selectedUser != null) {
@@ -125,7 +138,13 @@ public class GestioneUtentiDialogController {
 		}
 
 	}
-
+	
+	/**
+	 * Apri finestra di Modifica dell'utente selezionato
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void btnModificaPersonaClicked(final ActionEvent event) throws IOException {
 		if (selectedUser != null) {

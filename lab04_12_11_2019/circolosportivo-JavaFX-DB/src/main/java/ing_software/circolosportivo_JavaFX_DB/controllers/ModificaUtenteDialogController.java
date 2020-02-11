@@ -27,6 +27,13 @@ public class ModificaUtenteDialogController {
 
 	}
 	
+	/**
+	 * Metodo usato dalla classe chiamante per presettare i dati dell'utente da modificare
+	 * 
+	 * @param nome
+	 * @param cognome
+	 * @param email
+	 */
 	public void loadData(String nome, String cognome, String email) {
 		textFieldNome.setText(nome);
 		textFieldCognome.setText(cognome);

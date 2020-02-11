@@ -27,6 +27,7 @@ public class AddActivityDialogController {
 	private ToggleGroup toggleActivityType;
 	
 	public void initialize() {
+		// Setting up the toggle buttons
 		toggleBtnCorso.setUserData(2);
 		toggleBtnGara.setUserData(1);
 		
@@ -64,7 +65,14 @@ public class AddActivityDialogController {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 	}
-
+	
+	/**
+	 * The calling Controller use this method to set the controller (itself)
+	 * This class has to know the "parent" controller because while closing
+	 * the stage has to refresh the table in the "parent" stage
+	 * 
+	 * @param controller
+	 */
 	public void setController(GestioneAttivitaDialogController controller) {
 		parentController = controller;
 	}

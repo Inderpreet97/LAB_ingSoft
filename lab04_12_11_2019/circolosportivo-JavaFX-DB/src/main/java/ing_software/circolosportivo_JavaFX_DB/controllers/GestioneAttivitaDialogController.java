@@ -47,6 +47,7 @@ public class GestioneAttivitaDialogController {
 
 		refreshTable();
 		
+		// Single Click on Table Row Event
 		attivitaTable.setRowFactory(tv -> {
 			TableRow<Attivita> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -81,6 +82,12 @@ public class GestioneAttivitaDialogController {
 		labelError.setText("");
 	}
 	
+	/**
+	 * Apri finestra di Aggiunta di Attività
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void btnAggiungiAttivitaClicked(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
@@ -98,6 +105,11 @@ public class GestioneAttivitaDialogController {
 		stage.showAndWait();
 	}
 	
+	/**
+	 * Dialogo di eliminazione di un'Attività
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void btnEliminaAttivitaClicked(final ActionEvent event) {
 		if (selectedAttivita != null) {

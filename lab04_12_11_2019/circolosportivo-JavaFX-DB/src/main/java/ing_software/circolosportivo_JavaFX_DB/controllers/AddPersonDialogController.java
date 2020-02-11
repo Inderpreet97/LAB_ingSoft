@@ -33,6 +33,7 @@ public class AddPersonDialogController {
 	private GestioneUtentiDialogController parentController;
 	
 	public void initialize() {
+		// Setting up the toggle buttons
 		toggleBtnSocio.setUserData(1);
 		toggleBtnAdmin.setUserData(2);
 		
@@ -42,6 +43,13 @@ public class AddPersonDialogController {
 		toggleBtnAdmin.setToggleGroup(toggleUserType);
 	}
 	
+	/**
+	 * The calling Controller use this method to set the controller (itself)
+	 * This class has to know the "parent" controller because while closing
+	 * the stage has to refresh the table in the "parent" stage
+	 * 
+	 * @param controller
+	 */
 	public void setController(GestioneUtentiDialogController controller) {
 		parentController = controller;
 	}

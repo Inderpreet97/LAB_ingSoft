@@ -29,9 +29,6 @@ public class SocioViewController {
 	private TableColumn<String, String> colAttivita;
 
 	@FXML
-	private Button logoutButton;
-
-	@FXML
 	private Label labelError;
 
 	public void initialize() {
@@ -41,13 +38,8 @@ public class SocioViewController {
 	public void initSession(final Scene scene, String loggedUser) {
 		this.loggedUser = loggedUser;
 		refreshTable();
-		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				MainApp.logout();
-			}
-		});
-
+		
+		// Double Click on Table Row Event
 		partecipazioniTable.setRowFactory(tv -> {
 			TableRow<Partecipazione> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -78,6 +70,11 @@ public class SocioViewController {
 
 			return row;
 		});
+	}
+	
+	@FXML
+	void btnLogoutClicked (final ActionEvent event) {
+		MainApp.logout();
 	}
 
 	@FXML

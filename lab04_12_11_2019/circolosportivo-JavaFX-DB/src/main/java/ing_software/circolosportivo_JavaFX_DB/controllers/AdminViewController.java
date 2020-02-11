@@ -12,13 +12,11 @@ import ing_software.circolosportivo_JavaFX_DB.classes.Partecipazione;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -30,8 +28,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-//SITO PER FARE ALTRE TIPO DI FINESTRE POP-UP https://code.makery.ch/blog/javafx-dialogs-official/
-
 public class AdminViewController {
 	private String loggedUser;
 	@FXML
@@ -42,24 +38,18 @@ public class AdminViewController {
 	private TableColumn<String, String> colAttivita;
 
 	@FXML
-	private Button logoutButton;
-
-	@FXML
 	Label labelError;
 
 	public void initialize() {
+		// binds the table column with Class Attribute
 		colAttivita.setCellValueFactory(new PropertyValueFactory<>("nomeAttivita"));
 	}
 
 	public void initSession(final Scene scene, String loggedUser) {
 		this.loggedUser = loggedUser;
 		refreshTable();
-		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				MainApp.logout();
-			}
-		});
-
+		
+		// Double Click on Table Row Event
 		partecipazioniTable.setRowFactory(tv -> {
 			TableRow<Partecipazione> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -92,7 +82,18 @@ public class AdminViewController {
 		});
 
 	}
-
+	
+	@FXML
+	void btnLogoutClicked (final ActionEvent event) {
+		MainApp.logout();
+	}
+	
+	/**
+	 * Apri finestra di Gestione Attività
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void gestioneAttivita(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
@@ -106,7 +107,13 @@ public class AdminViewController {
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
-
+	
+	/**
+	 * Apri finestra di Gestione Utenti
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void gestioneUtenti(final ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
@@ -123,7 +130,13 @@ public class AdminViewController {
 		stage.setScene(scene);
 		stage.showAndWait();
 	}
-
+	
+	/**
+	 * Dialogo per una nuova iscrizione ad un'attività
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	void nuovaIscrizione(final ActionEvent event) throws IOException {
 		
