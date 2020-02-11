@@ -65,7 +65,6 @@ public class AdminViewController {
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty())) {
 					Partecipazione rowData = row.getItem();
-					System.out.println(rowData);
 
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 
@@ -75,7 +74,6 @@ public class AdminViewController {
 
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == ButtonType.OK) {
-						System.out.println(rowData.getNomeAttivita() + " - " + rowData.getEmailPersona());
 						Boolean risultato = DatabaseMethods.lasciaAttivita(rowData.getNomeAttivita(),
 								rowData.getEmailPersona());
 						if (risultato) {
@@ -115,7 +113,7 @@ public class AdminViewController {
 				.getResource("ing_software/circolosportivo_JavaFX_DB/FXML/gestioneUtentiDialog.fxml"));
 
 		Parent parent = fxmlLoader.load();
-		
+
 		GestioneUtentiDialogController controller = fxmlLoader.<GestioneUtentiDialogController>getController();
 		controller.setLoggedUser(loggedUser);
 
@@ -128,15 +126,26 @@ public class AdminViewController {
 
 	@FXML
 	void nuovaIscrizione(final ActionEvent event) throws IOException {
-
-		// https://code.makery.ch/blog/javafx-dialogs-official/
+		
 		List<Attivita> attivita = DatabaseMethods.getAttivitaList();
 
 		List<String> choices = new ArrayList<>();
 
-		attivita.forEach(a -> choices.add(a.getNome()));
+		attivita.forEach(a -> {
+			// controlla se l'utente non è già iscritto
+			Boolean iscritto = false;
+			for (Partecipazione p : iscrizioniList) {
+				if (p.getNomeAttivita().equals(a.getNome())) {
+					iscritto = true;
+					return;
+				}
+			}
+			if (!iscritto) {
+				choices.add(a.getNome());
+			}
+		});
 
-		ChoiceDialog<String> dialog = new ChoiceDialog<>("---", choices);
+		ChoiceDialog<String> dialog = new ChoiceDialog<>("", choices);
 		dialog.setTitle("Choice Dialog");
 		dialog.setHeaderText("A quale attivita vuoi iscriverti?");
 		dialog.setContentText("Scegli l'attività:");
@@ -146,16 +155,22 @@ public class AdminViewController {
 		Optional<String> result = dialog.showAndWait();
 
 		if (result.isPresent()) {
-			Boolean risultato = DatabaseMethods.iscrizioneAttivita(result.get(), loggedUser);
-			if (risultato) {
-				refreshTable();
-				labelError.setText("");
+			if (!result.get().isEmpty()) {
+				Boolean risultato = DatabaseMethods.iscrizioneAttivita(result.get(), loggedUser);
+				if (risultato) {
+					refreshTable();
+					labelError.setText("");
+				} else {
+					labelError.setText("Errore durante l'iscrizione");
+				}
+
 			} else {
-				labelError.setText("Errore durante l'iscrizione");
+				labelError.setText("Nessuna opzione selezionata");
 			}
 		}
 	}
-
+	
+	@FXML
 	public void refreshTable() {
 		List<Partecipazione> partecipazioni = DatabaseMethods.getPartecipazioni(loggedUser);
 

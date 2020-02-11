@@ -54,7 +54,7 @@ public class AddPersonDialogController {
 		String email = textFieldEmail.getText().trim();
 		String password = textFieldPassword.getText().trim();
 		
-		if(!(nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty() || toggleUserType.getSelectedToggle() != null)) {
+		if(!(nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || password.isEmpty() || toggleUserType.getSelectedToggle() == null)) {
 			int userType = (int) toggleUserType.getSelectedToggle().getUserData();
 			
 			Boolean risultato = DatabaseMethods.aggiungiPersona(nome, cognome, email, password, userType);

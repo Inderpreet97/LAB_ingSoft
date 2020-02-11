@@ -44,6 +44,7 @@
                         <Button alignment="CENTER" mnemonicParsing="false" onAction="#nuovaIscrizione" text="Nuova Iscrizione" GridPane.halignment="CENTER" />
                         <Button mnemonicParsing="false" onAction="#gestioneAttivita" text="Gestione Attività" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Button mnemonicParsing="false" onAction="#gestioneUtenti" text="Gestione Utenti" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" onAction="#refreshTable" text="Aggiorna Tabella" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                      </children>
                      <GridPane.margin>
                         <Insets />

@@ -12,19 +12,16 @@
 
 <AnchorPane minHeight="300.0" minWidth="287.0" prefHeight="300.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ing_software.circolosportivo_JavaFX_DB.controllers.AddActivityDialogController">
 	<children>
-		<VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+		<VBox alignment="CENTER" layoutX="131.0" layoutY="50.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
 			<children>
 				<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adding Activity Dialog" />
-				<HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+				<HBox alignment="CENTER" spacing="10.0">
 					<children>
-						<Label alignment="CENTER_RIGHT" minWidth="100.0" text="nome" />
-						<TextField fx:id="textFieldNome" HBox.hgrow="ALWAYS" />
+						<Label alignment="CENTER_RIGHT" text="nome" textAlignment="CENTER" />
+						<TextField fx:id="textFieldNome" />
 					</children>
-					<padding>
-						<Insets right="30.0" />
-					</padding>
 				</HBox>
-            <Label fx:id="labelError" prefHeight="18.0" prefWidth="291.0" />
+            <Label fx:id="labelError" textAlignment="CENTER" />
 				<HBox alignment="CENTER" spacing="20.0">
 					<children>
 						<ToggleButton fx:id="toggleBtnCorso" mnemonicParsing="false" selected="true" text="Corso" />
