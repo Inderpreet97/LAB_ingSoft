@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Feb 09, 2020 alle 01:11
+-- Creato il: Feb 12, 2020 alle 21:50
 -- Versione del server: 10.1.36-MariaDB
 -- Versione PHP: 7.2.10
 
@@ -38,8 +38,7 @@ CREATE TABLE `attivita` (
 --
 
 INSERT INTO `attivita` (`nome`, `attivita_type`) VALUES
-('calcio', 1),
-('Gara calcio', 2);
+('calcio', 2);
 
 -- --------------------------------------------------------
 
@@ -58,9 +57,7 @@ CREATE TABLE `partecipazione` (
 
 INSERT INTO `partecipazione` (`attivita`, `persona`) VALUES
 ('calcio', 'admin@circolo.it'),
-('calcio', 'indi@circolo.it'),
-('Gara calcio', 'admin@circolo.it'),
-('Gara calcio', 'indi@circolo.it');
+('calcio', 'indi@circolo.it');
 
 -- --------------------------------------------------------
 
